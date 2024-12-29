@@ -1,0 +1,292 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+
+    --primary: 220.9 39.3% 11%;
+    --primary-foreground: 210 20% 98%;
+
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 71.4% 4.1%;
+
+    --radius: 0.5rem;
+
+    --background-gradient-dark: #0F0F0F;
+    --background-gradient-light: #3D3D3D;
+    --auth-background: #1D1E22;
+    --classic-button: #4d4d4d;
+    --classic-button-hover: #585858;
+    --dashboard: #212121;
+    --sidebar: #212121;
+    --sidebar-button-active: #292B2D;
+    --sidebar-button-hover: #232629;
+    --highlight: #e0a3e1;
+    --less-highlight: white;
+    --less-highlight-chip: white;
+    --avatar: #424242;
+    --non-focus-text: #707070;
+    --focus-text: #c7c6c6;
+    /* --item: #4d4d4d17; */
+    --item: #1f2326;
+    --item-border: #4D4D4D79;
+    --focus-text-hover: #ffffff;
+    --dropdown-menu: #363636;
+    --dropdown-menu-hover: #4B4B4B;
+    --divider: #333333;
+
+    --secondary: #171717;
+  }
+
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 210 20% 98%;
+    --primary-foreground: 220.9 39.3% 11%;
+
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 216 12.2% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-dashboard;
+  }
+
+  input {
+    @apply w-full rounded-lg placeholder:text-focus-text focus:outline-none p-2 border-[1px] border-[#2a2c31] bg-[#4d4d4d0a] text-focus-text-hover;
+  }
+
+  button,
+  a {
+    @apply active:scale-95 duration-150 disabled:active:scale-100;
+  }
+
+  .item {
+    @apply shadow-sm hover:shadow-md hover:shadow-black/40 shadow-black/30 hover:scale-105 duration-200 bg-dashboard border border-item-border rounded-[10px];
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--item-border);
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--non-focus-text);
+}
+
+
+/* ======== Custom animations ======== */
+
+@keyframes spin-faster-slower {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-in;
+  }
+
+  30% {
+    transform: rotate(360deg);
+    animation-timing-function: ease-out;
+  }
+
+  50% {
+    transform: rotate(720deg);
+    animation-timing-function: ease-out;
+  }
+
+  100% {
+    transform: rotate(1080deg);
+    animation-timing-function: ease-in;
+  }
+}
+
+.custom-spin {
+  animation: spin-faster-slower 1.4s linear infinite;
+}
+
+
+
+/* ======== Tip Tap Text Editor ======== */
+
+ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+
+  p {
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+    >label {
+      flex: 0 0 auto;
+      margin-right: 0.5rem;
+      user-select: none;
+
+      >input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        font-size: 2rem;
+        padding: 0.1rem;
+        border: 1px solid var(--focus-text-hover);
+        border-radius: 6px;
+        background-color: transparent;
+      }
+
+      >input[type="checkbox"]::after {
+        content: "";
+        width: 13px;
+        height: 13px;
+        clip-path: polygon(19% 38%, 31% 56%, 84% 23%, 91% 34%, 27% 76%, 6% 46%);
+        transition: 0.4s cubic-bezier(0.8, 0, 0.2, 1);
+        transform: scale(0);
+        animation-duration: 200ms;
+        transition-duration: 200ms;
+      }
+
+      >input[type="checkbox"]:checked {
+        background-color: var(--focus-text-hover);
+      }
+
+      >input[type="checkbox"]:checked::after {
+        transform: scale(1.2);
+        background-color: var(--dashboard);
+      }
+    }
+
+    >div {
+      flex: 1 1 auto;
+    }
+
+    ul li,
+    ol li {
+      display: list-item;
+    }
+
+    ul[data-type="taskList"]>li {
+      display: flex;
+    }
+  }
+
+  li[data-checked="true"]>div {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+}
+
+.markdown-link {
+  color: var(--less-highlight-chip);
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.bubble-menu {
+  display: flex;
+  gap: 0.2rem;
+  background-color: var(--dashboard);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.35rem;
+
+  button {
+    border: none;
+    background: none;
+    color: var(--non-focus-text);
+    font-size: 0.85rem;
+    font-weight: 300;
+    padding: 0 0.2rem;
+
+    &:hover,
+    &.is-active {
+      color: var(--focus-text-hover);
+    }
+  }
+}
+
+.floating-menu {
+  background-color: transparent;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+  button {
+    border: none;
+    background: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0 0.2rem;
+    opacity: 0.6;
+
+    &:hover,
+    &.is-active {
+      opacity: 1;
+      color: var(--focus-text-hover);
+    }
+  }
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: var(--non-focus-text);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

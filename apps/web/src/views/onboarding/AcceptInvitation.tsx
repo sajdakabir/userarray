@@ -1,13 +1,12 @@
 "use client";
 
 import { USER_WORKSPACE } from "@/utils/constants/api-endpoints";
-import { NextButton } from "@/components/ui/custom-buttons";
 import { toast } from "@/components/ui/use-toast";
 import { PendingInvitation } from "@/lib/types/Workspaces";
-import { GetAvatarFromName } from "@/utils/helpers";
 import axios, { AxiosError } from "axios";
-import { Plus, ReplyAll } from "lucide-react";
-import { FC, useState } from "react";
+import { Plus } from "lucide-react";
+import { FC } from "react";
+import Invitation from "./Invitation";
 
 type AcceptInvitationProps = {
   accessToken: string;
@@ -20,10 +19,7 @@ const AcceptInvitation: FC<AcceptInvitationProps> = ({
   invitations,
   swichMode,
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleJoinWorkspace = async (invitation: PendingInvitation) => {
-    setLoading(true);
+  const joinWorkspace = async (invitation: PendingInvitation) => {
     const slug = invitation.workspace.slug;
     const invitationId = invitation.uuid;
     try {
@@ -45,7 +41,6 @@ const AcceptInvitation: FC<AcceptInvitationProps> = ({
         title: "Could not join workspace",
       });
     }
-    setLoading(false);
     window.location.href = `/${slug}/today`;
   };
 
@@ -57,26 +52,7 @@ const AcceptInvitation: FC<AcceptInvitationProps> = ({
       <section className="md:w-96 w-96 p-6 pb-8 bg-dashboard rounded-xl shadow-xl shadow-black/30">
         <div className="flex flex-col gap-y-4 items-center">
           {invitations.map((x) => (
-            <div key={x._id} className="flex w-full flex-col gap-y-0 text-left">
-              <p className="ml-2 flex items-center gap-x-1 text-xs text-nonfocus-text">
-                {x.createdBy.fullName} <ReplyAll size={12} />
-              </p>
-              <div className="flex item hover:scale-100 px-3 py-2 text-sm items-center justify-between">
-                <div className="flex items-center gap-x-2">
-                  <div className="h-7 w-7 rounded-lg bg-less-highlight-chip grid place-content-center text-xs text-white font-medium">
-                    {GetAvatarFromName(x.workspace.name)}
-                  </div>
-                  <p className="text-focus-text-hover">{x.workspace.name}</p>
-                </div>
-
-                <NextButton
-                  text="Join"
-                  handleClick={() => handleJoinWorkspace(x)}
-                  className="text-sm w-fit px-2 py-[2px] rounded-md font-normal"
-                  loading={loading}
-                />
-              </div>
-            </div>
+            <Invitation key={x._id} x={x} joinWorkspace={joinWorkspace} />
           ))}
         </div>
       </section>

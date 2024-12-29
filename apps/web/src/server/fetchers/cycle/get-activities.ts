@@ -1,16 +1,16 @@
-import { ItemActivityResponse } from "@/lib/types/Activity";
+import { CycleActivityResponse } from "@/lib/types/Activity";
 import { USER_WORKSPACE } from "@/utils/constants/api-endpoints";
 
-export const getItemActivities = async (
+export const getCycleActivities = async (
   token: string,
   slug: string,
   space: string,
-  itemId: string
+  cycleId: string
 ) => {
   let response: Response;
   try {
     response = await fetch(
-      USER_WORKSPACE + `/${slug}/spaces/${space}/items/${itemId}/history/`,
+      USER_WORKSPACE + `/${slug}/spaces/${space}/cycles/${cycleId}/history`,
       {
         headers: {
           Authorization: "Bearer " + token,
@@ -25,6 +25,6 @@ export const getItemActivities = async (
     return [];
   }
 
-  const history = await response.json() as ItemActivityResponse;
+  const history = await response.json() as CycleActivityResponse;
   return history.response;
 };

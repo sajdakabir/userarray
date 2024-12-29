@@ -348,7 +348,7 @@ const LabelSettingComponent = (props: {
                                 }
                                 className="text-sm max-w-36 py-1"
                               />
-                              <div className="w-[30px] h-[30px] rounded-lg border border-[#2a2c31] grid place-items-center">
+                              <div className="w-[30px] h-[30px] rounded-lg border border-sidebar-button-hover grid place-items-center">
                                 <DropdownMenuTrigger asChild>
                                   <button
                                     style={{

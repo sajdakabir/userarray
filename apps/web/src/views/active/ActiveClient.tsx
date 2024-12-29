@@ -32,9 +32,7 @@ type ActiveClientProps = {
 const ActiveClient: FC<ActiveClientProps> = ({ token, space, id }) => {
   const setCurrent = userStore((state) => state.setCurrent);
   const slug = userStore((state) => state.slug);
-
   const stateStorage = dataStore((state) => state.stateStorage);
-  const setStateStorage = dataStore((state) => state.setStateStorage);
 
   // calculations
   const members = useMemo<WorkspaceMember[]>(() => {

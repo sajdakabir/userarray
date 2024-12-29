@@ -39,7 +39,7 @@
     --dashboard: #212121;
     --sidebar: #212121;
     --sidebar-button-active: #292B2D;
-    --sidebar-button-hover: #232629;
+    --sidebar-button-hover: #2a2c31;
     --highlight: #e0a3e1;
     --less-highlight: white;
     --less-highlight-chip: white;
@@ -98,7 +98,7 @@
   }
 
   input {
-    @apply w-full rounded-lg placeholder:text-focus-text focus:outline-none p-2 border-[1px] border-[#2a2c31] bg-[#4d4d4d0a] text-focus-text-hover;
+    @apply w-full rounded-lg placeholder:text-focus-text focus:outline-none p-2 border-[1px] border-sidebar-button-hover bg-[#4d4d4d0a] text-focus-text-hover;
   }
 
   button,

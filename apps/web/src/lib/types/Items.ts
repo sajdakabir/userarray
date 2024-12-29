@@ -10,6 +10,9 @@ import {
   GaugeCircle,
 } from "lucide-react";
 
+/**
+ * Type for a single work item
+ */
 export type Item = {
   _id: string;
   name: string;
@@ -53,6 +56,7 @@ export type SingleItem = {
   response: Item;
 };
 
+
 /**
  * Type guard to check if the data is of type Item[]
  * @param data - The data to check
@@ -85,6 +89,9 @@ export type Status = {
   icon: LucideIcon;
 };
 
+/**
+ * Statuses list for the work items
+ */
 export const statuses: Status[] = [
   {
     value: "inbox",
@@ -104,22 +111,25 @@ export const statuses: Status[] = [
   },
 ];
 
+/**
+ * Efforts list for the work items
+ */
 export const efforts: Status[] = [
   {
     value: "large",
-    icon: ShieldAlert,
-  },
-  {
-    value: "medium",
     icon: SignalHigh,
   },
   {
-    value: "small",
+    value: "medium",
     icon: SignalMedium,
   },
   {
-    value: "none",
+    value: "small",
     icon: SignalLow,
+  },
+  {
+    value: "none",
+    icon: Circle,
   },
   // {
   //   value: "none",

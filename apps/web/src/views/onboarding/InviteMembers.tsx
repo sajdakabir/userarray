@@ -137,7 +137,7 @@ const InviteMembers = (props: {
               Select role
             </label>
             {/* <select
-                className="w-full rounded-lg focus:outline-none p-2 border border-[#2a2c31] bg-[#4d4d4d0a] text-black"
+                className="w-full rounded-lg focus:outline-none p-2 border border-sidebar-button-hover bg-[#4d4d4d0a] text-black"
                 name="role"
                 id="role"
                 onChange={(e) => {
@@ -152,7 +152,7 @@ const InviteMembers = (props: {
                 className={`text-hx ${
                   role === "member"
                     ? "text-highlight border-highlight"
-                    : "border-[#2a2c31] text-focus-text hover:text-focus-text-hover"
+                    : "border-sidebar-button-hover text-focus-text hover:text-focus-text-hover"
                 }  px-2 py-1 rounded-lg p-2 border-[1px] bg-[#4d4d4d0a] cursor-pointer`}
                 onClick={() => setRole("member")}
               >
@@ -162,7 +162,7 @@ const InviteMembers = (props: {
                 className={`text-hx ${
                   role === "admin"
                     ? "text-highlight border-highlight"
-                    : "border-[#2a2c31] text-focus-text hover:text-focus-text-hover"
+                    : "border-sidebar-button-hover text-focus-text hover:text-focus-text-hover"
                 }  px-2 py-1 rounded-lg p-2 border-[1px] bg-[#4d4d4d0a] cursor-pointer`}
                 onClick={() => setRole("admin")}
               >

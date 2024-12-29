@@ -10,7 +10,7 @@ import AssigneeSelector from "@/components/smalls/items/selector/AssigneeSelecto
 import StatusSelector from "@/components/smalls/items/selector/StatusSelector";
 import { DatePicker } from "@/components/ui/date-picker";
 import LabelSelector from "@/components/smalls/items/selector/LabelSelector";
-import { History, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import CycleSelector from "@/components/smalls/items/selector/CycleSelector";
 import {
   UpdateItem,
@@ -18,53 +18,9 @@ import {
 } from "@/utils/state-manager/item-updater";
 import { Cycle } from "@/lib/types/Cycle";
 import { TextEditor } from "@/components/smalls/editor/RichEditor";
-import { findCycle, formattedDate, truncateString } from "@/utils/helpers";
+import { findCycle, formattedDate } from "@/utils/helpers";
 import { patchItem } from "@/server/patchers/item-patcher";
-import { getItemHistory } from "@/server/fetchers/items/get-activities";
-import { useQuery } from "@tanstack/react-query";
-import ItemActivityLog from "./ItemActivityLog";
-
-// type ItemActivity = {
-//   "_id": string
-//   "verb": string
-//   "comment": string
-//   "attachments": string[]
-//   "oldIdentifier": null
-//   "newIdentifier": null
-//   "oldValue": string
-//   "newValue": string
-//   "space": string
-//   "workspace": string
-//   "item": string
-//   "actor": string
-//   "uuid": string
-//   "createdAt": string
-//   "updatedAt": string
-//   "__v": number
-// }
-
-type ItemActivity = {
-  _id: string;
-  verb: string;
-  comment: string;
-  attachments: string[];
-  oldIdentifier: null;
-  newIdentifier: null;
-  oldValue: string | null;
-  newValue: string | null;
-  space: string;
-  workspace: string;
-  item: string;
-  actor: {
-    userName: string;
-    fullName: string;
-  };
-  uuid: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-};
-
+import ItemActivitySection from "@/components/activity/ItemActivitySection";
 
 const ItemClient = (props: { token: string; space: string; id: string }) => {
   // Global states
@@ -126,14 +82,6 @@ const ItemClient = (props: { token: string; space: string; id: string }) => {
   const [itemStatus, setStatus] = useState<Status>(statuses[statusIndex]);
   const [itemEffort, setEffort] = useState<Status>(efforts[effortIndex]);
   const [members, setMembers] = useState<WorkspaceMember[]>(itemMembers);
-
-  const {data: itemActivity} = useQuery({
-    queryKey: ['hello'],
-    queryFn: async()=> await getItemHistory(props.token, slug ,props.space ,props.id) as unknown as ItemActivity[],
-    refetchInterval: 1000
-  })
-
-  console.log(itemActivity);
 
   useEffect(() => {
     setCurrent("");
@@ -336,63 +284,12 @@ const ItemClient = (props: { token: string; space: string; id: string }) => {
     }
   };
 
-
-  // here
-
-  // const ItemActivityLog = ({ itemActivity, showIssue }) => {
-  //   // If itemActivity is falsy, show a loading message.
-  //   if (!itemActivity) {
-  //     return <p className="text-white">Loading...</p>;
-  //   }
-  
-  //   // If itemActivity is truthy, map over the array and render each activity.
-  //   return itemActivity.map((item) => {
-  //     // Get the activity type details based on the item's verb.
-  //     const activityType = activityDetails[item.verb]; // Adjust this based on how you categorize activities
-  
-  //     // Return the JSX for each item in the itemActivity array.
-  //     return (
-  //       <div key={item._id} className="w-full text-gray-300 flex flex-col py-2 justify-center gap-2 border-b border-gray-300">
-  //         <div className="flex items-center justify-between text-sm text-gray-300">
-  //           <div>
-  //             <span className="font-semibold">{item.actor.userName || item.actor.fullName}</span>{" "}
-  //             {activityType ? activityType.message(item, showIssue) : `${item.verb} the item`}
-  //           </div>
-  //           <div className="text-xs text-gray-300">{formattedDate(item.createdAt)}</div>
-  //         </div>
-  //         <div className="flex items-center justify-between text-sm">
-  //           <div className="flex flex-col">
-  //             {item.oldValue && (
-  //               <>
-  //                 <span className="font-semibold">Old Value</span>
-  //                 <span dangerouslySetInnerHTML={{ __html: item.oldValue }} />
-  //               </>
-  //             )}
-  //           </div>
-  //           <div className="flex flex-col">
-  //             {item.newValue && (
-  //               <>
-  //                 <span className="font-semibold">New Value</span>
-  //                 <span dangerouslySetInnerHTML={{ __html: item.newValue }} />
-  //               </>
-  //             )}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     );
-  //   });
-  // };
-  
-
-  // ending here
-
-
   return (
     <div className="flex flex-grow">
-      <div className="h-screen w-[1px] bg-divider"></div>
+      <div className="h-screen w-[1px] bg-divider" />
       <section className="min-h-screen overflow-y-auto flex-grow bg-sidebar">
-        <div className="overflow-y-auto min-h-full flex flex-grow items-stretch">
-          <div className="flex-grow min-w-[47rem] min-h-full flex flex-col justify-between mt-8">
+        <div className="min-h-full flex flex-grow items-stretch">
+          <div className="min-w-[47rem] max-w-[70%] min-h-full flex flex-col overflow-y-auto justify-between mt-8">
             <div className="">
               <div className="flex items-center">
                 <button
@@ -494,97 +391,16 @@ const ItemClient = (props: { token: string; space: string; id: string }) => {
             </div>
           </div>
 
-          <div className="flex-grow rounded-l-[10px] border border-item-border p-4 ml-8">
-            <div className="flex h-full flex-col justify-between gap-y-2">
-              <div className="flex items-center gap-x-4 text-focus-text-hover font-medium">
-                <div className="flex items-center gap-x-2 text-sm">
-                  <History size={16} />
-                  Activities
-                </div>
-                {/* <div>Week 1</div> */}
-              </div>
-{/* working code  */}
-             {/* <div className="flex flex-col items-center justify-start h-full">
-
-              {itemActivity ? itemActivity.map((item, index)=>{
-                return <div className="h-fit w-full flex flex-col py-2 justify-center gap-2 border-y text-white border-gray-400">
-                      <div className="flex items-center justify-between text-gray-300 w-full">
-                      <h1>{item.verb}</h1>
-                      <h1>{item.actor}</h1>
-                      </div>
-                      <div className="flex items-center justify-between w-full">
-                      {item.oldValue}
-                      {item.newValue}
-                      </div>
-                      </div>
-              }): <p className="text-white">Loading...</p>}
-
-              </div>  */}
-
-              {/* end of it */}
-
-
-
-{/* mess starting */}
-{/* <h3 className="font-semibold">Activity Log</h3> */}
-          {itemActivity && <ItemActivityLog itemActivity={itemActivity} />}
-
-{/* right one */}
-{/* <div className="flex flex-col items-center justify-start h-full overflow-y-auto">
-  {itemActivity ? (
-    itemActivity.map((item, index) => (
-      <div key={item._id} className="w-full text-gray-300 flex flex-col py-2 justify-center gap-2 border-b border-gray-300">
-
-        <div className="flex items-center justify-between text-smtext-gray-300">
-          <div>
-            <span className="font-semibold">{item.actor.userName || item.actor.fullName}</span> {item.verb} the item
-          </div>
-          <div className="text-xs text-gray-300">{formattedDate(item.createdAt)}</div>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex flex-col">
-            <span className="font-semibold"></span>
-            <span
-                    dangerouslySetInnerHTML={{ __html: item.oldValue }}
-                    />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-semibold"></span>
-            <span dangerouslySetInnerHTML={{ __html: item.newValue }}/>
-          </div>
-        </div>
-      </div>
-    ))
-  ) : (
-    <p className="text-white">Loading...</p>
-  )}
-</div> */}
-
-{/* it's ending here */}
-                
-
-
-
-  {/* end the mess */}
-
-              <div>
-                <input
-                  className="bg-item text-sm"
-                  type="text"
-                  placeholder="Leave a comment"
-                />
-              </div>
-            </div>
-          </div>
+          <ItemActivitySection
+            token={props.token}
+            space={props.space}
+            itemId={item._id}
+            item={thisItem}
+          />
         </div>
       </section>
     </div>
   );
 };
+
 export default ItemClient;
-
-
-
-
-
-

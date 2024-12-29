@@ -1,6 +1,6 @@
 import { Cycle } from "@/lib/types/Cycle";
 import { WorkspaceMember } from "@/lib/types/Workspaces";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 /**
  * Generates an avatar string from a given name.
@@ -160,4 +160,26 @@ export const sortWithTopElement = (
  */
 export const formattedDate = (date: Date): string => {
   return format(date, "yyyy-MM-dd");
+};
+
+/**
+ * Formats a given date string into a human-readable time format.
+ *
+ * @param {string} dateStr - The date string to be formatted.
+ * @returns {string} - The formatted time string in "hh:mm a" format.
+ */
+export const getActivityTime = (dateStr: string): string => {
+  const date = parseISO(dateStr);
+  return format(date, "hh:mm a");
+};
+
+/**
+ * Formats a given date string into a human-readable date time format.
+ *
+ * @param {string} dateStr - The date string to be formatted.
+ * @returns {string} - The formatted date string in "MMMM d, yyyy, hh:mma" format.
+ */
+export const getActivityDateTime = (dateStr: string): string => {
+  const date = parseISO(dateStr);
+  return format(date, "MMMM d, yyyy, hh:mma");
 };

@@ -1,11 +1,9 @@
-'use client'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import local from "next/font/local";
 import localFont from "next/font/local";
 import { SessProvider } from "@/providers/SessionProvider";
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 const localInter = localFont({
   src: [
@@ -74,7 +72,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "march",
   description: "A lightweight sprint planner",
 };
@@ -84,16 +82,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const queryClient = new QueryClient()
   return (
     <html lang="en">
       <body className={`${inter.variable} font-inter font-light`}>
       {/* <body className={inter.className}> */}
-      <QueryClientProvider client={queryClient}>
-        <SessProvider>
-          {children}
-          </SessProvider>
-          </QueryClientProvider>
+        <SessProvider>{children}</SessProvider>
       </body>
     </html>
   );

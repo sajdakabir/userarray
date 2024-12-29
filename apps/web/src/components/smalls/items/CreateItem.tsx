@@ -283,11 +283,11 @@ const CreateItem: FC<CreateItemProps> = ({
 
         <DialogFooter className="flex items-center justify-end gap-2 mt-4 max-h-12">
           <NextButton
-            text="Create Item"
+            text="Add Item"
             loading={loading}
             handleClick={handleCreate}
             disabled={!itemName}
-            className={`text-black text-xs w-fit px-2 py-[6px] border border-focus-text ${
+            className={`text-[14px] text-black rounded-[10px] w-fit px-2 py-[6px] border border-focus-text ${
               itemName ? "" : "bg-focus-text"
             }`}
           />

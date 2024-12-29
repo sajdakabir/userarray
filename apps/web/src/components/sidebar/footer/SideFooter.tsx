@@ -85,7 +85,7 @@ const SideFooter = () => {
       </div>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="mt-1 group outline-none focus:outline-none text-focus-text hover:text-focus-text-hover flex justify-between items-center gap-2 px-2 py-[6px] w-full bg-sidebar-button-hover hover:bg-sidebar-button-active rounded-lg hover:shadow-md hover:shadow-black/45">
+        <DropdownMenuTrigger className="mt-1 group border border-divider outline-none focus:outline-none text-focus-text hover:text-focus-text-hover flex justify-between items-center gap-2 px-2 py-[6px] w-full bg-sidebar-button-hover hover:bg-sidebar-button-active rounded-lg hover:shadow-md hover:shadow-black/45">
           <div className="flex text-sm font-medium items-center gap-2">
             {user.avatar ? (
               // eslint-disable-next-line @next/next/no-img-element

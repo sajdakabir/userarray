@@ -41,7 +41,7 @@ const Pinned = () => {
               current === `${active.name}-${active.space}`
                 ? "bg-sidebar-button-active text-focus-text-hover"
                 : "hover:bg-sidebar-button-hover hover:text-focus-text-hover"
-            } group text-hx text-focus-text flex items-center gap-2 justify-start px-2 py-1 rounded-md`}
+            } group text-hx text-focus-text flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider`}
             href={`/${slug}/${spaces[index].name}/active/${active._id}`}
           >
             <Pin size={14} className="rotate-45" /> {active.name}

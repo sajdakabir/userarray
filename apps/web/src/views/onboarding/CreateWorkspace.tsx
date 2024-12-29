@@ -27,10 +27,6 @@ const CreateWorkspace = (props: { accessToken: string }) => {
       setError("Please Enter a slug name");
       return;
     }
-    else if (workspace.includes(" ")) {
-      setError("Workspace name cannot contain spaces");
-      return;
-    }
     else if (slug.includes(" ")) {
       setError("Slug cannot contain spaces");
       return;
@@ -128,7 +124,7 @@ const CreateWorkspace = (props: { accessToken: string }) => {
                 slug ? "text-focus-text-hover" : "text-focus-text"
               } mb-3 text-md font-medium rounded-md`}
             >
-              {slug ? `trymarch.dev/${slug}` : "trymarch.dev/"}
+              {slug ? `app.march.cat/${slug}` : "app.march.cat/"}
             </h3>
             <input
               type="slug"

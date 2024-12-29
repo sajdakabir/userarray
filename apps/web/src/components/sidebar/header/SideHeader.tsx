@@ -77,7 +77,7 @@ const SideHeader = (props: { accessToken: string }) => {
     <div id="header">
       <div className="flex items-center justify-between">
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex-grow group rounded-lg bg-sidebar-button-hover hover:bg-sidebar-button-active outline-none focus:outline-none hover:shadow-md hover:shadow-black/50 flex px-2 py-[6px] justify-between gap-2 items-center">
+          <DropdownMenuTrigger className="flex-grow group rounded-lg bg-sidebar-button-hover hover:bg-sidebar-button-active border border-divider outline-none focus:outline-none hover:shadow-md hover:shadow-black/50 flex px-2 py-[6px] justify-between gap-2 items-center">
             <div className="flex justify-start gap-2 items-center">
               <div className="bg-highlight h-5 w-5 leading-none rounded-md text-black uppercase grid place-content-center">
                 {thisWorkspace.name.charAt(0)}
@@ -101,7 +101,10 @@ const SideHeader = (props: { accessToken: string }) => {
         {/* Create item Button */}
         <Dialog open={open} onOpenChange={setIsOpen}>
           <DialogTrigger asChild={true}>
-            <button disabled={stateStorage.spaces.length === 0} className="ml-4 hover:text-focus-text-hover text-hx rounded-lg bg-sidebar-button-hover hover:bg-sidebar-button-active p-[8px]">
+            <button
+              disabled={stateStorage.spaces.length === 0}
+              className="ml-4 border border-divider hover:text-focus-text-hover text-hx rounded-lg bg-sidebar-button-hover hover:bg-sidebar-button-active hover:shadow-md hover:shadow-black/50 p-[8px]"
+            >
               <SquarePen size={15} />
             </button>
           </DialogTrigger>
@@ -134,7 +137,7 @@ const SideHeader = (props: { accessToken: string }) => {
           className={`flex justify-start gap-2 items-center text-hx rounded-lg ${
             active === slug + "-inbox"
               ? "bg-sidebar-button-active text-focus-text-hover"
-              : "hover:bg-sidebar-button-hover hover:text-focus-text-hover"
+              : "hover:bg-sidebar-button-hover hover:text-focus-text-hover border border-transparent hover:border-divider"
           } px-2 py-[6px]`}
         >
           <Inbox className="ml-2" size={14} />
@@ -145,7 +148,7 @@ const SideHeader = (props: { accessToken: string }) => {
           className={`flex justify-start gap-2 items-center text-hx rounded-lg ${
             active === slug + "-today"
               ? "bg-sidebar-button-active text-focus-text-hover"
-              : "hover:bg-sidebar-button-hover hover:text-focus-text-hover"
+              : "hover:bg-sidebar-button-hover hover:text-focus-text-hover border border-transparent hover:border-divider"
           } px-2 py-[6px]`}
         >
           <Activity className="ml-2" size={14} />

@@ -11,6 +11,7 @@ export const COOKIE_NAME = "march";
 /**
  * The name of the access token cookie
  */
+// file deepcode ignore HardcodedNonCryptoSecret: It's a cookie name not a secret
 export const ACCESS_TOKEN = "marchAccess";
 
 /**

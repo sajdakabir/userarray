@@ -55,8 +55,8 @@ const DropContent = (props: {
       setError("please enter a name and slug");
       return;
     }
-    else if (wrkspcName.includes(" ") || wrkSlug.includes(" ")) {
-      setError("Name and slug can't contain spaces!");
+    else if (wrkSlug.includes(" ")) {
+      setError("workspace slug can't contain spaces!");
       return;
     }
 

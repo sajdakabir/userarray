@@ -32,6 +32,17 @@ export const GetSmallPriority: FC<MyComponentProps> = ({ value }) => {
   return null;
 };
 
+export const GetSmallStatusIcon: FC<MyComponentProps> = ({ value }) => {
+  // Find the effort that matches the value
+  const status = statuses.find((status) => status.value === value);
+  // If a matching effort was found, render the icon
+  if (status) {
+    const Icon = status.icon;
+    return <Icon size={16} />;
+  }
+  return null;
+};
+
 export const GetStatus: FC<MyComponentProps> = ({ value }) => {
   // Find the status that matches the value
   const status = statuses.find((status) => status.value === value);

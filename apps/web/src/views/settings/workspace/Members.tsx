@@ -157,7 +157,7 @@ const MembersClient: React.FC<{
                       className={`text-hx ${
                         role === "member"
                           ? "text-highlight border-highlight"
-                          : "border-[#2a2c31] text-focus-text hover:text-focus-text-hover"
+                          : "border-sidebar-button-hover text-focus-text hover:text-focus-text-hover"
                       }  px-2 py-1 rounded-lg p-2 border-[1px] bg-[#4d4d4d0a] cursor-pointer`}
                       onClick={() => setRole("member")}
                     >
@@ -167,7 +167,7 @@ const MembersClient: React.FC<{
                       className={`text-hx ${
                         role === "admin"
                           ? "text-highlight border-highlight"
-                          : "border-[#2a2c31] text-focus-text hover:text-focus-text-hover"
+                          : "border-sidebar-button-hover text-focus-text hover:text-focus-text-hover"
                       }  px-2 py-1 rounded-lg p-2 border-[1px] bg-[#4d4d4d0a] cursor-pointer`}
                       onClick={() => setRole("admin")}
                     >
@@ -193,7 +193,7 @@ const MembersClient: React.FC<{
                     }}
                     autoComplete="message"
                     required={true}
-                    className="text-sm rounded-lg focus:outline-none p-2 border-[1px] border-[#2a2c31] bg-[#4d4d4d0a] text-focus-text-hover"
+                    className="text-sm rounded-lg focus:outline-none p-2 border-[1px] border-sidebar-button-hover bg-[#4d4d4d0a] text-focus-text-hover"
                   />
                 </div>
               </form>

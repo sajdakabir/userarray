@@ -15,10 +15,13 @@ import getEverything from "@/server/fetchers/workspace/get-everything";
 import { produce } from "immer";
 import { MyItems } from "@/lib/types/Items";
 import { MemberDayBoard, MyTodayResponse } from "@/lib/types/TodayBoard";
-import { format } from "date-fns";
 
-// User chosen workspace and sidebar appearance
-type userData = {
+
+/**
+ * The userData type is used to represent the state of the user's workspace.
+ * It includes the slug, current, and sidebar properties.
+ */
+export type userData = {
   /**
    * The slug is a unique identifier for the workspace.
    */
@@ -56,25 +59,11 @@ type userData = {
   setSidebar: (by: boolean) => void;
 };
 
-// This data will be persistent inside the local storage
-export const userStore = create<userData>()(
-  persist(
-    (set) => ({
-      sidebar: false,
-      slug: "",
-      current: "",
-      setSlug: (by) => set(() => ({ slug: by })),
-      setCurrent: (by) => set(() => ({ current: by })),
-      setSidebar: (by) => set(() => ({ sidebar: by })),
-    }),
-    {
-      name: "userPreference",
-    }
-  )
-);
-
-// User workspace data
-type work = {
+/**
+ * The work type is used to represent the state of the user's workspace.
+ * It includes the user, workspaces, stateStorage, and dayBoards properties.
+ */
+export type work = {
   /**
    * The user object contains information about the user, such as their name, email, id and onboarding status.
    */
@@ -204,6 +193,25 @@ type work = {
    */
   updateWorkspaces: (by: Workspace[], token: string) => Promise<boolean>;
 };
+
+
+
+// This data will be persistent inside the local storage
+export const userStore = create<userData>()(
+  persist(
+    (set) => ({
+      sidebar: false,
+      slug: "",
+      current: "",
+      setSlug: (by) => set(() => ({ slug: by })),
+      setCurrent: (by) => set(() => ({ current: by })),
+      setSidebar: (by) => set(() => ({ sidebar: by })),
+    }),
+    {
+      name: "userPreference",
+    }
+  )
+);
 
 // This data will be available in the global state store but not in the local storage
 export const dataStore = create<work>()((set) => ({

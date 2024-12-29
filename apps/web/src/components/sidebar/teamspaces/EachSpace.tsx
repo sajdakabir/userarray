@@ -22,7 +22,7 @@ const EachSpace = (props: { space: CompactSpace; isOpen: boolean }) => {
       onOpenChange={setIsOpen}
       className="w-full text-focus-text"
     >
-      <CollapsibleTrigger className="hover:bg-sidebar-button-active hover:shadow-sm hover:shadow-bg-gradient-dark flex items-center justify-between rounded-lg px-2 py-1 w-full">
+      <CollapsibleTrigger className="border border-transparent hover:border-divider hover:bg-sidebar-button-active hover:shadow-md hover:shadow-black/30 flex items-center justify-between rounded-lg px-2 py-1 w-full">
         <p
           className="flex items-center text-sm justify-start gap-2 group"
           data-state={isOpen ? "open" : "closed"}
@@ -43,7 +43,7 @@ const EachSpace = (props: { space: CompactSpace; isOpen: boolean }) => {
               active === props.space.name + "-cycle"
                 ? "bg-sidebar-button-active text-focus-text-hover"
                 : "hover:bg-sidebar-button-hover hover:text-focus-text-hover"
-            }  text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md`}
+            }  text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider`}
           >
             <Zap size={14} />
             Active
@@ -54,7 +54,7 @@ const EachSpace = (props: { space: CompactSpace; isOpen: boolean }) => {
               active === props.space.name + "-plan"
                 ? "bg-sidebar-button-active text-focus-text-hover"
                 : "hover:bg-sidebar-button-hover hover:text-focus-text-hover"
-            }  text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md`}
+            }  text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider`}
           >
             <Orbit size={14} />
             Plan

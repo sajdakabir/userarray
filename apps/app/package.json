@@ -1,16 +1,16 @@
 {
-  "name": "@march/backend",
+  "name": "@satellite/backend",
   "version": "0.0.1",
-  "description": "March",
+  "description": "Satellite",
   "main": "index.js",
   "type": "module",
-  "repository": "git@github.com:marchHQ/backend.git",
+  "repository": "https://github.com/marchhq/satellite",
   "scripts": {
     "dev": "nodemon index.js",
     "test": "jest",
     "start": "node index.js"
   },
-  "author": "March",
+  "author": "march-dev",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.0",

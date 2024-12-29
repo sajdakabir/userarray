@@ -8,6 +8,7 @@ export const environment = {
     DB_NAME: process.env.DB_NAME,
     MONGO: process.env.MONGO,
     DB_HOST: process.env.DB_HOST,
+    MONGO_URL: process.env.MONGO_URL,
     PORT: process.env.PORT || 9001,
     JWT_ISSUER: process.env.JWT_ISSUER,
     JWT_SECRET: process.env.JWT_SECRET,

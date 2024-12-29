@@ -6,7 +6,7 @@ import { environment } from "./environment.loader.js";
  * Later will move to certificate based authentication
  * TODO: Add certificate based authentication
  *  */
-const db = createConnection(`${environment.MONGO}://${environment.DB_USER}:${environment.DB_PASS}@${environment.DB_HOST}/${environment.DB_NAME}`, {
+const db = createConnection(environment.MONGO_URL, {
     autoIndex: false
 })
 export { db }

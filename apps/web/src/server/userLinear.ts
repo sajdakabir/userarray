@@ -2,6 +2,7 @@ import { useCallback, useState } from "react"
 
 import axios from "axios"
 import { loadGetInitialProps } from "next/dist/shared/lib/utils"
+import { cookies } from "next/headers"
 
 
 // const LINEAR_CLIENT_ID = process.env.LINEAR_CLIENT_ID
@@ -37,7 +38,7 @@ import { loadGetInitialProps } from "next/dist/shared/lib/utils"
 // }
 
 const useLinear = ( accessToken: string) => {
-    console.log("sajda")
+
 //   const [issues, setIssues] = useState<LinearIssue[]>([])
 //   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)

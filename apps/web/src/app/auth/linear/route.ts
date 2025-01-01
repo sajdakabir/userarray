@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server"
 
 import { BACKEND_URL, FRONTEND_URL } from "@/utils/constants/api-endpoints";
+import { ACCESS_TOKEN } from "@/utils/constants/cookie";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -20,10 +21,6 @@ export async function GET(request: NextRequest) {
   const token = cookieStore.get("marchAccess");
   const accessToken = token?.value;
 
-//   console.log("saju cookieStore: ", cookieStore)
-//   console.log("hmm linear access: ", token)
-
-//   console.log("hmm linear code: ", code)
 
   try {
     const response = await axios.get(
@@ -31,7 +28,7 @@ export async function GET(request: NextRequest) {
       {
         params: { code },
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     )

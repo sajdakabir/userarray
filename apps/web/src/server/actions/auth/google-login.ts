@@ -40,7 +40,6 @@ const LoginWithGoogle = async (token: string) => {
       maxAge: MAX_AGE,
       path: "/",
     });
-
     return redirect("/workspace");
   } catch (error) {
     const e = error as AxiosError;

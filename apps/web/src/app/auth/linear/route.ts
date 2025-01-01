@@ -17,17 +17,17 @@ export async function GET(request: NextRequest) {
   }
 
   const cookieStore = cookies();
-  const token = cookieStore.get("__MARCH_ACCESS_TOKEN__");
+  const token = cookieStore.get("marchAccess");
   const accessToken = token?.value;
 
+//   console.log("saju cookieStore: ", cookieStore)
+//   console.log("hmm linear access: ", token)
 
-  console.log("hmm linear access: ", accessToken)
-
-  console.log("hmm linear code: ", code)
+//   console.log("hmm linear code: ", code)
 
   try {
     const response = await axios.get(
-      `${BACKEND_URL}/auth/linear/getAccessToken`,
+      `${BACKEND_URL}/linear/getAccessToken`,
       {
         params: { code },
         headers: {
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
         },
       }
     )
-console.log("hmm linear response: ", response)
+// console.log("hmm linear response: ", response)
     const res = NextResponse.redirect(new URL("/workspace", redirectDomain))
 
     return res

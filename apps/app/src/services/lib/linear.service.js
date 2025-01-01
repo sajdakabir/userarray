@@ -1,5 +1,9 @@
+import axios from "axios";
+import { environment } from "../../loaders/environment.loader.js";
+
 export const getAccessToken = async (code, user) => {
     try {
+        console.log("hmm linear code: ", code)
         const requestBody = {
             grant_type: 'authorization_code',
             code,

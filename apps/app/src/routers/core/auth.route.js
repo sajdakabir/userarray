@@ -8,7 +8,6 @@ router.route('/common/login/').post(emailLoginController);
 router.route('/magic/login/').post(magicLoginController);
 router.route('/magic/verify/').post(validateLoginMagicLinkController);
 router.route('/google/login/').post(authenticateWithGoogleController);
-router.route('/linear/getAccessToken/').get(getAccessTokenController);
 router.route('/logout/').post(logOutController);
 
 export default router;

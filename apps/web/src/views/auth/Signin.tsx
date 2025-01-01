@@ -140,24 +140,23 @@ const Signin = () => {
                   </div>
                 </div>
                 <Button 
-                  disabled={loading} 
+                  disabled={loading || magicsent} 
                   className="w-full bg-zinc-50 text-zinc-900 hover:bg-zinc-200"
                 >
                   {loading && (
                     <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-zinc-900 border-t-transparent" />
                   )}
-                  Sign In with Email
+                  {magicsent ? "Magic Link Sent" : "Send Magic Link"}
                 </Button>
               </div>
             </form>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-white/10" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-zinc-900 px-2 text-zinc-400">
-                  Or continue with
-                </span>
+                <div className="w-full flex items-center gap-2">
+                  <span className="w-full border-t border-white/10" />
+                  <span className="text-zinc-400 text-xs uppercase whitespace-nowrap">Or continue with</span>
+                  <span className="w-full border-t border-white/10" />
+                </div>
               </div>
             </div>
 

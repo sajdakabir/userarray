@@ -53,6 +53,7 @@ const Signin = () => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
+      console.log(codeResponse);
       setLoading(true);
       await LoginWithGoogle(codeResponse.code);
       setLoading(false);

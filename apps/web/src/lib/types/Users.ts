@@ -20,6 +20,7 @@ export type User = {
     workspace_create: boolean;
     workspace_invite: boolean;
     workspace_join: boolean;
+    linear_connected: boolean;
   };
   hasFinishedOnboarding: boolean;
   uuid: string;

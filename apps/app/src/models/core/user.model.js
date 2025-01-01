@@ -31,7 +31,8 @@ const UserSchema = new Schema({
             profile_complete: false,
             workspace_create: false,
             workspace_invite: false,
-            workspace_join: false
+            workspace_join: false,
+            linear_connected: false
         }
     },
     hasFinishedOnboarding: {

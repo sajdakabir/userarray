@@ -10,7 +10,7 @@ import { getUser } from "@/server/fetchers/user/getdetails";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
 import { getPendingInvitations } from "@/server/fetchers/workspace/get-invitations";
 import ManageWorkspace from "@/views/onboarding/ManageWorkspace";
-
+import ConnectLinear from "@/views/onboarding/LinearConnect";
 export const metadata: Metadata = {
   title: "onboarding",
   description: "Creating Workspace for march",
@@ -46,10 +46,12 @@ const Onboard = async () => {
     return (
       <ManageWorkspace token={accessToken} invitations={pending.response} />
     );
-  } else if (!user.response.onboarding.workspace_invite)
+  } else if (!user.response.onboarding.linear_connected) {
+    return <ConnectLinear accessToken={accessToken} />;
+  }else if (!user.response.onboarding.workspace_invite){
     return <InviteMembers accessToken={accessToken} workSpaces={workspaces} />;
-  // Add a workspace_join check and component
-  else return redirect("/workspace");
+  }
+   else return redirect("/workspace");
 };
 
 export default Onboard;

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 
 export async function GET() {
-    console.log("hey")
   const scope = "read write"
   const LINEAR_CLIENT_ID = process.env.LINEAR_CLIENT_ID
   const LINEAR_REDIRECT_URL = process.env.LINEAR_REDIRECT_URL
@@ -19,7 +18,6 @@ export async function GET() {
   }
 
   const authUrl = `https://linear.app/oauth/authorize?client_id=${LINEAR_CLIENT_ID}&redirect_uri=${LINEAR_REDIRECT_URL}&response_type=code&scope=${LINEAR_SCOPE}`
-  console.log("authUrl saju : ", authUrl)
 
   return NextResponse.json({ authUrl })
 }

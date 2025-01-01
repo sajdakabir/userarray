@@ -40,7 +40,7 @@ const useLinear = ( accessToken: string) => {
     console.log("sajda")
 //   const [issues, setIssues] = useState<LinearIssue[]>([])
 //   const [isLoading, setIsLoading] = useState(false)
-//   const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
 //   const makeRequest = useCallback(async (url: string, config: object = {}) => {
 //     try {
@@ -65,7 +65,6 @@ const useLinear = ( accessToken: string) => {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      console.log("hmm")
       console.log("response saju : ", response.data)
       const { authUrl } = response.data
 
@@ -73,7 +72,7 @@ const useLinear = ( accessToken: string) => {
       window.location.href = authUrl
     } catch (error) {
       console.error("Error in initiating Linear OAuth login:", error)
-    //   setError("Failed to initiate Linear login")
+      setError("Failed to initiate Linear login")
     }
   }, [accessToken])
 

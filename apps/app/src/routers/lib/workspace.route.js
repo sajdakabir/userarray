@@ -22,6 +22,8 @@ router.route("/:workspace/").get(getWorkspaceProfileController)
 router.route("/:workspace/").patch(updateWorkspaceController)
 router.route("/:workspace/").delete(deleteWorkspaceController)
 
+// TODO: need to take a look according to userarray needs
+
 router.route("/:workspace/ping/").get(getEverything)
 
 // workspace member controllers below

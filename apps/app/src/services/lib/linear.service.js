@@ -1,7 +1,7 @@
 import axios from "axios";
 import { environment } from "../../loaders/environment.loader.js";
 
-export const getAccessToken = async (code, user) => {
+export const getAccessToken = async (code, workspace) => {
     try {
         const requestBody = {
             grant_type: 'authorization_code',
@@ -18,6 +18,9 @@ export const getAccessToken = async (code, user) => {
         });
 
         const accessToken = tokenResponse.data.access_token;
+
+        workspace.linearAccessToken = accessToken;
+        await workspace.save();
 
 
         return accessToken;

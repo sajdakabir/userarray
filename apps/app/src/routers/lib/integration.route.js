@@ -6,6 +6,6 @@ import { WorkspaceMiddleware } from "../../middlewares/workspace.middleware.js";
 const router = Router();
 
 router.use("/:workspace", WorkspaceMiddleware)
-router.route('/getAccessToken/').get(getAccessTokenController);
+router.route('/:workspace/getAccessToken/').get(getAccessTokenController);
 
 export default router;

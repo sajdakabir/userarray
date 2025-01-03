@@ -38,10 +38,11 @@ const WorkSpaceAvailabilityCheck = async (slug) => {
     return !workspace;
 }
 
-const createWorkspace = async (slug, name, createdBy) => {
+const createWorkspace = async (slug, name, createdBy, website) => {
     const workspace = await Workspace.create({
         slug,
         name,
+        website,
         createdBy
     });
     if (!workspace) {

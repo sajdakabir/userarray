@@ -16,7 +16,7 @@ const WorkspaceSchema = new Schema({
         required: true,
         unique: true
     },
-    websiteUrl: {
+    website: {
         type: String,
         required: true
     },

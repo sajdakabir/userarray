@@ -23,9 +23,9 @@ const updateUserController = async (req, res, next) => {
             err.statusCode = 400;
             throw err;
         }
-        const { fullName, userName, avatar, hasFinishedOnboarding, onboarding, timezone } = value;
+        const { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone } = value;
 
-        await updateUser(user, { fullName, userName, avatar, hasFinishedOnboarding, onboarding, timezone });
+        await updateUser(user, { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone });
 
         res.json({
             "status": 200,

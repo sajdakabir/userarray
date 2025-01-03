@@ -11,7 +11,10 @@ const UserSchema = new Schema({
         type: String,
         default: () => uuid()
     },
-    fullName: {
+    firstName: {
+        type: Schema.Types.String
+    },
+    lastName: {
         type: Schema.Types.String
     },
     userName: {

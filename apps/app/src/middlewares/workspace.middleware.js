@@ -4,9 +4,8 @@ import { validateUserWithWorkspace, getWorkspaceProfile } from "../services/lib/
 export const WorkspaceMiddleware = async (req, res, next) => {
     try {
         const user = req.user
-
         const workspace = await getWorkspaceProfile(req.params.workspace)
-        const check = await validateUserWithWorkspace(user, workspace)
+        const check = await validateUserWithWorkspace(user.id, workspace)
         if (check) {
             res.locals.user = user;
             res.locals.workspace = workspace;

@@ -1,8 +1,8 @@
 import { getAccessToken } from "../../services/lib/linear.service.js";
 
 export const getAccessTokenController = async (req, res, next) => {
+    console.log("hmm")
     const { code } = req.query;
-    const user = req.user;
     if (!code || !user) {
         return res
             .status(400)

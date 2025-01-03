@@ -13,21 +13,8 @@ const initRoutes = (app) => {
     app.use("/auth", AuthRouter);
     app.use("/users", JWTMiddleware, UserRouter);
     app.use("/workspaces", JWTMiddleware, WorkspacesRouter);
-    app.use("/linear", JWTMiddleware, WorkspaceMiddleware, IntegrationRouter);
+    app.use("/linear", JWTMiddleware, IntegrationRouter);
 
-    // app.get("/test", async (req, res) => {
-    //     const today = moment.utc().startOf('day');
-    //     const previousDay = moment(today).subtract(1, 'day').startOf('day');
-    //     const cyclesEndingToday = await Cycle.find({
-    //         endDate: {
-    //             $lt: today.toDate(), // End date is before today
-    //             $gte: previousDay.toDate() // End date is on or after the previous day
-    //         }
-    //     });
-    //     res.json(
-    //         cyclesEndingToday
-    //     )
-    // })
 
     app.get("/", async (req, res) => {
         res.json({

@@ -12,14 +12,16 @@ const generateJWTToken = async (payload, expiry) => {
 }
 const generateJWTTokenPair = async (user) => {
     const accessToken = await generateJWTToken({
-        id: user.uuid,
+        id: user._id,
+        uuid: user.uuid,
         email: user.accounts.local.email || user.accounts.google.email,
         name: user.fullName || user.userName,
         type: "access",
         roles: user.roles
     })
     const refreshToken = await generateJWTToken({
-        id: user.uuid,
+        id: user._id,
+        uuid: user.uuid,
         email: user.accounts.local.email || user.accounts.google.email,
         name: user.fullName || user.userName,
         type: "refresh",

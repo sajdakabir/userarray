@@ -47,7 +47,7 @@ const createWorkspaceController = async (req, res, next) => {
 
         res.json({
             status: 200,
-            response: workspace
+            response: workspace,
         });
     } catch (err) {
         if (err.code === 11000 && err.keyPattern && err.keyValue) {

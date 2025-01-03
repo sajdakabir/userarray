@@ -17,9 +17,11 @@ export const getAccessToken = async (code, workspace) => {
             }
         });
 
+
         const accessToken = tokenResponse.data.access_token;
 
-        workspace.linearAccessToken = accessToken;
+        workspace.integration.linear.accessToken = accessToken;
+        workspace.integration.linear.connected = true;
         await workspace.save();
 
 

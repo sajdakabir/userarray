@@ -23,5 +23,9 @@ export const environment = {
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT,
     REDIS_DB_USER: process.env.REDIS_DB_USER,
-    REDIS_DB_PASS: process.env.REDIS_DB_PASS
+    REDIS_DB_PASS: process.env.REDIS_DB_PASS,
+    LINEAR_CLIENT_ID: process.env.LINEAR_CLIENT_ID,
+    LINEAR_CLIENT_SECRET: process.env.LINEAR_CLIENT_SECRET,
+    LINEAR_REDIRECT_URL: process.env.LINEAR_REDIRECT_URL,
+    LINEAR_WH_SECRET: process.env.LINEAR_WH_SECRET
 }

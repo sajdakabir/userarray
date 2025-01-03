@@ -15,7 +15,7 @@ const userProfileController = async (req, res, next) => {
 
 const updateUserController = async (req, res, next) => {
     try {
-        const user = req.user.id;
+        const user = req.user.uuid;
         const { error, value } = UpdateUserPayload.validate(req.body);
 
         if (error) {

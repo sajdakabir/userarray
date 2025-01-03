@@ -3,7 +3,6 @@ import { environment } from "../../loaders/environment.loader.js";
 
 export const getAccessToken = async (code, user) => {
     try {
-        console.log("hmm linear code: ", code)
         const requestBody = {
             grant_type: 'authorization_code',
             code,
@@ -20,8 +19,6 @@ export const getAccessToken = async (code, user) => {
 
         const accessToken = tokenResponse.data.access_token;
 
-        // user.integration.linear.accessToken = accessToken;
-        // await user.save();
 
         return accessToken;
     } catch (error) {

@@ -10,7 +10,6 @@ export const getAccessTokenController = async (req, res, next) => {
     }
     try {
         const accessToken = await getAccessToken(code, user);
-        // const userInfo = await fetchUserInfo(accessToken, user);
 
         res.status(200).json({
             accessToken

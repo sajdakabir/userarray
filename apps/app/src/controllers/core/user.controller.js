@@ -3,7 +3,7 @@ import { UpdateUserPayload } from "../../payloads/core/user.payload.js";
 
 const userProfileController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id)
+        const user = await getUserById(req.user.uuid)
         res.json({
             "status": 200,
             "response": user

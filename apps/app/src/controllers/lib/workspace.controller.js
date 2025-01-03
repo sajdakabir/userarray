@@ -37,7 +37,7 @@ const createWorkspaceController = async (req, res, next) => {
             throw err;
         }
         const { slug, name } = value;
-        const createdBy = await getUserById(req.user.id);
+        const createdBy = req.user.id
         const workspace = await createWorkspace(slug, name, createdBy);
         await createWorkspaceMember(workspace._id, createdBy, {
             member: createdBy._id,

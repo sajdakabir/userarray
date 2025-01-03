@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { environment } from "../../loaders/environment.loader.js";
 
 export const getAccessToken = async (code, workspace) => {
@@ -31,3 +32,39 @@ export const getAccessToken = async (code, workspace) => {
         throw error;
     }
 };
+
+export const getLinearTeams = async (accessToken) => {
+    try {
+        console.log("AccessToken:", accessToken);
+        const response = await axios.post(
+            'https://api.linear.app/graphql',
+            {
+                query: `
+                    query {
+                        teams {
+                            nodes {
+                                id
+                                name
+                                description
+                            }
+                        }
+                    }
+                `,
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        // Extract teams from the response
+        return response.data.data.teams.nodes;
+    } catch (error) {
+        console.error('Error fetching Linear teams:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+

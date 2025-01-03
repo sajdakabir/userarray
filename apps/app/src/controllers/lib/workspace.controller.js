@@ -62,7 +62,7 @@ const createWorkspaceController = async (req, res, next) => {
 
 const getUserWorkspacesController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id);
+        const user = req.user.id;
         const workspaces = await getUserWorkspaces(user);
         res.json({
             status: 200,

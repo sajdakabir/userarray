@@ -20,9 +20,10 @@ const getWorkspaceProfile = async (slug) => {
 }
 
 const validateUserWithWorkspace = async (user, workspace) => {
+    console.log("hmm: ", user, workspace)
     const authorization = await WorkspaceMember.findOne({
         member: user,
-        workspace,
+        workspace: workspace._id,
         isDeleted: false
     })
     if (!authorization) {

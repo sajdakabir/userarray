@@ -355,7 +355,7 @@ const userWorkSpacesController = async (req, res, next) => {
 
 const getUserWorkspaceInvitationsController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id);
+        const user = await getUserById(req.user.uuid);
         const invitations = await getUserWorkspaceInvitations(user);
         res.json({
             status: 200,

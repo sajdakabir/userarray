@@ -38,7 +38,7 @@ const updateUserController = async (req, res, next) => {
 
 const updateUserOnBoardedController = async (req, res, next) => {
     try {
-        const user = req.user.id;
+        const user = req.user.uuid;
         const { hasFinishedOnboarding } = req.body;
 
         await updateUserOnBoarded(user, hasFinishedOnboarding);

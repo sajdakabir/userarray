@@ -342,8 +342,8 @@ const getWorkspaceInvitationByUuidController = async (req, res, next) => {
 
 const userWorkSpacesController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id);
-        const workspaces = await userWorkSpaces(user._id);
+        const user = req.user;
+        const workspaces = await userWorkSpaces(user.id);
         res.json({
             status: 200,
             response: workspaces

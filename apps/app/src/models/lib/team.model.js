@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 import { v4 as uuid } from "uuid";
 import { db } from "../../loaders/db.loader.js";
 
-const SpaceSchema = new Schema({
+const TeamSchema = new Schema({
     uuid: {
         type: String,
         default: () => uuid()
@@ -11,10 +11,12 @@ const SpaceSchema = new Schema({
         type: String,
         required: true
     },
-    identifier: {
+    key: {
         type: String,
-        required: true,
-        uppercase: true
+        required: true
+    },
+    linearId: {
+        type: String
     },
     workspace: {
         type: Schema.Types.ObjectId,
@@ -44,25 +46,25 @@ const SpaceSchema = new Schema({
     timestamps: true
 });
 
-SpaceSchema.pre("save", async function (next) {
-    const space = this;
+TeamSchema.pre("save", async function (next) {
+    const team = this;
 
-    const existingSpace = await Space.findOne({
+    const existingTeam = await Team.findOne({
         $or: [
-            { name: space.name },
-            { identifier: space.identifier }
+            { name: team.name },
+            { key: team.key }
         ],
-        workspace: space.workspace
+        workspace: team.workspace
     });
 
-    if (existingSpace) {
-        if (existingSpace.name === space.name) {
-            const error = new Error("The Space name is already taken.");
+    if (existingTeam) {
+        if (existingTeam.name === team.name) {
+            const error = new Error("The Team name is already taken.");
             error.statusCode = 400;
             return next(error);
         }
-        if (existingSpace.identifier === space.identifier) {
-            const error = new Error("The Space identifier is already taken.");
+        if (existingTeam.key === team.key) {
+            const error = new Error("The Team key is already taken.");
             error.statusCode = 400;
             return next(error);
         }
@@ -71,8 +73,8 @@ SpaceSchema.pre("save", async function (next) {
     next();
 });
 
-const Space = db.model('Space', SpaceSchema, 'spaces')
+const Team = db.model('Team', TeamSchema, 'teams')
 
 export {
-    Space
+    Team
 };

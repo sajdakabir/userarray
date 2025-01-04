@@ -1,4 +1,4 @@
-import { Space } from "../../models/lib/space.model.js";
+import { Team } from "../../models/lib/team.model.js";
 import { Workspace } from "../../models/lib/workspace.model.js";
 import { WorkspaceMember } from "../../models/lib/workspaceMember.model.js";
 import { Cycle } from "../../models/lib/cycle.model.js";

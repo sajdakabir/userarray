@@ -46,6 +46,7 @@ export const getLinearTeams = async (accessToken) => {
                                 id
                                 name
                                 description
+                                key
                             }
                         }
                     }

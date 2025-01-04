@@ -10,7 +10,7 @@ const getWorkspaceProfile = async (slug) => {
         slug,
         isDeleted: false
     })
-        .populate('spaces')
+        .populate('teams')
     if (!workspace) {
         const error = new Error("Workspace not found")
         error.statusCode = 404

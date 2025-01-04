@@ -1,6 +1,7 @@
 import { Team } from "../../models/lib/team.model.js";
 
-const createSpace = async (teamData, workspace) => {
+export const createTeam = async (teamData, workspace) => {
+    const { linearTeamId } = teamData;
     const team = await Team.create(teamData);
     if (!team) {
         const error = new Error("Failed to create the team");
@@ -8,8 +9,7 @@ const createSpace = async (teamData, workspace) => {
         throw error;
     }
     workspace.teams.push(team._id);
+    workspace.integration.linear.teamId = linearTeamId;
     await workspace.save();
     return team;
 };
-
-export { createSpace };

@@ -11,11 +11,14 @@ const TeamSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String
+    },
     key: {
         type: String,
         required: true
     },
-    linearId: {
+    linearTeamId: {
         type: String
     },
     workspace: {

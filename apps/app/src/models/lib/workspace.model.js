@@ -20,9 +20,9 @@ const WorkspaceSchema = new Schema({
         type: String,
         required: true
     },
-    spaces: [{
+    teams: [{
         type: Schema.Types.ObjectId,
-        ref: 'Space'
+        ref: 'Team'
     }],
     integration: {
         linear: {

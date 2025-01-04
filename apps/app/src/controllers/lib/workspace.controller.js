@@ -4,7 +4,7 @@ import { createEmailUser, getUserByEmail, getUserById } from "../../services/cor
 import { generateRandomPassword, sendEmail, readTemplateFile } from "../../utils/helper.service.js";
 // import { generateJWTToken } from "../../utils/jwt.service.js";
 import { environment } from "../../loaders/environment.loader.js";
-import { createSpace } from "../../services/lib/space.service.js";
+import { createTeam } from "../../services/lib/team.service.js";
 import { getUserWorkSpaceItems, getItems, getArchivedItems } from "../../services/lib/item.service.js";
 import { getLabels, createLabels } from "../../services/lib/label.service.js";
 import { getCycles, createCycle } from "../../services/lib/cycle.service.js";

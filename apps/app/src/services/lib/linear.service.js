@@ -1,6 +1,8 @@
 import axios from "axios";
 
 import { environment } from "../../loaders/environment.loader.js";
+import { findTeamByLinearId } from "./team.service.js";
+import { Issue } from "../../models/lib/issue.model.js";
 
 export const getAccessToken = async (code, workspace) => {
     try {
@@ -85,6 +87,7 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
                         id
                         title
                         description
+                        number
                         state {
                             id
                             name
@@ -94,6 +97,12 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
                                 id
                                 name
                             }
+                        }
+                        cycle {
+                            id
+                            name
+                            startsAt
+                            endsAt
                         }
                         dueDate
                         createdAt
@@ -129,4 +138,138 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
     const issues = response.data.data.issues.nodes;
     return issues;
 };
+
+export const saveIssuesToDatabase = async (issues, linearTeamId) => {
+    try {
+        const team = await findTeamByLinearId(linearTeamId);
+        if (!team) {
+            throw new Error("Team not found");
+        }
+        const teamId = team._id;
+        const workspaceId = team.workspace;
+
+        for (const issue of issues) {
+            const {
+                id,
+                title,
+                description,
+                number,
+                state,
+                labels,
+                dueDate,
+                createdAt,
+                updatedAt,
+                priority,
+                project,
+                assignee,
+                url,
+                cycle
+            } = issue;
+
+            const existingIssue = await Issue.findOne({ linearId: id, team: teamId, workspace: workspaceId });
+
+            if (existingIssue) {
+                // Update existing issue
+                existingIssue.title = title;
+                existingIssue.description = description;
+                existingIssue.number = number;
+                existingIssue.state = state;
+                existingIssue.labels = labels.nodes;
+                existingIssue.dueDate = dueDate;
+                existingIssue.updatedAt = updatedAt;
+                existingIssue.priority = priority;
+                existingIssue.project = project;
+                existingIssue.assignee = assignee;
+                existingIssue.url = url;
+                existingIssue.linearTeamId = linearTeamId;
+                existingIssue.cycle = cycle;
+      
+                await existingIssue.save();
+              } else {
+                // Create a new issue
+                const newIssue = new Issue({
+                  linearId: id,
+                  title,
+                  description,
+                  number,
+                  state,
+                  labels: labels.nodes,
+                  dueDate,
+                  createdAt,
+                  updatedAt,
+                  priority,
+                  cycle,
+                  project,
+                  assignee,
+                  url,
+                  linearTeamId,
+                  team: teamId,
+                  workspace: workspaceId,
+                });
+
+                await newIssue.save();
+              }
+            }
+        
+            console.log('Issues saved/updated successfully');
+        
+    } catch (error) {
+        console.error('Error saving issues to database:', error);
+        throw error;
+    }
+};
+
+export const fetchCurrentCycle = async (linearToken, teamId) => {
+    const response = await axios.post(
+        'https://api.linear.app/graphql',
+        {
+            query: `
+            query GetCyclesForTeam($teamId: String!) {
+                team(id: $teamId) {
+                    cycles {
+                        nodes {
+                            id
+                            name
+                            startsAt
+                            endsAt
+                            completedAt
+                        }
+                    }
+                }
+            }
+            `,
+            variables: {
+                teamId,
+            },
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${linearToken}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+
+    if (response.data.errors) {
+        console.error("Error fetching cycles:", response.data.errors);
+        throw new Error("Failed to fetch cycles.");
+    }
+
+    const cycles = response.data.data.team.cycles.nodes;
+
+    const now = new Date();
+    const currentCycle = cycles.find((cycle) => {
+        const startsAt = new Date(cycle.startsAt);
+        const endsAt = new Date(cycle.endsAt);
+
+        return (
+            cycle.completedAt === null && 
+            now >= startsAt &&            
+            now <= endsAt               
+        );
+    });
+
+    return currentCycle || null;
+};
+
 

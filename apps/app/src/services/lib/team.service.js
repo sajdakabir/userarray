@@ -2,6 +2,10 @@ import { Team } from "../../models/lib/team.model.js";
 
 export const createTeam = async (teamData, workspace) => {
     const { linearTeamId } = teamData;
+    const existingTeam = await Team.findOne({ linearTeamId, workspace: workspace._id });
+    if (existingTeam) {
+        return existingTeam;
+    }
     const team = await Team.create(teamData);
     if (!team) {
         const error = new Error("Failed to create the team");
@@ -35,4 +39,9 @@ export const updateTeam = async (name, workspace, updatedData) => {
         throw error;
     }
     return updateTeam;
+};
+
+export const findTeamByLinearId = async (linearTeamId) => {
+    const team = await Team.findOne({ linearTeamId });
+    return team;
 };

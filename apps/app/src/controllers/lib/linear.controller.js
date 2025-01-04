@@ -1,4 +1,4 @@
-import { getAccessToken, getLinearTeams } from "../../services/lib/linear.service.js";
+import { getAccessToken, getLinearTeams, fetchCurrentCycle } from "../../services/lib/linear.service.js";
 
 export const getAccessTokenController = async (req, res, next) => {
     const { code } = req.query;
@@ -30,4 +30,10 @@ export const getLinearTeamsController = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+}
+
+export const getLinearIssuesController = async (req, res, next) => {
+    
+    const hmm = await fetchCurrentCycle("", "");
+    res.status(200).json({ hmm });
 }

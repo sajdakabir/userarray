@@ -13,3 +13,9 @@ export const createTeam = async (teamData, workspace) => {
     await workspace.save();
     return team;
 };
+export const getAllTeam = async (workspace) => {
+    const teams = await Team.find({
+        'workspace': workspace._id
+    });
+    return teams;
+};

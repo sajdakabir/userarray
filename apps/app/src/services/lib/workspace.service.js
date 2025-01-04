@@ -131,14 +131,6 @@ const getWorkspaceBySlug = async (slug) => {
     return workspace;
 };
 
-const getAllSpaces = async (workspace) => {
-    // const spaces = workspace.spaces.filter(space => !space.isDeleted);
-    // return spaces;
-    const spaces = await Space.find({
-        'workspace': workspace._id
-    });
-    return spaces;
-};
 
 const getSpaceByIdentifier = async (slug, identifier) => {
     const workspace = await getWorkspaceBySlug(slug);
@@ -205,7 +197,6 @@ export {
     updateWorkspace,
     deleteWorkspace,
     userWorkSpaces,
-    getAllSpaces,
     getSpaceByIdentifier,
     getSpaceByName,
     updateSpace,

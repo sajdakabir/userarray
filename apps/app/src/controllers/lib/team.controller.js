@@ -1,5 +1,5 @@
-import { getAllSpaces, updateSpace, getSpaceByIdentifier, daleteSpace } from "../../services/lib/workspace.service.js"
-import { createTeam } from "../../services/lib/team.service.js";
+import { updateSpace, getSpaceByIdentifier, daleteSpace } from "../../services/lib/workspace.service.js"
+import { createTeam, getAllTeam } from "../../services/lib/team.service.js";
 import { createLabels } from "../../services/lib/label.service.js";
 import { createCycle } from "../../services/lib/cycle.service.js";
 import { CreateTeamPayload, UpdateTeamPayload } from "../../payloads/lib/team.payload.js";
@@ -33,10 +33,10 @@ export const createTeamController = async (req, res, next) => {
     }
 };
 
-const getAllSpacesController = async (req, res, next) => {
+export const getAllTeamsController = async (req, res, next) => {
     try {
         const workspace = res.locals.workspace;
-        const spaces = await getAllSpaces(workspace);
+        const spaces = await getAllTeam(workspace);
         res.json({
             status: 200,
             response: spaces
@@ -110,7 +110,6 @@ const daleteSpaceController = async (req, res, next) => {
 };
 
 export {
-    getAllSpacesController,
     getSpaceByIdentifierController,
     getSpaceByNameController,
     updateSpaceController,

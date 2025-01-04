@@ -31,4 +31,3 @@ export const getLinearTeamsController = async (req, res, next) => {
         next(err);
     }
 }
-

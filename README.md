@@ -25,4 +25,3 @@ linear companion for open source and user facing teams.
 • Changelog: [userarray/changelog](https://github.com/userarray/changelog)
 
 ### 💡 FAQ
- to be added.

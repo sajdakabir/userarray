@@ -10,38 +10,29 @@ const CycleSchema = new Schema({
     name: {
         type: String
     },
-    description: {
-        type: String,
-        default: ''
+ 
+    linearTeamId: {
+        type: String
     },
-    sequenceId: {
-        type: Number,
-        required: true,
-        default: 1
+    startsAt: {
+        type: Date,
+        default: null
     },
-    startDate: {
-        type: Date
+    endsAt: {
+        type: Date,
+        default: null
     },
-    endDate: {
-        type: Date
-    },
-    // items: [{
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Item'
-    // }],
-    space: {
+    team: {
         type: Schema.Types.ObjectId,
-        ref: 'Space'
-        // required: true
+        ref: 'Team'
     },
     workspace: {
         type: Schema.Types.ObjectId,
         ref: 'Workspace'
-        // required: true
     },
-    createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+    completedAt: {
+        type: Date,
+        default: null
     },
     isArchived: {
         type: Boolean,
@@ -55,31 +46,6 @@ const CycleSchema = new Schema({
     timestamps: true
 });
 
-// const CycleItemSchema = new Schema({
-//     subItemsCount: {
-//         type: Number
-//     },
-//     space: {
-//         type: Schema.Types.ObjectId,
-//         ref: 'Space'
-//     },
-//     workspace: {
-//         type: Schema.Types.ObjectId,
-//         ref: 'Workspace'
-//     },
-//     cycle: {
-//         type: Schema.Types.ObjectId,
-//         ref: 'Cycle',
-//         required: true
-//     },
-//     item: {
-//         type: Schema.Types.ObjectId,
-//         ref: 'Item',
-//         required: true
-//     }
-// }, {
-//     timestamps: true
-// });
 
 const CycleFavoriteSchema = new Schema({
     user: {

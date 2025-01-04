@@ -255,7 +255,21 @@ export const fetchCurrentCycle = async (linearToken, teamId) => {
         throw new Error("Failed to fetch cycles.");
     }
 
-    return response.data.data.team.cycles.nodes;
+    const cycles = response.data.data.team.cycles.nodes;
+
+    const now = new Date();
+    const currentCycle = cycles.find((cycle) => {
+        const startsAt = new Date(cycle.startsAt);
+        const endsAt = new Date(cycle.endsAt);
+
+        return (
+            cycle.completedAt === null && 
+            now >= startsAt &&            
+            now <= endsAt               
+        );
+    });
+
+    return currentCycle || null;
 };
 
 

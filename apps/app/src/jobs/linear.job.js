@@ -6,7 +6,7 @@ import { redisConnection } from "../loaders/redis.loader.js";
 const processLinearJob = async (job) => {
     const { accessToken, linearTeamId, teamId } = job.data;
     try {
-        const issues = await fetchLinearIssues(accessToken, linearTeamId);  //todo
+        const issues = await fetchLinearIssues(accessToken, linearTeamId);
         await saveIssuesToDatabase(issues, teamId); //todo
     } catch (error) {
         console.error('Error processing Linear job:', error);

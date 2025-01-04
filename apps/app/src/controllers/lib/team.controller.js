@@ -1,8 +1,7 @@
 import { getSpaceByIdentifier, daleteSpace } from "../../services/lib/workspace.service.js"
 import { createTeam, getAllTeam, updateTeam } from "../../services/lib/team.service.js";
-import { createLabels } from "../../services/lib/label.service.js";
-import { createCycle } from "../../services/lib/cycle.service.js";
 import { CreateTeamPayload, UpdateTeamPayload } from "../../payloads/lib/team.payload.js";
+import { linearQueue } from "../../loaders/bullmq.loader.js";
 
 export const createTeamController = async (req, res, next) => {
     try {
@@ -23,6 +22,23 @@ export const createTeamController = async (req, res, next) => {
         };
 
         const team = await createTeam(teamData, workspace);
+        // todo: get the linear data for this team 
+
+
+        await linearQueue.add(
+            "linearQueue",
+            {
+                accessToken: workspace.integration.linear.accessToken,
+                linearTeamId: workspace.integration.linear.teamId,
+                teamId: team._id
+            },
+            {
+                attempts: 3,
+                backoff: 1000,
+                timeout: 30000
+            }
+        );
+
 
         res.json({
             status: 200,
@@ -36,10 +52,10 @@ export const createTeamController = async (req, res, next) => {
 export const getAllTeamsController = async (req, res, next) => {
     try {
         const workspace = res.locals.workspace;
-        const spaces = await getAllTeam(workspace);
+        const teams = await getAllTeam(workspace);
         res.json({
             status: 200,
-            response: spaces
+            response: teams
         });
     } catch (err) {
         next(err);

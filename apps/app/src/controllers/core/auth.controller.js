@@ -1,58 +1,8 @@
-import Joi from "joi";
-import { RegisterPayload, LoginPayload } from "../../payloads/core/auth.payload.js";
-import { createEmailUser, validateEmailUser, createMagicLoginLink, validateMagicLoginLink, getUserById, validateGoogleUser, getUserByEmail, createGoogleUser } from "../../services/core/user.service.js";
+import { createMagicLoginLink, validateMagicLoginLink, getUserById, validateGoogleUser, getUserByEmail, createGoogleUser } from "../../services/core/user.service.js";
 import { generateJWTTokenPair } from "../../utils/jwt.service.js";
 import { BlackList } from "../../models/core/black-list.model.js";
 
-const { ValidationError } = Joi;
-
-const emailLoginController = async (req, res, next) => {
-    try {
-        const payload = await LoginPayload.validateAsync(req.body)
-        // TODO: Add 3 attempts and wait until next time
-        const user = await validateEmailUser(payload.email, payload.password)
-        const tokenPair = await generateJWTTokenPair(user)
-        res.status(200).json({
-            statusCode: 200,
-            response: tokenPair
-        })
-    } catch (err) {
-        const error = new Error(err);
-        error.statusCode = err.statusCode || 500;
-        next(err)
-    }
-}
-
-const registerEmailUserController = async (req, res, next) => {
-    try {
-        const { fullName, userName, email, password } = await RegisterPayload.validateAsync({ fullName: req.body.fullName, email: req.body.email, password: req.body.password });
-        const user = await createEmailUser({
-            fullName,
-            userName,
-            email,
-            password
-        })
-        if (!user) {
-            throw new Error("Failed to create user");
-        }
-        const { ok, isNewUser } = await generateJWTTokenPair(user);
-
-        res.status(200).json({
-            statusCode: 200,
-            response: {
-                ok,
-                isNewUser
-            }
-        })
-        // TODO: Send welcome email and verify email template to user
-    } catch (err) {
-        const error = new Error(err)
-        error.statusCode = err instanceof ValidationError ? 400 : (err.statusCode || 500)
-        next(error);
-    }
-}
-
-const magicLoginController = async (req, res, next) => {
+export const magicLoginController = async (req, res, next) => {
     try {
         if (!req.body.email) {
             const error = new Error("Bad request")
@@ -75,7 +25,7 @@ const magicLoginController = async (req, res, next) => {
     }
 }
 
-const validateLoginMagicLinkController = async (req, res, next) => {
+export const validateLoginMagicLinkController = async (req, res, next) => {
     try {
         const token = await validateMagicLoginLink(req.body.token)
         const user = await getUserById(token.user?.uuid)
@@ -96,7 +46,7 @@ const validateLoginMagicLinkController = async (req, res, next) => {
     }
 }
 
-const authenticateWithGoogleController = async (req, res, next) => {
+export const authenticateWithGoogleController = async (req, res, next) => {
     try {
         const token = req.headers["x-google-auth"]
         if (!token) {
@@ -129,7 +79,7 @@ const authenticateWithGoogleController = async (req, res, next) => {
     }
 }
 
-const logOutController = async (req, res, next) => {
+export const logOutController = async (req, res, next) => {
     try {
         const { authorization: header } = req.headers;
         if (!header) {
@@ -151,12 +101,3 @@ const logOutController = async (req, res, next) => {
         next(err)
     }
 }
-
-export {
-    registerEmailUserController,
-    emailLoginController,
-    magicLoginController,
-    validateLoginMagicLinkController,
-    authenticateWithGoogleController,
-    logOutController
-};

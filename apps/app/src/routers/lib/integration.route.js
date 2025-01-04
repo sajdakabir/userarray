@@ -10,4 +10,5 @@ router.route('/getLinearTeams/').get(getLinearTeamsController);
 router.use("/:workspace", WorkspaceMiddleware)
 router.route('/:workspace/getAccessToken/').get(getAccessTokenController);
 
+
 export default router;

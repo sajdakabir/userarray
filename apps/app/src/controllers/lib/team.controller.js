@@ -22,8 +22,6 @@ export const createTeamController = async (req, res, next) => {
         };
 
         const team = await createTeam(teamData, workspace);
-        // todo: get the linear data for this team 
-
 
         await linearQueue.add(
             "linearQueue",

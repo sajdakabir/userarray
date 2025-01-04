@@ -85,6 +85,7 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
                         id
                         title
                         description
+                        number
                         state {
                             id
                             name

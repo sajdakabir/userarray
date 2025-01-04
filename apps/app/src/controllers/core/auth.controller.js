@@ -2,9 +2,7 @@ import { createMagicLoginLink, validateMagicLoginLink, getUserById, validateGoog
 import { generateJWTTokenPair } from "../../utils/jwt.service.js";
 import { BlackList } from "../../models/core/black-list.model.js";
 
-
-
-const magicLoginController = async (req, res, next) => {
+export const magicLoginController = async (req, res, next) => {
     try {
         if (!req.body.email) {
             const error = new Error("Bad request")
@@ -27,7 +25,7 @@ const magicLoginController = async (req, res, next) => {
     }
 }
 
-const validateLoginMagicLinkController = async (req, res, next) => {
+export const validateLoginMagicLinkController = async (req, res, next) => {
     try {
         const token = await validateMagicLoginLink(req.body.token)
         const user = await getUserById(token.user?.uuid)
@@ -48,7 +46,7 @@ const validateLoginMagicLinkController = async (req, res, next) => {
     }
 }
 
-const authenticateWithGoogleController = async (req, res, next) => {
+export const authenticateWithGoogleController = async (req, res, next) => {
     try {
         const token = req.headers["x-google-auth"]
         if (!token) {
@@ -81,7 +79,7 @@ const authenticateWithGoogleController = async (req, res, next) => {
     }
 }
 
-const logOutController = async (req, res, next) => {
+export const logOutController = async (req, res, next) => {
     try {
         const { authorization: header } = req.headers;
         if (!header) {
@@ -103,10 +101,3 @@ const logOutController = async (req, res, next) => {
         next(err)
     }
 }
-
-export {
-    magicLoginController,
-    validateLoginMagicLinkController,
-    authenticateWithGoogleController,
-    logOutController
-};

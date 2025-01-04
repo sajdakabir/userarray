@@ -1,4 +1,4 @@
-import { getAllIssues, getIssue } from "../../services/lib/issue.service.js"
+import { getAllIssues, getIssue, updateIssue } from "../../services/lib/issue.service.js"
 
 export const getAllIssuesController = async (req, res, next) => {
    try {
@@ -20,4 +20,16 @@ export const getIssueController = async (req, res, next) => {
    } catch (err) {
     next(err)
    }
+}
+
+export const updateIssueController = async (req, res, next) => { 
+    try {
+        const workspace = res.locals.workspace
+        const { team, issue:id } = req.params
+        const updateData = req.body
+        const issue = await updateIssue(workspace, team, id, updateData)
+        res.status(200).json({ issue })
+    } catch (err) {
+        next(err)
+    }
 }

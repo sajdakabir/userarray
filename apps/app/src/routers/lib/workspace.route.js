@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { WorkspaceMiddleware } from "../../middlewares/workspace.middleware.js";
 import { createWorkspaceController, WorkSpaceAvailabilityCheckController, getUserWorkspacesController, getWorkspaceProfileController, updateWorkspaceController, inviteMemberToWorkspaceController, reinviteWorkspaceMembersController, getWorkspaceInvitationsController, getWorkspaceInvitationByUuidController, deleteWorkspaceInvitationByUuidController, joinWorkspaceController, getAllWorkspaceMembersController, getWorkspaceMemberController, leaveWorkspaceController, deleteWorkspaceController, getEverything } from "../../controllers/lib/workspace.controller.js"
-import { getAllIssuesController, getIssueController } from "../../controllers/lib/issue.controller.js"
+import { getAllIssuesController, getIssueController, updateIssueController } from "../../controllers/lib/issue.controller.js"
 import { createTeamController, getAllTeamsController, getSpaceByNameController, updateTeamController, daleteSpaceController } from "../../controllers/lib/team.controller.js"
 import { createCycleController, getCyclesController, getCycleController, updateCycleController, deleteCycleController, addItemsToCycleController, addUserFavoriteCycleController, getUserFavoriteCyclesController, deleteUserFavoriteCycleController, getCycleItemsController, deleteCycleItemController } from "../../controllers/lib/cycle.controller.js"
 import { createItemController, getItemsController, getItemController, updateItemController, deleteItemController, getArchivedItemsController, getArchivedItemController, unarchiveItemController, archiveItemController, getUserWorkSpaceItemsController, getUsersTodayWorkSpaceItemsController, getMembersTodayWorkItemsControlle, getMembersWorkItemsByDateControlle } from "../../controllers/lib/item.controller.js"
@@ -60,6 +60,7 @@ router.route("/:workspace/teams/:team/").patch(updateTeamController) //done
 // Issue controllers below
 router.route("/:workspace/teams/:team/issues/").get(getAllIssuesController)
 router.route("/:workspace/teams/:team/issues/:issue/").get(getIssueController)
+router.route("/:workspace/teams/:team/issues/:issue/").patch(updateIssueController)
 
 router.use("/:workspace/spaces/:space", SpaceMiddleware)
 

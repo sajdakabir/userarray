@@ -16,3 +16,21 @@ export const getIssue = async (workspace, team, id) => {
    })
    return issue
 }
+
+export const updateIssue = async (workspace, team, issueId, updateData) => {
+    const updatedIssue = await Issue.findOneAndUpdate(
+        { 
+            workspace,
+            team,
+            _id: issueId 
+        },
+        { $set: updateData },
+        { new: true } 
+    )
+
+    if (!updatedIssue) {
+        throw new Error('Issue not found')
+    }
+
+    return updatedIssue
+}

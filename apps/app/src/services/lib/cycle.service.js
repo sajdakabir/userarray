@@ -1,5 +1,6 @@
 import { Cycle, CycleFavorite } from "../../models/lib/cycle.model.js";
 import { Item } from "../../models/lib/item.model.js";
+import { findTeamByLinearId } from "./team.service.js";
 import moment from "moment-timezone";
 
 const createCycle = async (cycleData) => {
@@ -14,15 +15,23 @@ const createCycle = async (cycleData) => {
     return newCycle;
 };
 
-// const getCycles = async (workspaceId, spaceId) => {
-//     const cycles = await Cycle.find({
-//         'workspace': workspaceId,
-//         'space': spaceId,
-//         isDeleted: false
-//     }).sort({ createdAt: -1 });
+export const createLinearCurrentCycle = async (currentCycle, linearTeamId) => {
+    const team = await findTeamByLinearId(linearTeamId);
+    if (!team) {
+        throw new Error("Team not found");
+    }
+    const teamId = team._id;
+    const workspaceId = team.workspace;
 
-//     return cycles;
-// };
+    const newCycle = new Cycle({
+        ...currentCycle,
+        linearTeamId: linearTeamId,
+        workspace: workspaceId,
+        team: teamId
+    });
+    await newCycle.save();
+    return newCycle;
+}
 
 const getCycles = async (workspaceId, spaceId) => {
     const currentDate = moment();

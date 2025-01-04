@@ -10,7 +10,9 @@ const CycleSchema = new Schema({
     name: {
         type: String
     },
- 
+    id: {
+        type: String
+    },
     linearTeamId: {
         type: String
     },

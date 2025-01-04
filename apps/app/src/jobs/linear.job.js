@@ -1,7 +1,8 @@
 import { linearQueue } from '../loaders/bullmq.loader.js';
 import { Worker } from "bullmq";
 import { redisConnection } from "../loaders/redis.loader.js";
-import { fetchTeamIssues, saveIssuesToDatabase } from "../services/lib/linear.service.js";
+import { fetchTeamIssues, saveIssuesToDatabase, fetchCurrentCycle } from "../services/lib/linear.service.js";
+import { createLinearCurrentCycle } from "../services/lib/cycle.service.js";
 
 
 const processLinearJob = async (job) => {
@@ -9,6 +10,10 @@ const processLinearJob = async (job) => {
     try {
         const issues = await fetchTeamIssues(accessToken, linearTeamId);
         await saveIssuesToDatabase(issues, teamId);
+        const currentCycle = await fetchCurrentCycle(accessToken, linearTeamId);
+        if (currentCycle){
+            await createLinearCurrentCycle(currentCycle, linearTeamId);
+        }
     } catch (error) {
         console.error('Error processing Linear job:', error);
         throw error;

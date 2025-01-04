@@ -24,6 +24,6 @@ export const getLinearTeamsController = async (req, res, next) => {
     const teams = await getLinearTeams(linearToken);
     res.status(200).json({
         teams
-i    });
+   });
 }
 

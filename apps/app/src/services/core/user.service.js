@@ -24,7 +24,6 @@ const getUserByEmail = async (email) => {
 }
 
 const createEmailUser = async ({
-    fullName,
     userName,
     email,
     password
@@ -37,7 +36,6 @@ const createEmailUser = async ({
     }
     const hash = await generateHash(password);
     user = await User.create({
-        fullName,
         userName,
         accounts: {
             local: {
@@ -77,7 +75,7 @@ const createMagicLoginLink = async (email, redirectUrl) => {
     if (!user) {
         isNewUser = true;
         const userName = email.split('@')[0];
-        user = await createEmailUser({ fullName: email, userName, email, password: generateRandomPassword() })
+        user = await createEmailUser({ userName, email, password: generateRandomPassword() })
     }
     await LoginLink.create({
         token,
@@ -184,13 +182,15 @@ const validateGoogleUser = async (token) => {
     return {
         userId: payload.sub,
         email: payload.email,
-        fullName: payload.name,
+        firstName: payload.given_name,
+        lastName: payload.family_name,
         avatar: payload.picture
     }
 }
 
 const createGoogleUser = async ({
-    fullName,
+    firstName,
+    lastName,
     userName,
     email,
     id,
@@ -206,7 +206,8 @@ const createGoogleUser = async ({
         throw error
     }
     user = await User.create({
-        fullName,
+        firstName,
+        lastName,
         userName,
         accounts: {
             google: {

@@ -34,6 +34,12 @@ const IssueSchema = new Schema(
       id: { type: String },
       name: { type: String },
     },
+    cycle: {
+        id: { type: String },
+        name: { type: String },
+        startsAt: { type: Date },
+        endsAt: { type: Date },
+      },
     url: { type: String},
     linearTeamId: { type: String},
     team: { type: Schema.Types.ObjectId, ref: 'Team' },

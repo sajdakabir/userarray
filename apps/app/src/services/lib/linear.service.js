@@ -71,7 +71,6 @@ export const getLinearTeams = async (accessToken) => {
 };
 
 export const fetchTeamIssues = async (linearToken, linearTeamId) => {
-
     const response = await axios.post(
         'https://api.linear.app/graphql',
         {
@@ -98,6 +97,12 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
                                 id
                                 name
                             }
+                        }
+                        cycle {
+                            id
+                            name
+                            startsAt
+                            endsAt
                         }
                         dueDate
                         createdAt
@@ -134,13 +139,12 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
     return issues;
 };
 
-export const saveIssuesToDatabase = async (issues, teamId) => {
+export const saveIssuesToDatabase = async (issues, linearTeamId) => {
     try {
-        const team = await findTeamByLinearId(teamId);
+        const team = await findTeamByLinearId(linearTeamId);
         if (!team) {
             throw new Error("Team not found");
         }
-        console.log("team", team)
         const teamId = team._id;
         const workspaceId = team.workspace;
 
@@ -159,6 +163,7 @@ export const saveIssuesToDatabase = async (issues, teamId) => {
                 project,
                 assignee,
                 url,
+                cycle
             } = issue;
 
             const existingIssue = await Issue.findOne({ linearId: id, team: teamId, workspace: workspaceId });
@@ -177,6 +182,8 @@ export const saveIssuesToDatabase = async (issues, teamId) => {
                 existingIssue.assignee = assignee;
                 existingIssue.url = url;
                 existingIssue.linearTeamId = linearTeamId;
+                existingIssue.cycle = cycle;
+      
                 await existingIssue.save();
               } else {
                 // Create a new issue
@@ -191,6 +198,7 @@ export const saveIssuesToDatabase = async (issues, teamId) => {
                   createdAt,
                   updatedAt,
                   priority,
+                  cycle,
                   project,
                   assignee,
                   url,
@@ -198,6 +206,7 @@ export const saveIssuesToDatabase = async (issues, teamId) => {
                   team: teamId,
                   workspace: workspaceId,
                 });
+
                 await newIssue.save();
               }
             }

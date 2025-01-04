@@ -34,6 +34,6 @@ export const getLinearTeamsController = async (req, res, next) => {
 
 export const getLinearIssuesController = async (req, res, next) => {
     
-    const issues = await fetchTeamIssues();
+    const issues = await fetchTeamIssues("lin_oauth_a1f71cb280399062d3b0a23805468f6bf9188664be8a2dabd19563f564e4b72e", "be976a32-cd54-4d94-b02e-e15151ae8ab3");
     res.status(200).json({ issues });
 }

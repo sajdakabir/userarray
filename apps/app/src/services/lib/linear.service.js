@@ -69,3 +69,61 @@ export const getLinearTeams = async (accessToken) => {
 };
 
 
+export const fetchTeamIssues = async (linearToken, linearTeamId) => {
+    const response = await axios.post(
+        'https://api.linear.app/graphql',
+        {
+            query: `
+            query {
+                issues(filter: { 
+                    team: { id: { eq: "${linearTeamId}" } } 
+                }) {
+                    nodes {
+                        id
+                        title
+                        description
+                        state {
+                            id
+                            name
+                        }
+                        labels {
+                            nodes {
+                                id
+                                name
+                            }
+                        }
+                        dueDate
+                        createdAt
+                        updatedAt
+                        priority
+                        project {
+                            id
+                            name
+                        }
+                        assignee {
+                            id
+                            name
+                        }
+                        url
+                    }
+                }
+            }
+        `
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${linearToken}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+
+    // Handle errors if the response contains any
+    if (response.data.errors) {
+        console.error("Error fetching issues:", response.data.errors);
+        throw new Error("Failed to fetch issues.");
+    }
+
+    const issues = response.data.data.issues.nodes;
+    return issues;
+};

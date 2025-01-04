@@ -1,6 +1,8 @@
 import axios from "axios";
 
 import { environment } from "../../loaders/environment.loader.js";
+import { findTeamByLinearId } from "./team.service.js";
+import { Issue } from "../../models/lib/issue.model.js";
 
 export const getAccessToken = async (code, workspace) => {
     try {
@@ -69,6 +71,7 @@ export const getLinearTeams = async (accessToken) => {
 };
 
 export const fetchTeamIssues = async (linearToken, linearTeamId) => {
+
     const response = await axios.post(
         'https://api.linear.app/graphql',
         {
@@ -130,4 +133,81 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
     const issues = response.data.data.issues.nodes;
     return issues;
 };
+
+export const saveIssuesToDatabase = async (issues, teamId) => {
+    try {
+        const team = await findTeamByLinearId(teamId);
+        if (!team) {
+            throw new Error("Team not found");
+        }
+        console.log("team", team)
+        const teamId = team._id;
+        const workspaceId = team.workspace;
+
+        for (const issue of issues) {
+            const {
+                id,
+                title,
+                description,
+                number,
+                state,
+                labels,
+                dueDate,
+                createdAt,
+                updatedAt,
+                priority,
+                project,
+                assignee,
+                url,
+            } = issue;
+
+            const existingIssue = await Issue.findOne({ linearId: id, team: teamId, workspace: workspaceId });
+
+            if (existingIssue) {
+                // Update existing issue
+                existingIssue.title = title;
+                existingIssue.description = description;
+                existingIssue.number = number;
+                existingIssue.state = state;
+                existingIssue.labels = labels.nodes;
+                existingIssue.dueDate = dueDate;
+                existingIssue.updatedAt = updatedAt;
+                existingIssue.priority = priority;
+                existingIssue.project = project;
+                existingIssue.assignee = assignee;
+                existingIssue.url = url;
+                existingIssue.linearTeamId = linearTeamId;
+                await existingIssue.save();
+              } else {
+                // Create a new issue
+                const newIssue = new Issue({
+                  linearId: id,
+                  title,
+                  description,
+                  number,
+                  state,
+                  labels: labels.nodes,
+                  dueDate,
+                  createdAt,
+                  updatedAt,
+                  priority,
+                  project,
+                  assignee,
+                  url,
+                  linearTeamId,
+                  team: teamId,
+                  workspace: workspaceId,
+                });
+                await newIssue.save();
+              }
+            }
+        
+            console.log('Issues saved/updated successfully');
+        
+    } catch (error) {
+        console.error('Error saving issues to database:', error);
+        throw error;
+    }
+};
+
 

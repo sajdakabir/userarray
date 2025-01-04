@@ -11,7 +11,7 @@ const IssueSchema = new Schema(
     linearId: { type: String},
     title: { type: String, required: true },
     description: { type: String },
-    // number: { type: Number },
+    number: { type: Number },
     state: {
       id: { type: String },
       name: { type: String },
@@ -36,10 +36,23 @@ const IssueSchema = new Schema(
     },
     url: { type: String},
     linearTeamId: { type: String},
-    space: { type: Schema.Types.ObjectId, ref: 'Space' },
+    team: { type: Schema.Types.ObjectId, ref: 'Team' },
     workspace: { type: Schema.Types.ObjectId, ref: 'Workspace' },
+    isArchived: {
+        type: Boolean,
+        default: false
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
   },
   { timestamps: true }
 );
 
-export const Issue = mongoose.model('Issue', IssueSchema);
+
+const Issue = db.model('Issue', IssueSchema, 'issues')
+
+export {
+    Issue
+}

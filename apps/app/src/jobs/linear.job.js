@@ -1,14 +1,14 @@
 import { linearQueue } from '../loaders/bullmq.loader.js';
 import { Worker } from "bullmq";
 import { redisConnection } from "../loaders/redis.loader.js";
-import { fetchTeamIssues } from "../services/lib/linear.service.js";
+import { fetchTeamIssues, saveIssuesToDatabase } from "../services/lib/linear.service.js";
 
 
 const processLinearJob = async (job) => {
     const { accessToken, linearTeamId, teamId } = job.data;
     try {
         const issues = await fetchTeamIssues(accessToken, linearTeamId);
-        await saveIssuesToDatabase(issues, teamId); //todo
+        await saveIssuesToDatabase(issues, teamId);
     } catch (error) {
         console.error('Error processing Linear job:', error);
         throw error;

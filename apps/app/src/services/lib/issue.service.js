@@ -34,3 +34,27 @@ export const updateIssue = async (workspace, team, issueId, updateData) => {
 
     return updatedIssue
 }
+
+export const getCurrentWeekRange = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay(); 
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() + diffToMonday);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    return { startOfWeek, endOfWeek };
+};
+
+export const getCurrentCycleIssue = async (workspace, team) => {
+    const cycle = await Issue.findOne({
+        workspace: workspace._id,
+        team: team
+    })
+    return cycle
+}

@@ -13,14 +13,14 @@ import { createUpdateNoteController, getMembersNoteController } from "../../cont
 
 const router = Router();
 
-router.route("/").post(createWorkspaceController)
-router.route("/").get(getUserWorkspacesController)
-router.route('/workspace-slug-check/').get(WorkSpaceAvailabilityCheckController)
+router.route("/").post(createWorkspaceController) //done
+router.route("/").get(getUserWorkspacesController) //done
+router.route('/workspace-slug-check/').get(WorkSpaceAvailabilityCheckController) //done
 
-router.use("/:workspace", WorkspaceMiddleware)
-router.route("/:workspace/").get(getWorkspaceProfileController)
-router.route("/:workspace/").patch(updateWorkspaceController)
-router.route("/:workspace/").delete(deleteWorkspaceController)
+router.use("/:workspace", WorkspaceMiddleware) //done
+router.route("/:workspace/").get(getWorkspaceProfileController) //done
+router.route("/:workspace/").patch(updateWorkspaceController) //done
+router.route("/:workspace/").delete(deleteWorkspaceController) //done
 
 // TODO: need to take a look according to userarray needs
 
@@ -52,9 +52,9 @@ router.route("/:workspace/items/:member/:date/").get(getMembersWorkItemsByDateCo
 router.route("/:workspace/notes/:member/:date/").get(getMembersNoteController)
 
 // Team controllers below
-router.route("/:workspace/teams/").post(createTeamController)
-router.route("/:workspace/teams/").get(getAllTeamsController)
-router.route("/:workspace/teams/:team/").patch(updateTeamController)
+router.route("/:workspace/teams/").post(createTeamController) //done
+router.route("/:workspace/teams/").get(getAllTeamsController) //done
+router.route("/:workspace/teams/:team/").patch(updateTeamController) //done
 
 router.use("/:workspace/spaces/:space", SpaceMiddleware)
 

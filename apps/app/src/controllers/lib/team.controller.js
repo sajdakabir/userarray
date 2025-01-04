@@ -36,10 +36,10 @@ export const createTeamController = async (req, res, next) => {
 export const getAllTeamsController = async (req, res, next) => {
     try {
         const workspace = res.locals.workspace;
-        const spaces = await getAllTeam(workspace);
+        const teams = await getAllTeam(workspace);
         res.json({
             status: 200,
-            response: spaces
+            response: teams
         });
     } catch (err) {
         next(err);

@@ -147,7 +147,7 @@
 //     cycleWorker
 // };
 
-import { Space } from "../models/lib/space.model.js";
+import { Team } from "../models/lib/team.model.js";
 import { Cycle } from "../models/lib/cycle.model.js";
 import { Item } from "../models/lib/item.model.js";
 import { createCycle } from "../services/lib/cycle.service.js";

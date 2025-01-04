@@ -1,5 +1,5 @@
 {
-  "name": "satellite",
+  "name": "userarray",
   "private": true,
   "scripts": {
     "build": "turbo build",

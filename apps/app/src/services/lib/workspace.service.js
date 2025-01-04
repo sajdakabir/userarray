@@ -1,4 +1,4 @@
-import { Space } from "../../models/lib/space.model.js";
+import { Team } from "../../models/lib/team.model.js";
 import { Workspace } from "../../models/lib/workspace.model.js";
 import { WorkspaceMember } from "../../models/lib/workspaceMember.model.js";
 import { Cycle } from "../../models/lib/cycle.model.js";
@@ -10,7 +10,7 @@ const getWorkspaceProfile = async (slug) => {
         slug,
         isDeleted: false
     })
-        .populate('spaces')
+        .populate('teams')
     if (!workspace) {
         const error = new Error("Workspace not found")
         error.statusCode = 404
@@ -38,10 +38,11 @@ const WorkSpaceAvailabilityCheck = async (slug) => {
     return !workspace;
 }
 
-const createWorkspace = async (slug, name, createdBy) => {
+const createWorkspace = async (slug, name, createdBy, website) => {
     const workspace = await Workspace.create({
         slug,
         name,
+        website,
         createdBy
     });
     if (!workspace) {
@@ -130,14 +131,6 @@ const getWorkspaceBySlug = async (slug) => {
     return workspace;
 };
 
-const getAllSpaces = async (workspace) => {
-    // const spaces = workspace.spaces.filter(space => !space.isDeleted);
-    // return spaces;
-    const spaces = await Space.find({
-        'workspace': workspace._id
-    });
-    return spaces;
-};
 
 const getSpaceByIdentifier = async (slug, identifier) => {
     const workspace = await getWorkspaceBySlug(slug);
@@ -165,22 +158,6 @@ const getSpaceByName = async (workspace, name) => {
     return space;
 };
 
-const updateSpace = async (name, workspace, updatedData) => {
-    const updatedSpace = await Space.findOneAndUpdate({
-        name,
-        workspace: workspace._id
-    },
-    { $set: updatedData },
-    { new: true }
-    );
-
-    if (!updatedSpace) {
-        const error = new Error("Failed to update space");
-        error.statusCode = 500;
-        throw error;
-    }
-    return updatedSpace;
-};
 
 const daleteSpace = async (space, workspace) => {
     workspace.spaces.pull(space._id);
@@ -204,9 +181,7 @@ export {
     updateWorkspace,
     deleteWorkspace,
     userWorkSpaces,
-    getAllSpaces,
     getSpaceByIdentifier,
     getSpaceByName,
-    updateSpace,
     daleteSpace
 };

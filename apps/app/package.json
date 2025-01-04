@@ -1,16 +1,16 @@
 {
-  "name": "@satellite/backend",
+  "name": "@userarray/backend",
   "version": "0.0.1",
-  "description": "Satellite",
+  "description": "userarray",
   "main": "index.js",
   "type": "module",
-  "repository": "https://github.com/marchhq/satellite",
+  "repository": "https://github.com/sajdakabir/userarray",
   "scripts": {
     "dev": "nodemon index.js",
     "test": "jest",
     "start": "node index.js"
   },
-  "author": "march-dev",
+  "author": "sajdakabir",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.0",

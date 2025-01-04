@@ -1,15 +1,11 @@
 import { getUserById } from "../services/core/user.service.js";
 import { validateUserWithWorkspace, getWorkspaceProfile } from "../services/lib/workspace.service.js";
-// import { RedisClient } from "../loaders/redis.loader.js"
 
-// const redisClient = await RedisClient();
-
-const WorkspaceMiddleware = async (req, res, next) => {
+export const WorkspaceMiddleware = async (req, res, next) => {
     try {
-        const { id } = req.user;
-        const user = await getUserById(id)
+        const user = req.user
         const workspace = await getWorkspaceProfile(req.params.workspace)
-        const check = await validateUserWithWorkspace(user, workspace)
+        const check = await validateUserWithWorkspace(user.id, workspace._id)
         if (check) {
             res.locals.user = user;
             res.locals.workspace = workspace;
@@ -64,6 +60,4 @@ const WorkspaceMiddleware = async (req, res, next) => {
 //     }
 // };
 
-export {
-    WorkspaceMiddleware
-};
+

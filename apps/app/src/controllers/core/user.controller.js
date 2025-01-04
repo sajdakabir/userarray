@@ -3,7 +3,7 @@ import { UpdateUserPayload } from "../../payloads/core/user.payload.js";
 
 const userProfileController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id)
+        const user = await getUserById(req.user.uuid)
         res.json({
             "status": 200,
             "response": user
@@ -15,7 +15,7 @@ const userProfileController = async (req, res, next) => {
 
 const updateUserController = async (req, res, next) => {
     try {
-        const user = req.user.id;
+        const user = req.user.uuid;
         const { error, value } = UpdateUserPayload.validate(req.body);
 
         if (error) {
@@ -23,9 +23,9 @@ const updateUserController = async (req, res, next) => {
             err.statusCode = 400;
             throw err;
         }
-        const { fullName, userName, avatar, hasFinishedOnboarding, onboarding, timezone } = value;
+        const { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone } = value;
 
-        await updateUser(user, { fullName, userName, avatar, hasFinishedOnboarding, onboarding, timezone });
+        await updateUser(user, { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone });
 
         res.json({
             "status": 200,
@@ -38,7 +38,7 @@ const updateUserController = async (req, res, next) => {
 
 const updateUserOnBoardedController = async (req, res, next) => {
     try {
-        const user = req.user.id;
+        const user = req.user.uuid;
         const { hasFinishedOnboarding } = req.body;
 
         await updateUserOnBoarded(user, hasFinishedOnboarding);

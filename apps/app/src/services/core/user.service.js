@@ -137,11 +137,12 @@ const getUserById = async (id) => {
     return user;
 }
 
-const updateUser = async (user, { fullName, userName, avatar, hasFinishedOnboarding, onboarding, timezone }) => {
+const updateUser = async (user, { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone }) => {
     const _user = await getUserById(user)
     const updated = await _user.updateOne({
         $set: {
-            fullName: fullName || _user.fullName,
+            firstName: firstName || _user.firstName,
+            lastName: lastName || _user.lastName,
             userName: userName || _user.userName,
             avatar: avatar || _user.avatar,
             timezone,

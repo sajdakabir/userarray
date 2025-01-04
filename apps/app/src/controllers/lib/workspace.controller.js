@@ -4,7 +4,7 @@ import { createEmailUser, getUserByEmail, getUserById } from "../../services/cor
 import { generateRandomPassword, sendEmail, readTemplateFile } from "../../utils/helper.service.js";
 // import { generateJWTToken } from "../../utils/jwt.service.js";
 import { environment } from "../../loaders/environment.loader.js";
-import { createSpace } from "../../services/lib/space.service.js";
+import { createTeam } from "../../services/lib/team.service.js";
 import { getUserWorkSpaceItems, getItems, getArchivedItems } from "../../services/lib/item.service.js";
 import { getLabels, createLabels } from "../../services/lib/label.service.js";
 import { getCycles, createCycle } from "../../services/lib/cycle.service.js";
@@ -36,46 +36,18 @@ const createWorkspaceController = async (req, res, next) => {
             err.statusCode = 400;
             throw err;
         }
-        const { slug, name } = value;
-        const createdBy = await getUserById(req.user.id);
-        const workspace = await createWorkspace(slug, name, createdBy);
+        const { slug, name, website } = value;
+        const createdBy = req.user.id
+        const workspace = await createWorkspace(slug, name, createdBy, website);
         await createWorkspaceMember(workspace._id, createdBy, {
-            member: createdBy._id,
+            member: createdBy,
             role: "admin",
             status: "accepted"
         })
-        const spaceData = {
-            name,
-            identifier: name.substring(0, 3),
-            workspace: workspace._id,
-            createdBy
-        };
-        const space = await createSpace(spaceData, workspace);
-        const labelsData = [
-            { "name": "Bug", "color": "#dc2626" },
-            { "name": "Feature", "color": "#7c3aed" },
-            { "name": "Improvement", "color": "#3b82f6" }
-        ];
-        await createLabels(labelsData, space);
-
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
-
-        const cycle1StartDate = new Date(today);
-        const cycle1EndDate = new Date(cycle1StartDate);
-        cycle1EndDate.setDate(cycle1EndDate.getDate() + 6);
-
-        const cycle2StartDate = new Date(cycle1EndDate);
-        cycle2StartDate.setDate(cycle2StartDate.getDate() + 1);
-        const cycle2EndDate = new Date(cycle2StartDate);
-        cycle2EndDate.setDate(cycle2EndDate.getDate() + 6);
-
-        await createCycle({ startDate: cycle1StartDate, endDate: cycle1EndDate, space: space._id, workspace: space.workspace });
-        await createCycle({ startDate: cycle2StartDate, endDate: cycle2EndDate, space: space._id, workspace: space.workspace });
 
         res.json({
             status: 200,
-            response: workspace
+            response: workspace,
         });
     } catch (err) {
         if (err.code === 11000 && err.keyPattern && err.keyValue) {
@@ -90,7 +62,7 @@ const createWorkspaceController = async (req, res, next) => {
 
 const getUserWorkspacesController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id);
+        const user = req.user.id;
         const workspaces = await getUserWorkspaces(user);
         res.json({
             status: 200,
@@ -342,8 +314,8 @@ const getWorkspaceInvitationByUuidController = async (req, res, next) => {
 
 const userWorkSpacesController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id);
-        const workspaces = await userWorkSpaces(user._id);
+        const user = req.user;
+        const workspaces = await userWorkSpaces(user.id);
         res.json({
             status: 200,
             response: workspaces
@@ -355,7 +327,7 @@ const userWorkSpacesController = async (req, res, next) => {
 
 const getUserWorkspaceInvitationsController = async (req, res, next) => {
     try {
-        const user = await getUserById(req.user.id);
+        const user = await getUserById(req.user.uuid);
         const invitations = await getUserWorkspaceInvitations(user);
         res.json({
             status: 200,

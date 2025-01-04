@@ -19,10 +19,6 @@ const JWTMiddleware = async (req, res, next) => {
         }
         const payload = await verifyJWTToken(token);
         req.user = payload;
-        const user = await getUserById(payload.id)
-        if (user) {
-            moment.tz.setDefault(user.timezone);
-        }
         next();
     } catch (err) {
         const error = new Error(err.message);

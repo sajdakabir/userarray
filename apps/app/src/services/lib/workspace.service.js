@@ -158,22 +158,6 @@ const getSpaceByName = async (workspace, name) => {
     return space;
 };
 
-const updateSpace = async (name, workspace, updatedData) => {
-    const updatedSpace = await Space.findOneAndUpdate({
-        name,
-        workspace: workspace._id
-    },
-    { $set: updatedData },
-    { new: true }
-    );
-
-    if (!updatedSpace) {
-        const error = new Error("Failed to update space");
-        error.statusCode = 500;
-        throw error;
-    }
-    return updatedSpace;
-};
 
 const daleteSpace = async (space, workspace) => {
     workspace.spaces.pull(space._id);
@@ -199,6 +183,5 @@ export {
     userWorkSpaces,
     getSpaceByIdentifier,
     getSpaceByName,
-    updateSpace,
     daleteSpace
 };

@@ -19,3 +19,20 @@ export const getAllTeam = async (workspace) => {
     });
     return teams;
 };
+
+export const updateTeam = async (name, workspace, updatedData) => {
+    const updatedTeam = await Space.findOneAndUpdate({
+        name,
+        workspace: workspace._id
+    },
+    { $set: updatedData },
+    { new: true }
+    );
+
+    if (!updateTeam) {
+        const error = new Error("Failed to update team");
+        error.statusCode = 500;
+        throw error;
+    }
+    return updateTeam;
+};

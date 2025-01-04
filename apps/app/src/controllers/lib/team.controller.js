@@ -1,5 +1,5 @@
-import { updateSpace, getSpaceByIdentifier, daleteSpace } from "../../services/lib/workspace.service.js"
-import { createTeam, getAllTeam } from "../../services/lib/team.service.js";
+import { getSpaceByIdentifier, daleteSpace } from "../../services/lib/workspace.service.js"
+import { createTeam, getAllTeam, updateTeam } from "../../services/lib/team.service.js";
 import { createLabels } from "../../services/lib/label.service.js";
 import { createCycle } from "../../services/lib/cycle.service.js";
 import { CreateTeamPayload, UpdateTeamPayload } from "../../payloads/lib/team.payload.js";
@@ -71,20 +71,14 @@ const getSpaceByNameController = async (req, res, next) => {
     }
 };
 
-const updateSpaceController = async (req, res, next) => {
+export const updateTeamController = async (req, res, next) => {
     try {
+        
         const { space: name } = req.params;
         const updatedData = req.body;
-        // const { error, updatedData } = UpdateSpacePayload.validate(req.body);
-
-        // if (error) {
-        //     const err = error.details[0].message;
-        //     err.statusCode = 400;
-        //     throw err;
-        // }
 
         const workspace = res.locals.workspace;
-        const updatedSpace = await updateSpace(name, workspace, updatedData);
+        const updatedSpace = await updateTeam(name, workspace, updatedData);
         res.json({
             status: 200,
             message: "Space updated successfully",
@@ -112,6 +106,5 @@ const daleteSpaceController = async (req, res, next) => {
 export {
     getSpaceByIdentifierController,
     getSpaceByNameController,
-    updateSpaceController,
     daleteSpaceController
 };

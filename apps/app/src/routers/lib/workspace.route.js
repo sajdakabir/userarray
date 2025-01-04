@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { WorkspaceMiddleware } from "../../middlewares/workspace.middleware.js";
 import { createWorkspaceController, WorkSpaceAvailabilityCheckController, getUserWorkspacesController, getWorkspaceProfileController, updateWorkspaceController, inviteMemberToWorkspaceController, reinviteWorkspaceMembersController, getWorkspaceInvitationsController, getWorkspaceInvitationByUuidController, deleteWorkspaceInvitationByUuidController, joinWorkspaceController, getAllWorkspaceMembersController, getWorkspaceMemberController, leaveWorkspaceController, deleteWorkspaceController, getEverything } from "../../controllers/lib/workspace.controller.js"
-import { createTeamController, getAllTeamsController, getSpaceByNameController, updateSpaceController, daleteSpaceController } from "../../controllers/lib/team.controller.js"
+import { createTeamController, getAllTeamsController, getSpaceByNameController, updateTeamController, daleteSpaceController } from "../../controllers/lib/team.controller.js"
 import { createCycleController, getCyclesController, getCycleController, updateCycleController, deleteCycleController, addItemsToCycleController, addUserFavoriteCycleController, getUserFavoriteCyclesController, deleteUserFavoriteCycleController, getCycleItemsController, deleteCycleItemController } from "../../controllers/lib/cycle.controller.js"
 import { createItemController, getItemsController, getItemController, updateItemController, deleteItemController, getArchivedItemsController, getArchivedItemController, unarchiveItemController, archiveItemController, getUserWorkSpaceItemsController, getUsersTodayWorkSpaceItemsController, getMembersTodayWorkItemsControlle, getMembersWorkItemsByDateControlle } from "../../controllers/lib/item.controller.js"
 import { createLabelController, getLabelsController, getLabelController, updateLabelController, deleteLabelController } from "../../controllers/lib/label.controller.js"
@@ -54,7 +54,7 @@ router.route("/:workspace/notes/:member/:date/").get(getMembersNoteController)
 // Team controllers below
 router.route("/:workspace/teams/").post(createTeamController)
 router.route("/:workspace/teams/").get(getAllTeamsController)
-// router.route("/:workspace/teams/:team/").patch(updateTeamController)
+router.route("/:workspace/teams/:team/").patch(updateTeamController)
 
 router.use("/:workspace/spaces/:space", SpaceMiddleware)
 

@@ -219,4 +219,43 @@ export const saveIssuesToDatabase = async (issues, linearTeamId) => {
     }
 };
 
+export const fetchCurrentCycle = async (linearToken, teamId) => {
+    const response = await axios.post(
+        'https://api.linear.app/graphql',
+        {
+            query: `
+            query GetCyclesForTeam($teamId: String!) {
+                team(id: $teamId) {
+                    cycles {
+                        nodes {
+                            id
+                            name
+                            startsAt
+                            endsAt
+                            completedAt
+                        }
+                    }
+                }
+            }
+            `,
+            variables: {
+                teamId,
+            },
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${linearToken}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+
+    if (response.data.errors) {
+        console.error("Error fetching cycles:", response.data.errors);
+        throw new Error("Failed to fetch cycles.");
+    }
+
+    return response.data.data.team.cycles.nodes;
+};
+
 

@@ -1,4 +1,4 @@
-import { getAccessToken, getLinearTeams, fetchTeamIssues } from "../../services/lib/linear.service.js";
+import { getAccessToken, getLinearTeams, fetchCurrentCycle } from "../../services/lib/linear.service.js";
 
 export const getAccessTokenController = async (req, res, next) => {
     const { code } = req.query;
@@ -34,6 +34,6 @@ export const getLinearTeamsController = async (req, res, next) => {
 
 export const getLinearIssuesController = async (req, res, next) => {
     
-    const issues = await fetchTeamIssues("lin_oauth_a1f71cb280399062d3b0a23805468f6bf9188664be8a2dabd19563f564e4b72e", "be976a32-cd54-4d94-b02e-e15151ae8ab3");
-    res.status(200).json({ issues });
+    const hmm = await fetchCurrentCycle("lin_oauth_ca352c28e253a44723868908dfa0fe90eeeaf1ec883c8000221d47b08cfd208f", "be976a32-cd54-4d94-b02e-e15151ae8ab3");
+    res.status(200).json({ hmm });
 }

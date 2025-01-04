@@ -20,9 +20,14 @@ export const getAccessTokenController = async (req, res, next) => {
 };
 
 export const getLinearTeamsController = async (req, res, next) => {
-    const linearToken = req.headers.lineartoken;
-    const teams = await getLinearTeams(linearToken);
-    res.status(200).json({
-        teams
-    });
+    try {
+        const linearToken = req.headers.lineartoken;
+        if (!linearToken) {
+            return res.status(400).json({ error: "Linear token is missing" });
+        }
+        const teams = await getLinearTeams(linearToken);
+        res.status(200).json({ teams });
+    } catch (err) {
+        next(err);
+    }
 }

@@ -28,19 +28,7 @@ const UserSchema = new Schema({
         type: Schema.Types.Array,
         default: ["user"]
     },
-    onboarding: {
-        type: Schema.Types.Mixed,
-        default: {
-            profile_complete: false,
-            workspace_create: false,
-            workspace_invite: false,
-            workspace_join: false
-        }
-    },
-    hasFinishedOnboarding: {
-        type: Schema.Types.Boolean,
-        default: false
-    },
+
     timezone: {
         type: String,
         default: 'UTC',

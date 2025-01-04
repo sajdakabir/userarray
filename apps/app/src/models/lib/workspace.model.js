@@ -27,7 +27,7 @@ const WorkspaceSchema = new Schema({
     integration: {
         linear: {
             accessToken: String,
-            workspaceId: String,
+            teamId: String,
             connected: { type: Boolean, default: false }
         }
     },

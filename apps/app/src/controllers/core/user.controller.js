@@ -1,4 +1,4 @@
-import { getUserById, updateUser, updateUserOnBoarded } from "../../services/core/user.service.js";
+import { getUserById,getUserById_delete, updateUser, updateUserOnBoarded } from "../../services/core/user.service.js";
 import { UpdateUserPayload } from "../../payloads/core/user.payload.js";
 
 const userProfileController = async (req, res, next) => {
@@ -12,19 +12,33 @@ const userProfileController = async (req, res, next) => {
         next(err)
     }
 };
+const userProfileDeleteController = async (req, res, next) => {
+    try {
+        const user = await getUserById_delete(req.user.uuid)
+        res.json({
+            "status": 200,
+            "response": "Delete User"
+        })
+    } catch (err) {
+        next(err)
+    }
+};
 
 const updateUserController = async (req, res, next) => {
+   
+    
     try {
         const user = req.user.uuid;
         const { error, value } = UpdateUserPayload.validate(req.body);
-
+        console.log("error", error );
+        
         if (error) {
             const err = error.details[0].message;
             err.statusCode = 400;
             throw err;
         }
         const { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone } = value;
-
+       
         await updateUser(user, { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone });
 
         res.json({
@@ -55,5 +69,6 @@ const updateUserOnBoardedController = async (req, res, next) => {
 export {
     userProfileController,
     updateUserController,
-    updateUserOnBoardedController
+    updateUserOnBoardedController,
+    userProfileDeleteController
 };

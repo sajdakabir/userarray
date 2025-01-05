@@ -9,6 +9,7 @@ import { getUser } from "@/server/fetchers/user/getdetails";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
 import { getPendingInvitations } from "@/server/fetchers/workspace/get-invitations";
 import ManageWorkspace from "@/views/onboarding/ManageWorkspace";
+import CreateWorkspace from "@/views/onboarding/CreateWorkspace";
 
 export const metadata: Metadata = {
   title: "onboarding",
@@ -32,21 +33,22 @@ const Onboard = async () => {
   }
 
   // If the user has already finished onboarding, redirect
-  if (user.response.hasFinishedOnboarding) {
-    return redirect("/workspace");
-  }
+  // if (!user.response.lastWorkspace) {
+  //   return redirect("/workspace");
+  // }
 
   // Check the user progress
-  if (!user.response.onboarding.profile_complete) {
+  if (!user.response.onboarding?.profile_complete) {
     return <CreateProfile accessToken={accessToken} />;
-  } else if (!user.response.onboarding.workspace_create) {
+  }
+  if (!user.response.onboarding?.workspace_create) {
     const pending = await getPendingInvitations(accessToken);
     return (
       <ManageWorkspace token={accessToken} invitations={pending.response} />
     );
-  } else {
-    return redirect("/workspace");
   }
+
+  return redirect("/workspace");
 };
 
 export default Onboard;

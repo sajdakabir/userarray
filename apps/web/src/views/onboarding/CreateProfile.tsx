@@ -1,74 +1,107 @@
 "use client";
 
 import axios from "axios";
-import { useState } from "react";
-import { GET_USER, USER_WORKSPACE } from "@/utils/constants/api-endpoints";
+import { useEffect, useState } from "react";
+import { GET_USER } from "@/utils/constants/api-endpoints";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
+import { useRouter } from "next/navigation";
 const CreateProfile = (props: { accessToken: string }) => {
+  const route=useRouter()
   const [loading, setLoading] = useState<boolean>(false);
   const [firstName, setFirstName] = useState<string>("");
-  const [workspaceSlug, setWorkspaceSlug] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  // const [workspaceSlug, setWorkspaceSlug] = useState<string>("");
   const [error, setError] = useState<string>("");
+  
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(GET_USER, {
+          headers: {
+            Authorization: `Bearer ${props.accessToken}`,
+          },
+        });
+      
+        
+        setFirstName(response.data && response.data.response?.firstName)
+        setLastName(response.data && response.data.response?.lastName)
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
+    fetchUserData();
+  }, [props.accessToken]);
   const handleSubmit = async () => {
-    if (!firstName) {
-      setError("Please enter your first name");
-      return;
-    } else if (!workspaceSlug) {
-      setError("Please enter a workspace name");
+    if (firstName==="") {
+      setError(firstName);
       return;
     }
+    if (lastName==="") {
+      setError("Please enter your Last name");
+      return;
+    }
+    // } else if (!workspaceSlug) {
+    //   setError("Please enter a workspace name");
+    //   return;
+    // }
 
-    // Validate workspace slug format
-    const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-    if (!slugRegex.test(workspaceSlug)) {
-      setError("Workspace name can only contain lowercase letters, numbers, and hyphens");
-      return;
-    }
+    // // Validate workspace slug format
+    // const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    // if (!slugRegex.test(workspaceSlug)) {
+    //   setError("Workspace name can only contain lowercase letters, numbers, and hyphens");
+    //   return;
+    // }
 
     setLoading(true);
 
     try {
       // First update the user profile
-      await axios.patch(GET_USER, {
-        fullName: firstName,
+     const update_profile= await axios.patch(GET_USER, {
+        firstName:firstName,
+        lastName:lastName,
         onboarding: {
-          profile_complete: true,
-        },
+          profile_complete: true
+        }
+        
       }, {
         headers: {
           Authorization: "Bearer " + props.accessToken,
         },
       });
+      console.log('update_profile',update_profile);
+      
 
       // Then create the workspace
-      await axios.post(USER_WORKSPACE, {
-        name: workspaceSlug,
-        slug: workspaceSlug.toLowerCase(),
-      }, {
-        headers: {
-          Authorization: "Bearer " + props.accessToken,
-        },
-      });
+      // await axios.post(USER_WORKSPACE, {
+      //   name: workspaceSlug,
+      //   slug: workspaceSlug.toLowerCase(),
+      // }, {
+      //   headers: {
+      //     Authorization: "Bearer " + props.accessToken,
+      //   },
+      // });
 
       // Finally, mark workspace creation as complete
-      await axios.patch(GET_USER, {
-        onboarding: {
-          workspace_create: true,
-          workspace_invite: true
-        },
-      }, {
-        headers: {
-          Authorization: "Bearer " + props.accessToken,
-        },
-      });
+      // await axios.patch(GET_USER, {
+      //   onboarding: {
+      //     workspace_create: true,
+      //     workspace_invite: true
+      //   },
+      // }, {
+      //   headers: {
+      //     Authorization: "Bearer " + props.accessToken,
+      //   },
+      // });
 
       // On Success Refresh /onboarding page
-      location.reload();
+      if(update_profile.status===200){
+
+        route.push('/onboarding')
+      }
     } catch (error: any) {
       console.error(error);
       if (error.response?.data?.message) {
@@ -134,19 +167,19 @@ const CreateProfile = (props: { accessToken: string }) => {
 
               <div className="grid gap-2">
                 <Label htmlFor="workspaceSlug" className="text-zinc-100">
-                  Workspace Name
+                  Last Name
                 </Label>
                 <Input
                   id="workspaceSlug"
                   name="workspaceSlug"
-                  value={workspaceSlug}
-                  onChange={(e) => setWorkspaceSlug(e.target.value.toLowerCase())}
-                  placeholder="my-awesome-team"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Last Name"
                   className="bg-zinc-950/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-400 focus-visible:ring-zinc-500 focus-visible:ring-offset-0"
                 />
-                <p className="text-xs text-zinc-400">
+                {/* <p className="text-xs text-zinc-400">
                   Only lowercase letters, numbers, and hyphens allowed
-                </p>
+                </p> */}
                 {error && (
                   <p className="text-sm text-destructive">{error}</p>
                 )}
@@ -160,7 +193,7 @@ const CreateProfile = (props: { accessToken: string }) => {
                 {loading && (
                   <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-zinc-900 border-t-transparent" />
                 )}
-                Create Workspace
+                Next
               </Button>
             </div>
           </div>

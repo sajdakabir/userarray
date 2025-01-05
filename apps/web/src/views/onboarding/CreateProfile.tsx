@@ -1,160 +1,172 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
-import { User as UserIcon } from "lucide-react";
-import { GetAvatarFromName } from "@/utils/helpers";
-import { NextButton } from "@/components/ui/custom-buttons";
-import { GET_USER } from "@/utils/constants/api-endpoints";
-import { UserResponse } from "@/lib/types/Users";
-import { getUser } from "@/server/fetchers/user/getdetails";
+import { useState } from "react";
+import { GET_USER, USER_WORKSPACE } from "@/utils/constants/api-endpoints";
 import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 const CreateProfile = (props: { accessToken: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [username, setUserName] = useState<string>("");
-  const [user, setUser] = useState<UserResponse | null>(null);
-  const [name, setName] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [workspaceSlug, setWorkspaceSlug] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const us = await getUser(props.accessToken);
-        setUser(us);
-        us && setName(us.response.fullName);
-      } catch (error) {
-        setError("Error fetching data");
-      }
-    };
-    fetchData();
-  }, [props.accessToken]);
-
-  const avatar = useMemo(() => {
-    setError("");
-    if (!name) {
-      return "";
-    }
-    return GetAvatarFromName(name);
-  }, [name]);
-
   const handleSubmit = async () => {
-    if (!name) {
-      setError("Please enter a name");
+    if (!firstName) {
+      setError("Please enter your first name");
       return;
-    } else if (!username) {
-      setError("Please enter a username");
+    } else if (!workspaceSlug) {
+      setError("Please enter a workspace name");
       return;
     }
+
+    // Validate workspace slug format
+    const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    if (!slugRegex.test(workspaceSlug)) {
+      setError("Workspace name can only contain lowercase letters, numbers, and hyphens");
+      return;
+    }
+
     setLoading(true);
 
-    const body = {
-      fullName: name,
-      userName: username,
-      onboarding: {
-        profile_complete: true,
-      },
-    };
-
     try {
-      const { data } = await axios.patch(GET_USER, body, {
+      // First update the user profile
+      await axios.patch(GET_USER, {
+        fullName: firstName,
+        onboarding: {
+          profile_complete: true,
+        },
+      }, {
         headers: {
           Authorization: "Bearer " + props.accessToken,
         },
       });
+
+      // Then create the workspace
+      await axios.post(USER_WORKSPACE, {
+        name: workspaceSlug,
+        slug: workspaceSlug.toLowerCase(),
+      }, {
+        headers: {
+          Authorization: "Bearer " + props.accessToken,
+        },
+      });
+
+      // Finally, mark workspace creation as complete
+      await axios.patch(GET_USER, {
+        onboarding: {
+          workspace_create: true,
+          workspace_invite: true
+        },
+      }, {
+        headers: {
+          Authorization: "Bearer " + props.accessToken,
+        },
+      });
+
       // On Success Refresh /onboarding page
-    } catch (error) {
+      location.reload();
+    } catch (error: any) {
       console.error(error);
-      setError("Something Went Wrong!");
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong!");
+      }
     }
-    location.reload();
     setLoading(false);
   };
 
-  // TODO: take username
-
   return (
-    <main className="min-h-screen bg-auth-background grid place-items-center">
-      <section className="md:w-[450px] w-96 px-8">
-        <div className="px-8 2xl:px-16 mb-6">
-          <h2 className="text-xl text-focus-text font-medium mb-4">
-            Complete Your profile
-          </h2>
+    <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="relative hidden h-full flex-col bg-[#18181B] p-10 text-white lg:flex border-r border-white/10">
+        <div className="absolute inset-0 bg-[#18181B]" />
+        <div className="relative z-20 flex items-center text-lg font-medium">
+          <Image
+            src="/new_logo.png"
+            alt="Logo"
+            width={40}
+            height={40}
+            className="mr-2"
+          />
+          march
+        </div>
+        <div className="relative z-20 mt-auto">
+          <blockquote className="space-y-2">
+            <p className="text-lg">
+              &ldquo;Create your workspace and start collaborating with your team. It's simple, efficient, and incredibly powerful.&rdquo;
+            </p>
+            <footer className="text-sm text-muted-foreground">Get Started</footer>
+          </blockquote>
+        </div>
+      </div>
+      <div className="relative p-4 lg:p-8 h-full flex items-center bg-[#09090B]">
+        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:30px_30px]" />
+        <div className="relative mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+          <div className="flex flex-col space-y-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight text-white">
+              Complete your profile
+            </h1>
+            <p className="text-sm text-zinc-400">
+              Fill in your information to get started
+            </p>
+          </div>
 
-          <div className="flex flex-row items-center gap-3">
-            {user && user.response.avatar ? (
-              <Image
-                src={user.response.avatar.toString()}
-                className="rounded-full bg-vlack"
-                alt={user.response.fullName}
-                height={60}
-                width={60}
-              />
-            ) : (
-              <div className="h-16 w-16 rounded-full bg-classic-button grid place-items-center">
-                {!avatar ? (
-                  <UserIcon size={32} className="text-gray-300" />
-                ) : (
-                  <span className="text-xl text-focus-text-hover font-medium">
-                    {avatar}
-                  </span>
+          <div className="grid gap-6">
+            <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="firstName" className="text-zinc-100">
+                  First Name
+                </Label>
+                <Input
+                  id="firstName"
+                  name="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="John"
+                  autoComplete="given-name"
+                  className="bg-zinc-950/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-400 focus-visible:ring-zinc-500 focus-visible:ring-offset-0"
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="workspaceSlug" className="text-zinc-100">
+                  Workspace Name
+                </Label>
+                <Input
+                  id="workspaceSlug"
+                  name="workspaceSlug"
+                  value={workspaceSlug}
+                  onChange={(e) => setWorkspaceSlug(e.target.value.toLowerCase())}
+                  placeholder="my-awesome-team"
+                  className="bg-zinc-950/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-400 focus-visible:ring-zinc-500 focus-visible:ring-offset-0"
+                />
+                <p className="text-xs text-zinc-400">
+                  Only lowercase letters, numbers, and hyphens allowed
+                </p>
+                {error && (
+                  <p className="text-sm text-destructive">{error}</p>
                 )}
               </div>
-            )}
-            <h3 className="text-xl font-medium text-focus-text">
-              {username && `@${username}`}
-            </h3>
+
+              <Button 
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-full bg-zinc-50 text-zinc-900 hover:bg-zinc-200"
+              >
+                {loading && (
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-zinc-900 border-t-transparent" />
+                )}
+                Create Workspace
+              </Button>
+            </div>
           </div>
         </div>
-
-        <div className="w-full flex flex-col gap-3 px-8 2xl:px-16">
-          <div className="flex flex-col">
-            <label className="text-nonfocus-text text-sm mb-1" htmlFor="name">
-              Full Name
-            </label>
-            <input
-              type="name"
-              name="name"
-              id="name"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              placeholder={"John Doe"}
-              autoComplete="name"
-              required={true}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-nonfocus-text text-sm mb-1" htmlFor="name">
-              Username
-            </label>
-            <input
-              type="username"
-              name="username"
-              id="username"
-              value={username}
-              onChange={(e) => {
-                setUserName(e.target.value);
-              }}
-              placeholder="username"
-              autoComplete="username"
-              required={true}
-            />
-
-            {error && (
-              <span className="text-sm mt-1 text-red-600">{error}</span>
-            )}
-          </div>
-          <NextButton
-            text="Next"
-            loading={loading}
-            className={"mt-3"}
-            handleClick={handleSubmit}
-          />
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 };
 

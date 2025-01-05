@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ACCESS_TOKEN } from "@/utils/constants/cookie";
 import CreateProfile from "@/views/onboarding/CreateProfile";
-import InviteMembers from "@/views/onboarding/InviteMembers";
 import { UserWorkspaces } from "@/lib/types/Workspaces";
 import { UserResponse } from "@/lib/types/Users";
 import { getUser } from "@/server/fetchers/user/getdetails";
@@ -38,18 +37,16 @@ const Onboard = async () => {
   }
 
   // Check the user progress
-
-  if (!user.response.onboarding.profile_complete)
+  if (!user.response.onboarding.profile_complete) {
     return <CreateProfile accessToken={accessToken} />;
-  else if (!user.response.onboarding.workspace_create) {
+  } else if (!user.response.onboarding.workspace_create) {
     const pending = await getPendingInvitations(accessToken);
     return (
       <ManageWorkspace token={accessToken} invitations={pending.response} />
     );
-  } else if (!user.response.onboarding.workspace_invite)
-    return <InviteMembers accessToken={accessToken} workSpaces={workspaces} />;
-  // Add a workspace_join check and component
-  else return redirect("/workspace");
+  } else {
+    return redirect("/workspace");
+  }
 };
 
 export default Onboard;

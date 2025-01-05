@@ -38,6 +38,10 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Workspace"
     },
+    hasFinishedOnboarding: {
+        type: Schema.Types.Boolean,
+        default: false
+    },
     accounts: {
         local: {
             email: {

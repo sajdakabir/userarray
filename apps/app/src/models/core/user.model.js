@@ -42,6 +42,20 @@ const UserSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false
     },
+    onboarding: {
+        profile_complete: {
+            type: Schema.Types.Boolean,
+            default: false
+        },
+        workspace_create: {
+            type: Schema.Types.Boolean,
+            default: false
+        },
+        workspace_invite: {
+            type: Schema.Types.Boolean,
+            default: false
+        },
+    },  
     accounts: {
         local: {
             email: {

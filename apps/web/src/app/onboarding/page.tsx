@@ -10,6 +10,7 @@ import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
 import { getPendingInvitations } from "@/server/fetchers/workspace/get-invitations";
 import ManageWorkspace from "@/views/onboarding/ManageWorkspace";
 import CreateWorkspace from "@/views/onboarding/CreateWorkspace";
+import LinnerConnect from "@/views/onboarding/LinnerConnect";
 
 export const metadata: Metadata = {
   title: "onboarding",
@@ -38,7 +39,7 @@ const Onboard = async () => {
   // }
 
   // Check the user progress
-  if (!user.response.onboarding?.profile_complete) {
+  if (user.response.onboarding?.profile_complete===false) {
     return <CreateProfile accessToken={accessToken} />;
   }
   if (!user.response.onboarding?.workspace_create) {
@@ -47,7 +48,14 @@ const Onboard = async () => {
       <ManageWorkspace token={accessToken} invitations={pending.response} />
     );
   }
-
+  
+  if (!user.response.onboarding?.linner_connect) {
+    
+    return (
+      <LinnerConnect token={accessToken}  />
+    );
+  }
+  
   return redirect("/workspace");
 };
 

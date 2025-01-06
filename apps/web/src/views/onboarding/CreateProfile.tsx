@@ -7,9 +7,7 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 const CreateProfile = (props: { accessToken: string }) => {
-  const route=useRouter()
   const [loading, setLoading] = useState<boolean>(false);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -72,7 +70,6 @@ const CreateProfile = (props: { accessToken: string }) => {
           Authorization: "Bearer " + props.accessToken,
         },
       });
-      console.log('update_profile',update_profile);
       
 
       // Then create the workspace
@@ -98,10 +95,7 @@ const CreateProfile = (props: { accessToken: string }) => {
       // });
 
       // On Success Refresh /onboarding page
-      if(update_profile.status===200){
-
-        route.push('/onboarding')
-      }
+      location.reload()
     } catch (error: any) {
       console.error(error);
       if (error.response?.data?.message) {

@@ -22,18 +22,24 @@ const CreateWorkspace = (props: { accessToken: string }) => {
     },
   };
 
+  const isValidSlug = (slug: string) => {
+    return /^[a-z_-]+$/.test(slug);
+  };
+
   const handleSubmit = async () => {
-    if (!workspace) {
+    if (workspace==="") {
       setError("Please enter a workspace name");
       return;
-    } else if (!slug) {
+    }
+    if (slug==="") {
       setError("Please enter a workspace URL");
       return;
-    }
-    else if (slug.includes(" ")) {
-      setError("URL cannot contain spaces");
+    } 
+    if (!isValidSlug(slug)) {
+      setError("URL can only contain lowercase letters,  hyphens, and underscores");
       return;
     }
+
     setLoading(true);
 
     try {
@@ -43,20 +49,22 @@ const CreateWorkspace = (props: { accessToken: string }) => {
         authHeader
       );
       const checkAvailable: SlugCheck = checkRes.data;
+      console.log("check",checkRes);
+      
       if (!checkAvailable.response) {
         setError("This URL is already taken");
         setLoading(false);
         return;
       }
 
-      // Create Workspace
+     
       const body = {
         slug: slug,
         name: workspace,
       };
       await axios.post(USER_WORKSPACE, body, authHeader);
 
-      // Update User Profile
+      
       const userbody = {
         onboarding: {
           workspace_create: true,
@@ -64,7 +72,7 @@ const CreateWorkspace = (props: { accessToken: string }) => {
       };
       await axios.patch(GET_USER, userbody, authHeader);
 
-      // Reload the page on success
+     
       location.reload();
     } catch (error) {
       const e = error as AxiosError;
@@ -123,7 +131,7 @@ const CreateWorkspace = (props: { accessToken: string }) => {
                     setWorkspace(e.target.value);
                     setError("");
                   }}
-                  placeholder="My Awesome Team"
+                  placeholder="Name"
                   className="bg-zinc-950/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-400 focus-visible:ring-zinc-500 focus-visible:ring-offset-0"
                 />
               </div>
@@ -148,7 +156,7 @@ const CreateWorkspace = (props: { accessToken: string }) => {
                   className="bg-zinc-950/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-400 focus-visible:ring-zinc-500 focus-visible:ring-offset-0"
                 />
                 <p className="text-xs text-zinc-400">
-                  Only lowercase letters, numbers, and hyphens allowed
+                  Only lowercase letters, numbers, hyphens, and underscores allowed
                 </p>
                 {error && (
                   <p className="text-sm text-destructive">{error}</p>

@@ -155,7 +155,7 @@ export const GetActorName: FC<ActivityHelperProps> = ({ activity }) => {
     return (
       <Link href={`/${slug}/settings/members`}>
         <span className="text-focus-text-hover w-fit hover:underline cursor-pointer">
-          {member.member.userName || member.member.fullName.split(" ")[0]}
+          {member.member.userName}
         </span>
       </Link>
     );

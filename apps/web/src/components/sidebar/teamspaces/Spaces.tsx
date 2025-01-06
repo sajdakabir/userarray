@@ -57,7 +57,7 @@ const Spaces = (props: { accessToken: string }) => {
     let ws = workspaces;
     const index = workspaces.findIndex((w) => w.slug === slug);
     let work = ws[index];
-    work.spaces.push(space.response);
+    work.teams.push(space.response);
     ws[index] = work;
     setWorkspaces(ws);
     await buildStateStorage(props.accessToken, slug, work);

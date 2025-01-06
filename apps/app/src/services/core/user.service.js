@@ -119,6 +119,17 @@ const validateMagicLoginLink = async (token) => {
     return magicLink;
 }
 
+const userProfileDelete = async (id) => {
+    const user = await User.findOneAndDelete({
+        uuid: id
+    })
+    if (!user) {
+        const error = new Error("User does not exist")
+        error.statusCode = 404;
+        throw error
+    }
+    return user;
+}
 const getUserById = async (id) => {
     const user = await User.findOne({
         uuid: id
@@ -232,5 +243,6 @@ export {
     updateUser,
     updateUserOnBoarded,
     validateGoogleUser,
-    createGoogleUser
+    createGoogleUser,
+    userProfileDelete
 }

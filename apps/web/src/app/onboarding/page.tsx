@@ -3,13 +3,14 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ACCESS_TOKEN } from "@/utils/constants/cookie";
 import CreateProfile from "@/views/onboarding/CreateProfile";
-import InviteMembers from "@/views/onboarding/InviteMembers";
 import { UserWorkspaces } from "@/lib/types/Workspaces";
 import { UserResponse } from "@/lib/types/Users";
 import { getUser } from "@/server/fetchers/user/getdetails";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
 import { getPendingInvitations } from "@/server/fetchers/workspace/get-invitations";
 import ManageWorkspace from "@/views/onboarding/ManageWorkspace";
+import CreateWorkspace from "@/views/onboarding/CreateWorkspace";
+import LinnerConnect from "@/views/onboarding/LinnerConnect";
 
 export const metadata: Metadata = {
   title: "onboarding",
@@ -33,23 +34,29 @@ const Onboard = async () => {
   }
 
   // If the user has already finished onboarding, redirect
-  if (user.response.hasFinishedOnboarding) {
-    return redirect("/workspace");
-  }
+  // if (!user.response.lastWorkspace) {
+  //   return redirect("/workspace");
+  // }
 
   // Check the user progress
-
-  if (!user.response.onboarding.profile_complete)
+  if (user.response.onboarding?.profile_complete===false) {
     return <CreateProfile accessToken={accessToken} />;
-  else if (!user.response.onboarding.workspace_create) {
+  }
+  if (!user.response.onboarding?.workspace_create) {
     const pending = await getPendingInvitations(accessToken);
     return (
       <ManageWorkspace token={accessToken} invitations={pending.response} />
     );
-  } else if (!user.response.onboarding.workspace_invite)
-    return <InviteMembers accessToken={accessToken} workSpaces={workspaces} />;
-  // Add a workspace_join check and component
-  else return redirect("/workspace");
+  }
+  
+  if (!user.response.onboarding?.linner_connect) {
+    
+    return (
+      <LinnerConnect token={accessToken}  />
+    );
+  }
+  
+  return redirect("/workspace");
 };
 
 export default Onboard;

@@ -51,6 +51,10 @@ const UserSchema = new Schema({
             type: Schema.Types.Boolean,
             default: false
         },
+        linner_connect: {
+            type: Schema.Types.Boolean,
+            default: false
+        },
         workspace_invite: {
             type: Schema.Types.Boolean,
             default: false

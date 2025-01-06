@@ -19,9 +19,10 @@ const Workspace = async () => {
   if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
     return redirect("/");
   }
-
+  
   const user: UserResponse | null = await getUser(accessToken);
-
+  
+  
   if (!user) {
     return redirect("/error?status=500");
   }
@@ -29,7 +30,7 @@ const Workspace = async () => {
   else if (!user.response.hasFinishedOnboarding) {
     return redirect("/onboarding");
   }
-
+  
   return <WorkspaceFinder accessToken={accessToken} user={user.response} />;
 };
 

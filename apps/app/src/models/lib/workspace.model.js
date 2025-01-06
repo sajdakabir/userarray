@@ -17,8 +17,7 @@ const WorkspaceSchema = new Schema({
         unique: true
     },
     website: {
-        type: String,
-        required: true
+        type: String
     },
     teams: [{
         type: Schema.Types.ObjectId,

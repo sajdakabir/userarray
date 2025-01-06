@@ -41,12 +41,9 @@ const WorkspaceSchema = new Schema({
 }, {
     timestamps: true
 });
+WorkspaceSchema.index({ slug: 1 }, { unique: true });
 
-WorkspaceSchema.index({
-    name: "text"
-})
-
-
+WorkspaceSchema.index({ name: "text" });
 const Workspace = db.model('Workspace', WorkspaceSchema, 'workspaces')
 
 export {

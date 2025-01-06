@@ -1,5 +1,5 @@
 {
-  "name": "@userarray/backend",
+  "name": "@userarray/app",
   "version": "0.0.1",
   "description": "userarray",
   "main": "index.js",
@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "test": "jest",
-    "start": "node index.js"
+    "start": "node index.js",
+    "init-indexes": "node src/scripts/initIndexes.script.js"
   },
   "author": "sajdakabir",
   "license": "ISC",

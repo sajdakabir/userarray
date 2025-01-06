@@ -55,6 +55,7 @@ export type User = {
     profile_complete?: boolean | null;
     workspace_create?: boolean | null;
     workspace_invite?: boolean | null;
+    linner_connect?: boolean | null;
   } | null;
   hasFinishedOnboarding: boolean;
   createdAt?: string;

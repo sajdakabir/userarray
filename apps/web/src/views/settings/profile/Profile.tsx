@@ -95,7 +95,7 @@ const ProfileClient: React.FC<{ accessToken: string }> = (props) => {
                 {GetAvatarFromName(user.firstName || "", user.lastName || "")}
               </div>
             )}
-            <FormButton type="button" text="Upload Image" />
+            {/* <FormButton type="button" text="Upload Image" /> */}
           </div>
 
           <div className="w-72 flex flex-col gap-4 mt-10 text-sm">

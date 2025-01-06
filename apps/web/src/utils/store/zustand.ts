@@ -308,9 +308,9 @@ export const dataStore = create<work>()((set) => ({
     const eve = await getEverything(token, slug);
     const everything = eve!.response;
 
-    const spaces: StateSpace[] = workspace.spaces.map((space, index) => {
+    const spaces: StateSpace[] = workspace.teams.map((team, index) => {
       return {
-        ...space,
+        ...team,
         ...everything.spacesData[index],
       };
     });

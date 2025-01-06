@@ -447,25 +447,25 @@ const getEverything = async (req, res, next) => {
             }
         };
 
-        for (const space of workspace.spaces) {
-            const spaceData = {};
-            spaceData.uuid = space.uuid;
-            spaceData.name = space.name;
-            spaceData.identifier = space.identifier;
+        for (const team of workspace.teams) {
+            const teamData = {};
+            teamData.uuid = team.uuid;
+            teamData.name = team.name;
+            teamData.identifier = team.identifier;
 
-            const spaceLabels = await getLabels(workspace._id, space._id);
-            const spaceItems = await getItems(workspace._id, space._id);
-            const spaceArchivedItems = await getArchivedItems(workspace._id, space._id);
-            const spaceCycle = await getCycles(workspace._id, space._id);
-            const spaceRoadmap = await getRoadmaps(workspace._id, space._id);
+            const teamLabels = await getLabels(workspace._id, team._id);
+            const teamItems = await getItems(workspace._id, team._id);
+            const teamArchivedItems = await getArchivedItems(workspace._id, team._id);
+            const teamCycle = await getCycles(workspace._id, team._id);
+            const teamRoadmap = await getRoadmaps(workspace._id, team._id);
 
-            spaceData.labels = spaceLabels;
-            spaceData.items = spaceItems;
-            spaceData.archived = spaceArchivedItems;
-            spaceData.cycles = spaceCycle;
-            spaceData.roadmaps = spaceRoadmap;
+            teamData.labels = teamLabels;
+            teamData.items = teamItems;
+            teamData.archived = teamArchivedItems;
+            teamData.cycles = teamCycle;
+            teamData.roadmaps = teamRoadmap;
 
-            response.response.spacesData.push(spaceData);
+            response.response.spacesData.push(teamData);
         }
 
         res.json(response);

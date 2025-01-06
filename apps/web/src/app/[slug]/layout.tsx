@@ -20,12 +20,12 @@ const SlugLayout = async ({
   if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
     return redirect("/");
   }
-
   const workspaces = await getAllWorkspaces(accessToken);
   if (!workspaces) {
     // cookie expired or server error
     return redirect("/error?status=500");
   }
+
 
   // check if the slug is valid
   let found = workspaces.response.findIndex(

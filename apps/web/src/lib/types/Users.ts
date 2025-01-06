@@ -1,32 +1,3 @@
-// export type User = {
-//   accounts: {
-//     local: {
-//       email: string;
-//       isVerified: boolean;
-//     };
-//     google: {
-//       isVerified: boolean;
-//       email: string;
-//       hasAuthorizedEmail: boolean;
-//     };
-//   };
-//   _id: string;
-//   fullName: string;
-//   userName: string;
-//   avatar: string;
-//   roles: string[];
-  // onboarding: {
-  //   profile_complete: boolean;
-  //   workspace_create: boolean;
-  //   workspace_invite: boolean;
-  //   workspace_join: boolean;
-  // };
-//   hasFinishedOnboarding: boolean;
-//   uuid: string;
-//   createdAt: string;
-// };
-
-
 import type { Workspace } from './Workspaces';
 
 export type User = {

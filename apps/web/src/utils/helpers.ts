@@ -11,9 +11,8 @@ import { format, parseISO } from "date-fns";
  * @param {string} name - The full name from which to generate the avatar.
  * @returns {string} The generated avatar string.
  */
-export const GetAvatarFromName = (name: string) => {
+export const GetAvatarFromName = (firstName: string, lastName: string) => {
   let lastInitial = "";
-  const [firstName, lastName] = name.split(" ");
   const firstInitial = firstName.charAt(0).toUpperCase();
   lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
   return `${firstInitial}${lastInitial}`;

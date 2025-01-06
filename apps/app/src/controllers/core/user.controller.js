@@ -1,4 +1,4 @@
-import { getUserById,getUserById_delete, updateUser, updateUserOnBoarded } from "../../services/core/user.service.js";
+import { getUserById,userProfileDelete, updateUser, updateUserOnBoarded } from "../../services/core/user.service.js";
 import { UpdateUserPayload } from "../../payloads/core/user.payload.js";
 
 const userProfileController = async (req, res, next) => {
@@ -14,7 +14,7 @@ const userProfileController = async (req, res, next) => {
 };
 const userProfileDeleteController = async (req, res, next) => {
     try {
-        const user = await getUserById_delete(req.user.uuid)
+        const user = await userProfileDelete(req.user.uuid)
         res.json({
             "status": 200,
             "response": "Delete User"

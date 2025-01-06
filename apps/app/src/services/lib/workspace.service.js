@@ -62,10 +62,10 @@ const getUserWorkspaces = async (user) => {
         })
             .populate({
                 path: 'workspace',
-                // populate: {
-                //     path: 'spaces',
-                //     select: 'name identifier workspace _id'
-                // }
+                populate: {
+                    path: 'teams',
+                    select: 'name workspace _id'
+                }
             })
 
             .select('workspace')

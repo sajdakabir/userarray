@@ -119,7 +119,7 @@ const validateMagicLoginLink = async (token) => {
     return magicLink;
 }
 
-const getUserById_delete = async (id) => {
+const userProfileDelete = async (id) => {
     const user = await User.findOneAndDelete({
         uuid: id
     })
@@ -244,5 +244,5 @@ export {
     updateUserOnBoarded,
     validateGoogleUser,
     createGoogleUser,
-    getUserById_delete
+    userProfileDelete
 }

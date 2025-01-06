@@ -36,9 +36,9 @@ const createWorkspaceController = async (req, res, next) => {
             err.statusCode = 400;
             throw err;
         }
-        const { slug, name, website } = value;
+        const { slug, name } = value;
         const createdBy = req.user.id
-        const workspace = await createWorkspace(slug, name, createdBy, website);
+        const workspace = await createWorkspace(slug, name, createdBy);
         await createWorkspaceMember(workspace._id, createdBy, {
             member: createdBy,
             role: "admin",
@@ -74,6 +74,7 @@ const getUserWorkspacesController = async (req, res, next) => {
 };
 
 const getWorkspaceProfileController = async (req, res, next) => {
+    
     try {
         const workspace = res.locals.workspace;
         res.json({
@@ -135,6 +136,8 @@ const updateWorkspaceController = async (req, res, next) => {
 };
 
 const deleteWorkspaceController = async (req, res, next) => {
+    
+    
     try {
         const workspace = res.locals.workspace;
         await deleteWorkspace(workspace);

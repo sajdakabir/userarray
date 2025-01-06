@@ -96,10 +96,10 @@ const SideFooter = () => {
               />
             ) : (
               <div className="text-[10px] h-5 w-5 bg-less-highlight text-black font-semibold rounded-md grid place-content-center">
-                {GetAvatarFromName(user.fullName)}
+                {user.firstName ? GetAvatarFromName(user.firstName) : ''}
               </div>
             )}
-            {user.fullName}
+            {user.firstName}
           </div>
           <ChevronUp
             className="group-data-[state=open]:rotate-90 duration-300"
@@ -109,7 +109,7 @@ const SideFooter = () => {
 
         <DropdownMenuContent className="min-w-52 border border-divider font-medium text-hx text-focus-text py-2 select-none rounded-lg px-0 ml-[15.5rem] -mb-9 z-20 bg-sidebar shadow-lg shadow-bg-gradient-dark">
           <div className="text-xs px-4 text-nonfocus-text flex flex-col gap-1">
-            <span>{user.fullName}</span>
+            <span>{user.firstName} {user.lastName}</span>
             <span>
               {user.accounts.local.email || user.accounts.google.email}
             </span>

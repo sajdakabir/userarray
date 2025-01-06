@@ -30,6 +30,7 @@
 import type { Workspace } from './Workspaces';
 
 export type User = {
+  _id: string;
   uuid: string;
   firstName?: string;
   lastName?: string;

@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Profile",
-  description: "profile settings for march",
+  description: "profile settings for userarray",
 };
 
 const Profile = () => {

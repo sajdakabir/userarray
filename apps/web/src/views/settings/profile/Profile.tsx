@@ -14,9 +14,9 @@ const ProfileClient: React.FC<{ accessToken: string }> = (props) => {
   const setCurrent = userStore((state) => state.setCurrent);
   const temp = dataStore((state) => state.user);
   const user: User = temp!;
-
-  const [name, setName] = useState<string>(user.fullName);
-  const [username, setUserName] = useState<string>(user.userName);
+  const [firstName, setFirstName] = useState<string>(user.firstName || "");
+  const [lastName, setLastName] = useState<string>(user.lastName || "");
+  const [username, setUserName] = useState<string>(user.userName || "");
   const [changed, setChanged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -24,17 +24,15 @@ const ProfileClient: React.FC<{ accessToken: string }> = (props) => {
 
   useEffect(() => {
     setCurrent("profile");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (name !== user.fullName || username !== user.userName) setChanged(true);
+    if (firstName !== user.firstName || lastName !== user.lastName || username !== user.userName) setChanged(true);
     else setChanged(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username, name]);
+  }, [username, firstName, lastName]);
 
   const handleUpdate = async () => {
-    if (username === user.userName && name === user.fullName) {
+    if (username === user.userName && firstName === user.firstName && lastName === user.lastName) {
       // TODO: toast("You didn't change anything!");
       return;
     }
@@ -44,7 +42,8 @@ const ProfileClient: React.FC<{ accessToken: string }> = (props) => {
         GET_USER,
         {
           userName: username,
-          fullName: name,
+          firstName: firstName,
+          lastName: lastName,
         },
         {
           headers: {
@@ -88,12 +87,12 @@ const ProfileClient: React.FC<{ accessToken: string }> = (props) => {
                 <img
                   className="h-28 w-28 rounded-full bg-avatar"
                   src={user.avatar}
-                  alt={user.fullName}
+                  alt={user.firstName + " " + user.lastName}
                 />
               </div>
             ) : (
               <div className="h-28 w-28 rounded-full bg-bg-gradient-light grid place-items-center text-xl text-focus-text-hover font-medium">
-                {GetAvatarFromName(user.fullName)}
+                {GetAvatarFromName(user.firstName || "", user.lastName || "")}
               </div>
             )}
             <FormButton type="button" text="Upload Image" />
@@ -101,23 +100,39 @@ const ProfileClient: React.FC<{ accessToken: string }> = (props) => {
 
           <div className="w-72 flex flex-col gap-4 mt-10 text-sm">
             <div className="flex flex-col">
-              <label className="text-focus-text mb-2" htmlFor="email">
-                Full Name
+              <label className="text-focus-text mb-2" htmlFor="firstName">
+                First Name
               </label>
               <input
-                type="name"
-                name="name"
-                id="name"
-                value={name}
+                type="text"
+                name="firstName"
+                id="firstName"
+                value={firstName}
                 onChange={(e) => {
-                  setName(e.target.value);
+                  setFirstName(e.target.value);
                 }}
-                autoComplete="name"
+                autoComplete="firstName"
                 required={true}
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-focus-text mb-2" htmlFor="email">
+              <label className="text-focus-text mb-2" htmlFor="lastName">
+                Last Name
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+                autoComplete="lastName"
+                required={true}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-focus-text mb-2" htmlFor="username">
                 User Name
               </label>
               <input

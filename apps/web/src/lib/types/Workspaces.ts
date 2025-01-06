@@ -9,25 +9,13 @@ export type SlugCheck = {
   response: boolean;
 };
 
-// export type Workspace = {
-//   _id: string;
-//   name: string;
-//   slug: string;
-//   createdBy: User;
-//   isDeleted: boolean;
-//   uuid: string;
-//   spaces: CompactSpace[];
-//   createdAt: string;
-//   updatedAt: string;
-//   __v: number;
-// };
 export type Workspace = {
   _id: string;
   uuid: string;
   name: string;
   slug: string;
   website: string;
-  teams: string[]; // Array of ObjectId references to 'Team'
+  teams: string[];
   integration: {
     linear: {
       accessToken?: string;
@@ -35,7 +23,7 @@ export type Workspace = {
       connected: boolean;
     };
   };
-  createdBy: string; // ObjectId reference to 'User'
+  createdBy: string;
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;

@@ -6,8 +6,8 @@ const getLinearAllTeam = async (token:string,linearToken:string,slug: string,) =
     try {
         const response = await fetch(`${BACKEND_URL}/${slug}`, {
             headers: {
-                Authorization: `Bearer ${token}`, // Use accessToken here
-                linearToken: linearToken, // Use the linearToken here
+                Authorization: `Bearer ${token}`,
+                linearToken: linearToken,
             },
         });
 
@@ -17,7 +17,6 @@ const getLinearAllTeam = async (token:string,linearToken:string,slug: string,) =
         }
 
         const eve = await response.json();
-        console.log("eve", eve);
 
         return eve.teams;
     } catch (error) {

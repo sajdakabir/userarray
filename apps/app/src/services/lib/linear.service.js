@@ -38,7 +38,6 @@ export const getAccessToken = async (code, workspace) => {
 
 export const getLinearTeams = async (accessToken) => {
     try {
-        console.log("AccessToken:", accessToken);
         const response = await axios.post(
             'https://api.linear.app/graphql',
             {
@@ -63,7 +62,6 @@ export const getLinearTeams = async (accessToken) => {
             }
         );
 
-        // Extract teams from the response
         return response.data.data.teams.nodes;
     } catch (error) {
         console.error('Error fetching Linear teams:', error.response ? error.response.data : error.message);

@@ -21,7 +21,7 @@ const CreateWorkspace = (props: { accessToken: string }) => {
       Authorization: "Bearer " + props.accessToken,
     },
   };
-
+  
   const isValidSlug = (slug: string) => {
     return /^[a-z_-]+$/.test(slug);
   };
@@ -62,8 +62,10 @@ const CreateWorkspace = (props: { accessToken: string }) => {
         slug: slug,
         name: workspace,
       };
-      await axios.post(USER_WORKSPACE, body, authHeader);
-
+      const response_workSpace=await axios.post(USER_WORKSPACE, body, authHeader);
+      if(response_workSpace.status===200){
+        localStorage.setItem("workspace_slug",slug)
+      }
       
       const userbody = {
         onboarding: {

@@ -7,7 +7,7 @@ export const MAX_AGE = 60 * 60 * 24 * 29; // 29 Days
  * The name of the cookie
  */
 export const COOKIE_NAME = "march";
-
+export const LINNER_TOKEN='linnerToken';
 /**
  * The name of the access token cookie
  */

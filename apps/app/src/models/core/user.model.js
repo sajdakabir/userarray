@@ -55,7 +55,7 @@ const UserSchema = new Schema({
             type: Schema.Types.Boolean,
             default: false
         },
-        team_Create:{
+        team_create:{
             type: Schema.Types.Boolean,
             default: false
         },

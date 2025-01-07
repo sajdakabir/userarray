@@ -57,12 +57,12 @@ const Onboard = async () => {
     );
   }
 
-  // if (!user.response.onboarding?.team_Create) {
+  if (!user.response.onboarding?.team_Create) {
     
-  //   return (
-  //     <TeamCreate token={accessToken}  />
-  //   );
-  // }
+    return (
+      <TeamCreate token={accessToken}  />
+    );
+  }
   
   return redirect("/workspace");
 };

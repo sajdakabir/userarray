@@ -12,6 +12,8 @@ const UpdateUserPayload = Joi.object({
     onboarding: Joi.object({
         profile_complete: Joi.boolean().optional(),
         workspace_create: Joi.boolean().optional(),
+        linner_connect: Joi.boolean().optional(),
+        team_create: Joi.boolean().optional(),
         workspace_invite: Joi.boolean().optional(),
         workspace_join: Joi.boolean().optional()
     }).optional(),

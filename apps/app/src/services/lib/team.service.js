@@ -14,6 +14,7 @@ export const createTeam = async (teamData, workspace) => {
     }
     workspace.teams.push(team._id);
     workspace.integration.linear.teamId = linearTeamId;
+    workspace.integration.linear.team = team._id;
     await workspace.save();
     return team;
 };

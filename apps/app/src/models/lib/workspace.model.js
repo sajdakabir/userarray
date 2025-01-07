@@ -27,6 +27,7 @@ const WorkspaceSchema = new Schema({
         linear: {
             accessToken: String,
             teamId: String,
+            team: { type: Schema.Types.ObjectId, ref: 'Team' },
             connected: { type: Boolean, default: false }
         }
     },

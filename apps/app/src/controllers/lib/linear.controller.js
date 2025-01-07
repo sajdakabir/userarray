@@ -1,4 +1,4 @@
-import { getAccessToken, getLinearTeams, fetchCurrentCycle } from "../../services/lib/linear.service.js";
+import { getAccessToken, getLinearTeams, fetchCurrentCycle, handleLinearWebhookEvent } from "../../services/lib/linear.service.js";
 import crypto from "crypto";
 import { environment } from "../../loaders/environment.loader.js";
 
@@ -50,6 +50,12 @@ export const handleLinearWebhook = async (req, res, next) => {
     if (signature !== req.headers["linear-signature"]) {
         res.sendStatus(400);
         return;
+    }
+    try {
+        await handleLinearWebhookEvent(payload);
+        res.status(200).send("Webhook event processed");
+    } catch (err) {
+        next(err);
     }
 
 }

@@ -1,27 +1,29 @@
 import { BACKEND_URL } from "@/utils/constants/api-endpoints";
-import { Everything } from "@/lib/types/Everything";
 
-const getLinearAllTeam = async (token: string, slug: string) => {
-  let response: Response;
+const getLinearAllTeam = async (token:string,linearToken:string,slug: string,) => {
+   
 
-  try {
-    response = await fetch( `${BACKEND_URL}/${slug}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-    if (!response.ok) {
-      return null;
+    try {
+        const response = await fetch(`${BACKEND_URL}/${slug}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Use accessToken here
+                linearToken: linearToken, // Use the linearToken here
+            },
+        });
+
+        if (!response.ok) {
+            console.error("Error fetching data:", response.statusText);
+            return null;
+        }
+
+        const eve = await response.json();
+        console.log("eve", eve);
+
+        return eve.teams;
+    } catch (error) {
+        console.error("Error:", error);
+        return null;
     }
-  } catch (error) {
-    console.error("Error:", error);
-    return null;
-  }
-
-  const eve = await response.json();
-  console.log("eve",eve);
-  
-  return eve.teams;
 };
 
 export default getLinearAllTeam;

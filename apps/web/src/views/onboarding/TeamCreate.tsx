@@ -1,48 +1,34 @@
-'use client';
-import getLinearAllTeam from '@/server/fetchers/onboarding/getAllLinearTeams';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from "react";
+import getLinearAllTeam from "@/server/fetchers/onboarding/getAllLinearTeams";
+import { cookies } from "next/headers";
+import { LINNER_TOKEN } from "@/utils/constants/cookie";
+import { redirect } from "next/navigation";
+import SelectTeam from "./SelectTeam";
 
 type TeamCreateProps = {
-    token: string;
+  token: string; // Token passed as a prop
 };
 
-const TeamCreate: FC<TeamCreateProps> = ({ token }) => {
-    const [teams, setTeams] = useState<any[]>([]);
-    const [selectedTeam, setSelectedTeam] = useState<string>('');
+const TeamCreate: FC<TeamCreateProps> = async ({ token }) => {
+  const cookieStore = cookies();
+  const linear_Token = cookieStore.get(LINNER_TOKEN);
+  const linearToken = linear_Token?.value;
+  if (!linearToken || linearToken === undefined) {
+    return redirect("/");
+  }
+  // Fetch the teams using both tokens
+  const response = await getLinearAllTeam(
+    token,
+    linearToken,
+    "linear/getLinearTeams/"
+  );
 
-    const fetchAllTeam = async () => {
-        const response = await getLinearAllTeam(token, '/linear/getLinearTeams/');
-        if (response) {
-            setTeams(response);
-        }
-    };
-
-    useEffect(() => {
-        if (token) {
-            fetchAllTeam();
-        }
-    }, [token]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        alert(e.target.value);
-        setSelectedTeam(e.target.value);
-    };
-
-    return (
-        <div>
-            <p>Token: {token}</p>
-            <h3>Linear Teams:</h3>
-            <select value={selectedTeam} onChange={handleChange}>
-                <option value="">Select a Team</option>
-                {teams.map((team) => (
-                    <option key={team.id} value={team.id}>
-                        {team.name}
-                    </option>
-                ))}
-            </select>
-            {selectedTeam && <p>Selected Team ID: {selectedTeam}</p>}
-        </div>
-    );
+  return (
+    <div>
+      <h3>Linear Teams:</h3>
+      <SelectTeam token={token} response={response} />
+    </div>
+  );
 };
 
 export default TeamCreate;

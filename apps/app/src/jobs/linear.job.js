@@ -8,8 +8,10 @@ import { createLinearCurrentCycle } from "../services/lib/cycle.service.js";
 const processLinearJob = async (job) => {
     const { accessToken, linearTeamId, teamId } = job.data;
     try {
+        console.log("hey linear job")
+        console.log(accessToken, linearTeamId, teamId)
         const issues = await fetchTeamIssues(accessToken, linearTeamId);
-        await saveIssuesToDatabase(issues, teamId);
+        await saveIssuesToDatabase(issues, linearTeamId);
         const currentCycle = await fetchCurrentCycle(accessToken, linearTeamId);
         if (currentCycle){
             await createLinearCurrentCycle(currentCycle, linearTeamId);

@@ -70,6 +70,8 @@ export const getLinearTeams = async (accessToken) => {
 };
 
 export const fetchTeamIssues = async (linearToken, linearTeamId) => {
+    console.log("fetching issues")  
+    console.log(linearToken, linearTeamId)
     const response = await axios.post(
         'https://api.linear.app/graphql',
         {

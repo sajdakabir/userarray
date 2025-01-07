@@ -190,6 +190,7 @@ export const saveIssuesToDatabase = async (issues, linearTeamId) => {
                 // Create a new issue
                 const newIssue = new Issue({
                   linearId: id,
+                  source: "linear",
                   title,
                   description,
                   number,
@@ -414,7 +415,7 @@ export const handleLinearWebhookEvent = async (payload) => {
                 targetWorkspaceId = workspace._id;
 
                 // Check if the issue already exists
-                const existingIssue = await Issue.findOne({ linearId: issue.id, linearTeamId: issue.teamId, workspace: targetWorkspaceId });
+                const existingIssue = await Issue.findOne({ linearId: issue.id, linearTeamId: issue.teamId, workspace: targetWorkspaceId, source: "linear" });
                 if (existingIssue) {
                     // Update existing issue
                     const updatedIssue = await Issue.findByIdAndUpdate(
@@ -449,6 +450,7 @@ export const handleLinearWebhookEvent = async (payload) => {
                     // Create a new issue
                     const newIssue = new Issue({
                         linearId: issue.id,
+                        source: "linear",
                         title: issue.title,
                         description: issue.description,
                         number: issue.number,

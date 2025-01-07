@@ -1,31 +1,31 @@
-// import { app } from "./src/index.js";
-// import { environment } from "./src/loaders/environment.loader.js";
-// import { issueActivityWorker } from "./src/jobs/activity.job.js";
+import { app } from "./src/index.js";
+import { environment } from "./src/loaders/environment.loader.js";
+import { issueActivityWorker } from "./src/jobs/activity.job.js";
 
-// (async function init () {
-//     app.listen(environment.PORT, () => {
-//         console.log(`Server listening on port ${environment.PORT}`)
-//     })
-// })()
+(async function init () {
+    app.listen(environment.PORT, () => {
+        console.log(`Server listening on port ${environment.PORT}`)
+    })
+})()
 
 
 // for webhook testing
-import { app } from "./src/index.js";
-import { environment } from "./src/loaders/environment.loader.js";
-import { createServer } from "http";
-// import { initializeWebSocket } from "./src/loaders/websocket.loader.js";
-import ngrok from '@ngrok/ngrok';
+// import { app } from "./src/index.js";
+// import { environment } from "./src/loaders/environment.loader.js";
+// import { createServer } from "http";
+// // import { initializeWebSocket } from "./src/loaders/websocket.loader.js";
+// import ngrok from '@ngrok/ngrok';
 
-let listener;
+// let listener;
 
-(async function init () {
-    const server = createServer(app);
-    server.listen(environment.PORT, async () => {
-        console.log(`Server listening on port ${environment.PORT}`);
-        // Await ngrok forwarding outside the listen callback
-        listener = await ngrok.forward({ addr: `http://localhost:${environment.PORT}`, authtoken: environment.NGROK_AUTH_TOKEN });
-        console.log(`Ingress established at: ${listener.url()}`);
-    });
+// (async function init () {
+//     const server = createServer(app);
+//     server.listen(environment.PORT, async () => {
+//         console.log(`Server listening on port ${environment.PORT}`);
+//         // Await ngrok forwarding outside the listen callback
+//         listener = await ngrok.forward({ addr: `http://localhost:${environment.PORT}`, authtoken: environment.NGROK_AUTH_TOKEN });
+//         console.log(`Ingress established at: ${listener.url()}`);
+//     });
 
-    // initializeWebSocket(server);
-})();
+//     // initializeWebSocket(server);
+// })();

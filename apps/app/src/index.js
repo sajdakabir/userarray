@@ -1,13 +1,17 @@
 import express from "express";
 import cors from "cors";
 import Joi from "joi";
+import bodyParser from "body-parser";
 import { initRoutes } from "./routers/index.js";
 import { environment } from "./loaders/environment.loader.js";
 import { scheduleCycleCreation } from "./jobs/cycle.job.js";
+import { handleLinearWebhook } from "./controllers/lib/linear.controller.js";
 
 const { ValidationError } = Joi;
 const app = express()
 app.use(cors())
+
+app.use('/linear/webhook', bodyParser.raw({ type: 'application/json' }));
 
 app.use(express.json())
 app.use(
@@ -15,6 +19,7 @@ app.use(
         extended: true
     })
 )
+app.post("/linear/webhook", handleLinearWebhook);
 scheduleCycleCreation();
 initRoutes(app)
 // Express error handler

@@ -18,7 +18,7 @@ const initRoutes = (app) => {
 
     app.get("/", async (req, res) => {
         res.json({
-            "message": "Welcome to March Developers Portal"
+            "message": "Welcome to Userarray Developers Portal"
         })
     })
 

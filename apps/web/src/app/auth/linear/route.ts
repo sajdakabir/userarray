@@ -68,7 +68,7 @@ export async function GET(request: any) {
     console.log('accessTokenData', accessTokenData);
     const data = {
       onboarding: {
-        linner_connect: true,
+        linner_connect: true, // Send the value as false as in Postman
       },
     };
     

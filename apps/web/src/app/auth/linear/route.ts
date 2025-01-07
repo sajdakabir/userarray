@@ -15,7 +15,6 @@ export async function GET(request: any) {
     const cookieStore = cookies();
     const tokenCookie = cookieStore.get(ACCESS_TOKEN);
     const accessToken = tokenCookie?.value;
-    console.log("sajdakjdsdjk: ", accessToken)
 
     if (!accessToken) {
       return NextResponse.redirect('/');
@@ -40,10 +39,6 @@ export async function GET(request: any) {
     if (!workspaceName) {
       return NextResponse.json({ error: 'No workspace found' }, { status: 404 });
     }
-    console.log('workspaceName', workspaceName);
-
-
-    console.log("urldddd", `${process.env.NEXT_PUBLIC_BACKEND_URL}/linear/${workspaceName}/getAccessToken/?code=${code}`);
 
     const accessTokenResponse = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/linear/${workspaceName}/getAccessToken/?code=${code}`,
@@ -54,7 +49,6 @@ export async function GET(request: any) {
         },
       }
     );
-    console.log('accessTokenResponse', accessTokenResponse);
 
     if (!accessTokenResponse.ok) {
       return NextResponse.json({ error: 'Failed to get access token' }, { status: 500 });
@@ -84,20 +78,19 @@ export async function GET(request: any) {
         method: 'PATCH',
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json', // Ensure content-type is specified
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
       }
     );
     const dataUser=await updateUser.json();
     console.log('updateUser', dataUser);
-    console.log('manaashjAccesstoken', accessToken);
 
     if (updateUser.status === 200) {
       console.log("hi");
 
 
-      return NextResponse.redirect('http://localhost:3000/onboarding');
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/onboarding`);
 
     }
 

@@ -1,6 +1,7 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-import Cookies from 'js-cookie';  // Correct import for js-cookie
+import axios from "axios";
+import { FC, useCallback, useEffect, useState } from "react";
+
 
 type LinnerProps = {
   token: string;
@@ -10,19 +11,24 @@ const LinnerConnect: FC<LinnerProps> = ({ token }) => {
 
   const [accessLinearToken, setAccessLinearToken] = useState<string | null>(null);
 
-  // This will get the token from the cookie on initial load using js-cookie
-  useEffect(() => {
-    const accessToken = Cookies.get('linerAccess'); // Retrieve token using js-cookie
-    setAccessLinearToken(accessToken || null); // If token exists, set it
-  }, []);
 
-  const handleConnect = () => {
-    const clientId = process.env.NEXT_PUBLIC_LINEAR_CLIENT_ID || "61c4c0f7c6ee94ecd209c19ed2f996b1";
-    const redirectUri = encodeURIComponent(process.env.NEXT_PUBLIC_LINEAR_REDIRECT_URL || "http://localhost:3000/auth/linear");
-    const authUrl = `https://linear.app/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=read`;
+ 
+  const handleConnect = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/auth/linear`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log("response saju : ", response.data)
+      const { authUrl } = response.data
 
-    window.location.href = authUrl; // Redirect to Linear OAuth page
-  };
+      console.log("Redirecting to Linear OAuth URL:")
+      window.location.href = authUrl
+    } catch (error) {
+      console.error("Error in initiating Linear OAuth login:", error)
+    }
+  }, [token])
 
   useEffect(() => {
     if (accessLinearToken) {
@@ -45,3 +51,5 @@ const LinnerConnect: FC<LinnerProps> = ({ token }) => {
 };
 
 export default LinnerConnect;
+
+

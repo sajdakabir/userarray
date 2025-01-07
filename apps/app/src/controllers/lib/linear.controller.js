@@ -1,7 +1,10 @@
 import { getAccessToken, getLinearTeams, fetchCurrentCycle } from "../../services/lib/linear.service.js";
 
 export const getAccessTokenController = async (req, res, next) => {
+    
     const { code } = req.query;
+    console.log('code', code);
+    
     const workspace = res.locals.workspace;
     if (!code) {
         return res

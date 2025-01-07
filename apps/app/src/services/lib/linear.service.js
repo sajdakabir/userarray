@@ -273,106 +273,223 @@ export const fetchCurrentCycle = async (linearToken, teamId) => {
     return currentCycle || null;
 };
 
+// export const handleLinearWebhookEvent = async (payload) => {
+//     const issue = payload.data;
+//     let message = "";
+//     let action = null;
+//     let broadcastItem = null;
+//     let targetWorkspaceId = null;
+
+
+//     if (payload.action === "remove") {
+//         const deletedIssue = await Issue.findOneAndDelete({ linearId: issue.id, linearTeamId: issue.team.id });
+//         if (deletedIssue) {
+//             message = `Deleted issue with ID: ${issue.id}`;
+//             action = "delete";
+//             broadcastItem = deletedIssue;
+//             targetWorkspaceId = deletedIssue.workspace;
+//         } else {
+//             console.log(`Issue with ID: ${issue.id} not found in the database.`);
+//         }
+//     } else {
+//         if (!issue.team || !issue.team.id) {
+//             const deletedIssue = await Issue.findOneAndDelete({ linearId: issue.id, linearTeamId: issue.team.id });
+//             if (deletedIssue) {
+//                 message = `Unassigned issue with ID: ${issue.id} deleted from the database.`;
+//                 action = "unassigned";
+//                 broadcastItem = deletedIssue;
+//                 targetWorkspaceId = deletedIssue.workspace;
+//             } else {
+//                 console.log(`Unassigned issue with ID: ${issue.id} not found in the database.`);
+//             }
+//         } else {
+//             const workspace = await Workspace.findOne({ "integration.linear.teamId": issue.team.id });
+//             if (!workspace) {
+//                 console.log("No workspace found with the matching Linear teamId.");
+//                 return;
+//             }
+//             const workspaceId = workspace._id;
+//             const teamId = workspace?.linear?.teamId;
+//             targetWorkspaceId = workspaceId;
+
+//             const existingIssue = await Issue.findOne({ linearId: issue.id, linearTeamId: issue.team.id, workspace: workspaceId });
+//             if (existingIssue) {
+//                 const dueDate = issue.dueDate ? issue.dueDate : null;
+//                 const startsAt = issue.cycle?.startsAt ? issue.cycle?.startsAt : null;
+//                 const endsAt = issue.cycle?.endsAt ? issue.cycle?.endsAt : null;
+//                 const updatedIssue = await Item.findByIdAndUpdate(existingIssue._id, {
+//                     title: issue.title,
+//                     description: issue.description,
+//                     number: issue.number,
+//                     state: {
+//                         id: issue.state.id,
+//                         name: issue.state.name,
+//                         color: issue.state.color
+//                     },
+//                     dueDate,
+//                     "cycle.startsAt": startsAt,
+//                     "cycle.endsAt": endsAt,
+//                     "cycle.name": issue.cycle.name,
+//                     updatedAt: issue.updatedAt,
+//                     priority: issue.priority,
+//                     project: issue.project,
+//                     assignee: issue.assignee,
+//                     url: issue.url,
+//                     linearTeamId: issue.team.id,
+//                 }, { new: true });
+
+//                 message = `Updated issue with ID: ${issue.id}`;
+//                 action = "update"
+//                 broadcastItem = updatedIssue;
+//             } else {
+//                 const newIssue = new Issue({
+//                     title: issue.title,
+//                     description: issue.description,
+//                     number: issue.number,
+//                     state: {
+//                         id: issue.state.id,
+//                         name: issue.state.name,
+//                         color: issue.state.color
+//                     },
+//                     dueDate: issue.dueDate,
+//                     createdAt: issue.createdAt,
+//                     updatedAt: issue.updatedAt,
+//                     priority: issue.priority,
+//                     project: issue.project,
+//                     assignee: issue.assignee,
+//                     url: issue.url,
+//                     linearTeamId: issue.team.id,
+//                     cycle: issue.cycle, 
+//                     team: workspace?.teamId,
+//                     workspace: workspaceId
+//                 });
+//                 const savedIssue = await newIssue.save();
+//                 message = `Created new issue with ID: ${issue.id}`;
+//                 action = "create"
+//                 broadcastItem = savedIssue;
+//             }
+//         }
+//     }
+
+//     if (targetWorkspaceId) {
+//         const broadcastData = {
+//             type: "linear",
+//             message,
+//             action,
+//             item: broadcastItem
+//         };
+
+//         // broadcastToUser(targetUserId.toString(), broadcastData, true);
+//     }
+// };
+
 export const handleLinearWebhookEvent = async (payload) => {
     const issue = payload.data;
     let message = "";
     let action = null;
     let broadcastItem = null;
     let targetWorkspaceId = null;
-    console.log("hmm..., ", issue.team.id)
+    try {
+        console.log("Processing issue for team ID:", issue.teamId);
 
-    if (payload.action === "remove") {
-        const deletedIssue = await Issue.findOneAndDelete({ linearId: issue.id, linearTeamId: issue.team.id });
-        if (deletedIssue) {
-            message = `Deleted issue with ID: ${issue.id}`;
-            action = "delete";
-            broadcastItem = deletedIssue;
-            // targetUserId = deletedIssue.user;
-        } else {
-            console.log(`Issue with ID: ${issue.id} not found in the database.`);
-        }
-    } else {
-        if (!issue.team || !issue.team.id) {
-            const deletedIssue = await Issue.findOneAndDelete({ linearId: issue.id, linearTeamId: issue.team.id });
+        if (payload.action === "remove") {
+            // Handle issue removal
+            const deletedIssue = await Issue.findOneAndDelete({ linearId: issue.id, linearTeamId: issue.teamId });
             if (deletedIssue) {
-                message = `Unassigned issue with ID: ${issue.id} deleted from the database.`;
-                action = "unassigned";
+                message = `Deleted issue with ID: ${issue.id}`;
+                action = "delete";
                 broadcastItem = deletedIssue;
                 targetWorkspaceId = deletedIssue.workspace;
             } else {
-                console.log(`Unassigned issue with ID: ${issue.id} not found in the database.`);
+                console.warn(`Issue with ID: ${issue.id} not found in the database for deletion.`);
             }
         } else {
-            const workspace = await Workspace.findOne({ "integration.linear.teamId": issue.team.id });
-            if (!workspace) {
-                console.log("No workspace found with the matching Linear teamId.");
-                return;
-            }
-            const workspaceId = workspace._id;
-            targetWorkspaceId = workspaceId;
 
-            // const existingIssue = await Issue.findOne({ linearId: issue.id, linearTeamId: issue.team.id, workspace: workspaceId });
-            // if (existingIssue) {
-                // const dueDate = issue.dueDate ? issue.dueDate : null;
-                // const startsAt = issue.cycle?.startsAt ? issue.cycle?.startsAt : null;
-                // const endsAt = issue.cycle?.endsAt ? issue.cycle?.endsAt : null;
-                // const updatedIssue = await Item.findByIdAndUpdate(existingIssue._id, {
-                //     title: issue.title,
-                //     description: issue.description,
-                //     "metadata.labels": issue.labels,
-                //     "metadata.state": issue.state,
-                //     "metadata.priority": issue.priority,
-                //     "metadata.project": issue.project,
-                //     dueDate,
-                //     "cycle.startsAt": startsAt,
-                //     "cycle.endsAt": endsAt,
-                //     updatedAt: issue.updatedAt
-                // }, { new: true });
+                const workspace = await Workspace.findOne({ "integration.linear.teamId": issue.teamId});
+                if (!workspace) {
+                    console.error("No workspace found with the matching Linear teamId:", issue.teamId);
+                    return;
+                }
 
-                // message = `Updated issue with ID: ${issue.id}`;
-                // action = "update"
-                // broadcastItem = updatedIssue;
-            // } else {
-            console.log("hey1")
-                const newIssue = new Issue({
-                    title: issue.title,
-                    description: issue.description,
-                    number: issue.number,
-                    state: {
-                        id: issue.state.id,
-                        name: issue.state.name,
-                        color: issue.state.color
-                    },
-                    dueDate: issue.dueDate,
-                    createdAt: issue.createdAt,
-                    updatedAt: issue.updatedAt,
-                    priority: issue.priority,
-                    project: issue.project,
-                    assignee: issue.assignee,
-                    url: issue.url,
-                    linearTeamId: issue.team.id,
-                    cycle: issue.cycle, 
-                    // team: teamId,
-                    workspace: workspaceId
-                });
-                console.log("hey2")
-                const savedIssue = await newIssue.save();
-                message = `Created new issue with ID: ${issue.id}`;
-                action = "create"
-                broadcastItem = savedIssue;
-            // }
+                targetWorkspaceId = workspace._id;
+
+                // Check if the issue already exists
+                const existingIssue = await Issue.findOne({ linearId: issue.id, linearTeamId: issue.teamId, workspace: targetWorkspaceId });
+                if (existingIssue) {
+                    // Update existing issue
+                    const updatedIssue = await Issue.findByIdAndUpdate(
+                        existingIssue._id,
+                        {
+                            title: issue.title,
+                            description: issue.description,
+                            number: issue.number,
+                            state: {
+                                id: issue.state.id,
+                                name: issue.state.name,
+                                color: issue.state.color,
+                            },
+                            dueDate: issue.dueDate || null,
+                            "cycle.startsAt": issue.cycle?.startsAt || null,
+                            "cycle.endsAt": issue.cycle?.endsAt || null,
+                            "cycle.name": issue.cycle?.name || null,
+                            updatedAt: issue.updatedAt,
+                            priority: issue.priority,
+                            project: issue.project,
+                            assignee: issue.assignee,
+                            url: issue.url,
+                            linearTeamId: issue.team.id,
+                        },
+                        { new: true }
+                    );
+
+                    message = `Updated issue with ID: ${issue.id}`;
+                    action = "update";
+                    broadcastItem = updatedIssue;
+                } else {
+                    // Create a new issue
+                    const newIssue = new Issue({
+                        linearId: issue.id,
+                        title: issue.title,
+                        description: issue.description,
+                        number: issue.number,
+                        state: {
+                            id: issue.state.id,
+                            name: issue.state.name,
+                            color: issue.state.color,
+                        },
+                        dueDate: issue.dueDate,
+                        createdAt: issue.createdAt,
+                        updatedAt: issue.updatedAt,
+                        priority: issue.priority,
+                        project: issue.project,
+                        assignee: issue.assignee,
+                        url: issue.url,
+                        linearTeamId: issue.team.id,
+                        cycle: issue.cycle,
+                        team: workspace.teamId,
+                        workspace: targetWorkspaceId,
+                    });
+
+                    const savedIssue = await newIssue.save();
+                    message = `Created new issue with ID: ${issue.id}`;
+                    action = "create";
+                    broadcastItem = savedIssue;
+                }
         }
-    }
-console.log("saju: ", message)
-    if (targetWorkspaceId) {
-        const broadcastData = {
-            type: "linear",
-            message,
-            action,
-            item: broadcastItem
-        };
 
-        // broadcastToUser(targetUserId.toString(), broadcastData, true);
+        // Broadcast the event if a workspace ID is identified
+        if (targetWorkspaceId) {
+            const broadcastData = {
+                type: "linear",
+                message,
+                action,
+                item: broadcastItem,
+            };
+
+            // broadcastToUser(targetWorkspaceId.toString(), broadcastData, true);
+        }
+    } catch (error) {
+        console.error("Error handling Linear webhook event:", error.message);
     }
 };
 

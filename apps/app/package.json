@@ -14,6 +14,7 @@
   "author": "sajdakabir",
   "license": "ISC",
   "dependencies": {
+    "@ngrok/ngrok": "^1.4.1",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "bullmq": "^5.7.10",

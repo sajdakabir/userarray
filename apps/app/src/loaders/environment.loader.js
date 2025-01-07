@@ -27,5 +27,6 @@ export const environment = {
     LINEAR_CLIENT_ID: process.env.LINEAR_CLIENT_ID,
     LINEAR_CLIENT_SECRET: process.env.LINEAR_CLIENT_SECRET,
     LINEAR_REDIRECT_URL: process.env.LINEAR_REDIRECT_URL,
-    LINEAR_WH_SECRET: process.env.LINEAR_WH_SECRET
+    LINEAR_WH_SECRET: process.env.LINEAR_WH_SECRET,
+    NGROK_AUTH_TOKEN: process.env.NGROK_AUTH_TOKEN
 }

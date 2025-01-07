@@ -55,6 +55,10 @@ const UserSchema = new Schema({
             type: Schema.Types.Boolean,
             default: false
         },
+        team_Create:{
+            type: Schema.Types.Boolean,
+            default: false
+        },
         workspace_invite: {
             type: Schema.Types.Boolean,
             default: false

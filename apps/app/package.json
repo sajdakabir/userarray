@@ -14,10 +14,13 @@
   "author": "sajdakabir",
   "license": "ISC",
   "dependencies": {
+    "@ngrok/ngrok": "^1.4.1",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
     "bullmq": "^5.7.10",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "crypto-random-string": "^5.0.0",
     "dotenv": "^16.3.1",
     "express": "^4.19.2",

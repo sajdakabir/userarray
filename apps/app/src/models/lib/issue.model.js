@@ -20,6 +20,7 @@ const IssueSchema = new Schema(
       {
         id: { type: String },
         name: { type: String },
+        color: { type: String },
       },
     ],
     dueDate: { type: Date },

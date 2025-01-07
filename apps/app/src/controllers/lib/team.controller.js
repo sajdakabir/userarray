@@ -87,8 +87,8 @@ const getSpaceByNameController = async (req, res, next) => {
 
 export const updateTeamController = async (req, res, next) => {
     try {
-        
-        const { space: name } = req.params;
+        console.log("hey")
+        const { team: name } = req.params;
         const updatedData = req.body;
 
         const workspace = res.locals.workspace;
@@ -97,6 +97,19 @@ export const updateTeamController = async (req, res, next) => {
             status: 200,
             message: "Space updated successfully",
             response: updatedSpace
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const deleteTeamController = async (req, res, next) => {
+    try {
+        
+        await deleteTeam(team);
+        res.json({
+            status: 200,
+            message: "Team deleted successfully"
         });
     } catch (err) {
         next(err);

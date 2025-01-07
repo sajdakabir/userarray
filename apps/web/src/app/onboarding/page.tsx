@@ -50,19 +50,19 @@ const Onboard = async () => {
     );
   }
   
-  // if (!user.response.onboarding?.linner_connect) {
-    
-  //   return (
-  //     <LinnerConnect token={accessToken}  />
-  //   );
-  // }
-
-  if (!user.response.onboarding?.team_Create) {
+  if (!user.response.onboarding?.linner_connect) {
     
     return (
-      <TeamCreate token={accessToken}  />
+      <LinnerConnect token={accessToken}  />
     );
   }
+
+  // if (!user.response.onboarding?.team_Create) {
+    
+  //   return (
+  //     <TeamCreate token={accessToken}  />
+  //   );
+  // }
   
   return redirect("/workspace");
 };

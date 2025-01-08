@@ -21,20 +21,20 @@ const CycleClient = (props: { token: string; slug: string; space: string }) => {
     return spaceIndex;
   }, [stateStorage, props.space]);
 
-  const current = useMemo<Cycle | undefined>(() => {
-    if (!stateStorage) return;
-    return stateStorage.spaces[spaceIndex].cycles.current;
-  }, [stateStorage, spaceIndex]);
+  // const current = useMemo<Cycle | undefined>(() => {
+  //   if (!stateStorage) return;
+  //   return stateStorage.spaces[spaceIndex].cycles.current;
+  // }, [stateStorage, spaceIndex]);
 
-  const upcoming = useMemo<Cycle[]>(() => {
-    if (!stateStorage) return [];
-    return stateStorage.spaces[spaceIndex].cycles.upcoming;
-  }, [stateStorage, spaceIndex]);
+  // const upcoming = useMemo<Cycle[]>(() => {
+  //   if (!stateStorage) return [];
+  //   return stateStorage.spaces[spaceIndex].cycles.upcoming;
+  // }, [stateStorage, spaceIndex]);
 
-  useEffect(() => {
-    setCurrent(`${props.space}-cycle`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   setCurrent(`${props.space}-cycle`);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <section className="min-h-screen overflow-auto flex-grow right-0 bg-dashboard pl-20">
@@ -61,7 +61,7 @@ const CycleClient = (props: { token: string; slug: string; space: string }) => {
                   </h4>
                 </div>
 
-                {upcoming.length !== 0 ? (
+                {/* {upcoming.length !== 0 ? (
                   <div className="mt-8 flex flex-col gap-y-4">
                     {upcoming.map((x) => (
                       <UpcomingCycle
@@ -77,7 +77,7 @@ const CycleClient = (props: { token: string; slug: string; space: string }) => {
                   <div className="mt-8 text-focus-text text-sm">
                     No upcoming cycles
                   </div>
-                )}
+                )} */}
               </div>
               <div className="">
                 <div className="flex items-center justify-between w-[17rem]">
@@ -86,7 +86,7 @@ const CycleClient = (props: { token: string; slug: string; space: string }) => {
                     This Week
                   </h4>
                 </div>
-                <div className="mt-8 flex flex-col gap-y-6">
+                {/* <div className="mt-8 flex flex-col gap-y-6">
                   {current ? (
                     <ActiveCycle
                       cycle={current}
@@ -98,17 +98,17 @@ const CycleClient = (props: { token: string; slug: string; space: string }) => {
                       You don&apos;t have any active cycle
                     </p>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
-        <CycleActivitySection
+        {/* <CycleActivitySection
           cycle={current}
           cycleId={current!._id}
           space={props.space}
           token={props.token}
-        />
+        /> */}
       </div>
     </section>
   );

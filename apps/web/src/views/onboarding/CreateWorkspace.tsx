@@ -13,7 +13,7 @@ const CreateWorkspace = (props: { accessToken: string }) => {
   const [slug, setSlug] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const authHeader = {
+  const authHeader: { headers: { Authorization: string } } = {
     headers: {
       Authorization: "Bearer " + props.accessToken,
     },
@@ -53,23 +53,23 @@ const CreateWorkspace = (props: { accessToken: string }) => {
       }
 
       // Create workspace
-      await axios.post(USER_WORKSPACE, {
+      const response_workSpace = await axios.post(USER_WORKSPACE, {
         name: workspaceName,
-        slug: slug,
-        name: workspace,
-      };
-      const response_workSpace=await axios.post(USER_WORKSPACE, body, authHeader);
-      if(response_workSpace.status===200){
-        localStorage.setItem("workspace_slug",slug)
-      }
-      
-      const userbody = {
-        onboarding: {
-          workspace_create: true
-        }
+        slug: slug
       }, authHeader);
+      
+      if(response_workSpace.status === 200) {
+        localStorage.setItem("workspace_slug", slug);
+        
+        // Update user onboarding status
+        await axios.patch(GET_USER, {
+          onboarding: {
+            workspace_create: true
+          }
+        }, authHeader);
 
-      location.reload();
+        location.reload();
+      }
     } catch (error: any) {
       console.error(error);
       if (error.response?.data?.message) {

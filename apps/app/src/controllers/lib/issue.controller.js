@@ -1,4 +1,4 @@
-import { getAllIssues, getIssue, updateIssue, getCurrentCycleIssue } from "../../services/lib/issue.service.js"
+import { getAllIssues, getIssue, updateIssue, getCurrentCycleIssue, getTeamCurrentCycleIssues } from "../../services/lib/issue.service.js"
 
 export const getAllIssuesController = async (req, res, next) => {
    try {
@@ -40,6 +40,17 @@ export const getCurrentCycleIssueController = async (req, res, next) => {
         const { team } = req.params
         const cycle = await getCurrentCycleIssue(workspace, team)
         res.status(200).json({ cycle })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getTeamCurrentCycleIssuesController = async (req, res, next) => {
+    try {
+        const workspace = res.locals.workspace
+        const { team } = req.params
+        const issues = await getTeamCurrentCycleIssues(workspace, team)
+        res.status(200).json({ issues })
     } catch (err) {
         next(err)
     }

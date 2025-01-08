@@ -28,7 +28,8 @@ export const createTeamController = async (req, res, next) => {
             {
                 accessToken: workspace.integration.linear.accessToken,
                 linearTeamId: workspace.integration.linear.teamId,
-                teamId: team._id
+                teamId: team._id,
+                userId: createdBy
             },
             {
                 attempts: 3,

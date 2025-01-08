@@ -6,6 +6,7 @@ import { initRoutes } from "./routers/index.js";
 import { environment } from "./loaders/environment.loader.js";
 import { scheduleCycleCreation } from "./jobs/cycle.job.js";
 import { handleLinearWebhook } from "./controllers/lib/linear.controller.js";
+import { linearWorker } from "./jobs/linear.job.js"
 
 const { ValidationError } = Joi;
 const app = express()

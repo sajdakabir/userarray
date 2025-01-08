@@ -29,7 +29,7 @@ const CustomLogin = async (email: string, password: string) => {
   cookies().set(ACCESS_TOKEN, res.response.accessToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: MAX_AGE,
     path: "/",
   });
@@ -37,7 +37,7 @@ const CustomLogin = async (email: string, password: string) => {
   cookies().set(REFRESH_TOKEN, res.response.refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: MAX_AGE,
     path: "/",
   });

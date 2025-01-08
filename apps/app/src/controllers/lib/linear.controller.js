@@ -3,7 +3,9 @@ import crypto from "crypto";
 import { environment } from "../../loaders/environment.loader.js";
 
 export const getAccessTokenController = async (req, res, next) => {
+    
     const { code } = req.query;
+    
     const workspace = res.locals.workspace;
     if (!code) {
         return res

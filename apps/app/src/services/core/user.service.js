@@ -147,6 +147,7 @@ const getUserById = async (id) => {
 }
 
 const updateUser = async (user, { firstName, lastName, userName, avatar, hasFinishedOnboarding, onboarding, timezone }) => {
+   
     const _user = await getUserById(user)
     const updated = await _user.updateOne({
         $set: {

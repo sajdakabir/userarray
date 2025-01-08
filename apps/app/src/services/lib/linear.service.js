@@ -38,7 +38,6 @@ export const getAccessToken = async (code, workspace) => {
 
 export const getLinearTeams = async (accessToken) => {
     try {
-        console.log("AccessToken:", accessToken);
         const response = await axios.post(
             'https://api.linear.app/graphql',
             {
@@ -63,7 +62,6 @@ export const getLinearTeams = async (accessToken) => {
             }
         );
 
-        // Extract teams from the response
         return response.data.data.teams.nodes;
     } catch (error) {
         console.error('Error fetching Linear teams:', error.response ? error.response.data : error.message);
@@ -140,9 +138,9 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
     return issues;
 };
 
-export const saveIssuesToDatabase = async (issues, linearTeamId) => {
+export const saveIssuesToDatabase = async (issues, linearTeamId, userId) => {
     try {
-        const team = await findTeamByLinearId(linearTeamId);
+        const team = await findTeamByLinearId(linearTeamId, userId);
         if (!team) {
             throw new Error("Team not found");
         }
@@ -189,6 +187,7 @@ export const saveIssuesToDatabase = async (issues, linearTeamId) => {
               } else {
                 // Create a new issue
                 const newIssue = new Issue({
+                  source: "linear",
                   linearId: id,
                   title,
                   description,
@@ -219,6 +218,7 @@ export const saveIssuesToDatabase = async (issues, linearTeamId) => {
         throw error;
     }
 };
+
 
 export const fetchCurrentCycle = async (linearToken, teamId) => {
     const response = await axios.post(
@@ -414,7 +414,7 @@ export const handleLinearWebhookEvent = async (payload) => {
                 targetWorkspaceId = workspace._id;
 
                 // Check if the issue already exists
-                const existingIssue = await Issue.findOne({ linearId: issue.id, linearTeamId: issue.teamId, workspace: targetWorkspaceId });
+                const existingIssue = await Issue.findOne({ linearId: issue.id, linearTeamId: issue.teamId, workspace: targetWorkspaceId, source: "linear" });
                 if (existingIssue) {
                     // Update existing issue
                     const updatedIssue = await Issue.findByIdAndUpdate(
@@ -449,6 +449,7 @@ export const handleLinearWebhookEvent = async (payload) => {
                     // Create a new issue
                     const newIssue = new Issue({
                         linearId: issue.id,
+                        source: "linear",
                         title: issue.title,
                         description: issue.description,
                         number: issue.number,

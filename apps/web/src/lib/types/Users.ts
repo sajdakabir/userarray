@@ -27,7 +27,8 @@ export type User = {
     profile_complete?: boolean | null;
     workspace_create?: boolean | null;
     workspace_invite?: boolean | null;
-    linner_connect?: boolean | null;
+    linear_connect?: boolean | null;
+    team_Create?: boolean | null;
   } | null;
   hasFinishedOnboarding: boolean;
   createdAt?: string;

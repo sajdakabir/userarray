@@ -30,7 +30,6 @@ const updateUserController = async (req, res, next) => {
     try {
         const user = req.user.uuid;
         const { error, value } = UpdateUserPayload.validate(req.body);
-        console.log("error", error );
         
         if (error) {
             const err = error.details[0].message;

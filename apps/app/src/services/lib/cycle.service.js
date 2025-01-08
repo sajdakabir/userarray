@@ -33,6 +33,19 @@ export const createLinearCurrentCycle = async (currentCycle, linearTeamId) => {
     return newCycle;
 }
 
+export const getTeamCurrentCycles = async (workspace, team) => {
+    const currentDate = new Date();
+    const cycle = await Cycle.findOne({
+        workspace: workspace,
+        team: team,
+        isDeleted: false,
+        isArchived: false,
+        startsAt: { $lte: currentDate },
+        endsAt: { $gte: currentDate }
+    });
+    return cycle;
+}
+
 const getCycles = async (workspaceId, spaceId) => {
     const currentDate = moment();
     const cycles = await Cycle.find({

@@ -11,10 +11,12 @@ import { format, parseISO } from "date-fns";
  * @param {string} name - The full name from which to generate the avatar.
  * @returns {string} The generated avatar string.
  */
-export const GetAvatarFromName = (firstName: string, lastName: string) => {
-  let lastInitial = "";
+export const GetAvatarFromName = (firstName?: string, lastName?: string) => {
+  if (!firstName) return "U"; // Default to "U" for userArray if no name is provided
+  
   const firstInitial = firstName.charAt(0).toUpperCase();
-  lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+  const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+  
   return `${firstInitial}${lastInitial}`;
 };
 

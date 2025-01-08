@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { WorkspaceMiddleware } from "../../middlewares/workspace.middleware.js";
 import { createWorkspaceController, WorkSpaceAvailabilityCheckController, getUserWorkspacesController, getWorkspaceProfileController, updateWorkspaceController, inviteMemberToWorkspaceController, reinviteWorkspaceMembersController, getWorkspaceInvitationsController, getWorkspaceInvitationByUuidController, deleteWorkspaceInvitationByUuidController, joinWorkspaceController, getAllWorkspaceMembersController, getWorkspaceMemberController, leaveWorkspaceController, deleteWorkspaceController, getEverything } from "../../controllers/lib/workspace.controller.js"
-import { getAllIssuesController, getIssueController, updateIssueController, getCurrentCycleIssueController } from "../../controllers/lib/issue.controller.js"
+import { getAllIssuesController, getIssueController, updateIssueController, getCurrentCycleIssueController, getTeamCurrentCycleIssuesController } from "../../controllers/lib/issue.controller.js"
 import { createTeamController, getAllTeamsController, getSpaceByNameController, updateTeamController, daleteSpaceController, deleteTeamController } from "../../controllers/lib/team.controller.js"
-import { createCycleController, getCyclesController, getCycleController, updateCycleController, deleteCycleController, addItemsToCycleController, addUserFavoriteCycleController, getUserFavoriteCyclesController, deleteUserFavoriteCycleController, getCycleItemsController, deleteCycleItemController } from "../../controllers/lib/cycle.controller.js"
+import { createCycleController, getCyclesController, getCycleController, updateCycleController, deleteCycleController, addItemsToCycleController, addUserFavoriteCycleController, getUserFavoriteCyclesController, deleteUserFavoriteCycleController, getCycleItemsController, deleteCycleItemController, getTeamCurrentCyclesController } from "../../controllers/lib/cycle.controller.js"
 import { createItemController, getItemsController, getItemController, updateItemController, deleteItemController, getArchivedItemsController, getArchivedItemController, unarchiveItemController, archiveItemController, getUserWorkSpaceItemsController, getUsersTodayWorkSpaceItemsController, getMembersTodayWorkItemsControlle, getMembersWorkItemsByDateControlle } from "../../controllers/lib/item.controller.js"
 import { createLabelController, getLabelsController, getLabelController, updateLabelController, deleteLabelController } from "../../controllers/lib/label.controller.js"
 import { createRoadmapController, getRoadmapsController, getRoadmapController, updateRoadmapController, deleteRoadmapController, addItemsToRoadmapController, getRoadmapItemsController, deleteRoadmapItemController } from "../../controllers/lib/roadmap.controller.js"
@@ -57,6 +57,10 @@ router.route("/:workspace/teams/").post(createTeamController) //done
 router.route("/:workspace/teams/").get(getAllTeamsController) //done
 router.route("/:workspace/teams/:team/").patch(updateTeamController) //done
 router.route("/:workspace/teams/:team/").delete(deleteTeamController) //done
+
+// cycle controllers below
+router.route("/:workspace/teams/:team/cycles/current/").get(getTeamCurrentCyclesController)
+router.route("/:workspace/teams/:team/cycles/current/issues/").get(getTeamCurrentCycleIssuesController)
 
 // Issue controllers below
 router.route("/:workspace/teams/:team/issues/").get(getAllIssuesController)

@@ -1,4 +1,4 @@
-import { createCycle, getCycles, getCycle, updateCycle, deleteCycle, addUserFavoriteCycle, getUserFavoriteCycles, deleteUserFavoriteCycle, addItemsToCycle, getCycleItems, deleteCycleItem, archiveCycle } from "../../services/lib/cycle.service.js";
+import { createCycle, getCycles,getTeamCurrentCycles, getCycle, updateCycle, deleteCycle, addUserFavoriteCycle, getUserFavoriteCycles, deleteUserFavoriteCycle, addItemsToCycle, getCycleItems, deleteCycleItem, archiveCycle } from "../../services/lib/cycle.service.js";
 
 const createCycleController = async (req, res, next) => {
     try {
@@ -37,6 +37,20 @@ const getCyclesController = async (req, res, next) => {
 
         const cycles = await getCycles(space.workspace, space._id);
 
+        res.json({
+            status: 200,
+            response: cycles
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getTeamCurrentCyclesController = async (req, res, next) => {
+    try {
+        const workspace = res.locals.workspace;
+        const { team } = req.params;
+        const cycles = await getTeamCurrentCycles(workspace._id, team);
         res.json({
             status: 200,
             response: cycles

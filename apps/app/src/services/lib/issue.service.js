@@ -58,3 +58,18 @@ export const getCurrentCycleIssue = async (workspace, team) => {
     })
     return cycle
 }
+
+export const getTeamCurrentCycleIssues = async (workspace, team) => {
+    const currentDate = new Date();
+    
+    const issues = await Issue.find({
+        workspace: workspace,
+        team: team,
+        isDeleted: false,
+        isArchived: false,
+        'cycle.startsAt': { $lte: currentDate },
+        'cycle.endsAt': { $gte: currentDate }
+    }).sort({ createdAt: -1 });
+    
+    return issues;
+};

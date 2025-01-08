@@ -73,8 +73,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "march",
-  description: "A lightweight sprint planner",
+  title: 'userArray',
+  description: 'Linear companion for open source and user facing teams',
+  icons: {
+    icon: '/new_logo.png',
+    shortcut: '/new_logo.png',
+    apple: '/new_logo.png',
+  },
 };
 
 export default function RootLayout({

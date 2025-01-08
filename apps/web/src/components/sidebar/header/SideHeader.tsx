@@ -3,80 +3,83 @@
 import { Workspace } from "@/lib/types/Workspaces";
 import { Inbox, Activity, ChevronDown, SquarePen, Bell } from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
-import DropContent from "./DropContent";
+// import DropContent from "./DropContent";
 import Link from "next/link";
 
 import { dataStore, userStore } from "@/utils/store/zustand";
-import CreateItem from "../../smalls/items/CreateItem";
-import { statuses } from "@/lib/types/Items";
+// import CreateItem from "../../smalls/items/CreateItem";
+// import { statuses } from "@/lib/types/Items";
 
 const SideHeader = (props: { accessToken: string }) => {
   // Global states
   const workspaces = dataStore((state) => state.workspaces);
-  const stateStorage = dataStore((state) => state.stateStorage);
-  const slug = userStore((state) => state.slug);
-  const setSlug = userStore((state) => state.setSlug);
-  const active = userStore((state) => state.current);
-  const setStateNull = dataStore((state) => state.setStateNull);
+  // const stateStorage = dataStore((state) => state.stateStorage);
+  // const slug = userStore((state) => state.slug);
+  // const setSlug = userStore((state) => state.setSlug);
+  // const active = userStore((state) => state.current);
+  // const setStateNull = dataStore((state) => state.setStateNull);
 
   // Local States
-  const [thisWorkspace, setThisWorkspace] = useState<Workspace>(workspaces[0]);
-  const [otherWorkspaces, setOtherWorkspaces] = useState<Workspace[]>([]);
-  const [open, setIsOpen] = useState<boolean>(false);
+  // const [thisWorkspace, setThisWorkspace] = useState<Workspace>(workspaces[0]);
+  // const [otherWorkspaces, setOtherWorkspaces] = useState<Workspace[]>([]);
+  // const [open, setIsOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (slug === "") {
-      // If no slug was found
-      setSlug(workspaces[0].slug);
-      setThisWorkspace(workspaces[0]);
-    } else if (slug !== undefined) {
-      const found = workspaces.find((workspace) => workspace.slug === slug);
-      if (found) {
-        setThisWorkspace(found);
-      } else {
-        // Worst case where wrong slug is found in local storage
-        setThisWorkspace(workspaces[0]);
-        setSlug(workspaces[0].slug);
-      }
-    }
-    // If slug is undefined, then eat 5 star, do nothing
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
+  // useEffect(() => {
+  //   if (slug === "") {
+  //     // If no slug was found
+  //     setSlug(workspaces[0].slug);
+  //     setThisWorkspace(workspaces[0]);
+  //   } else if (slug !== undefined) {
+  //     const found = workspaces.find((workspace) => workspace.slug === slug);
+  //     if (found) {
+  //       setThisWorkspace(found);
+  //     } else {
+  //       // Worst case where wrong slug is found in local storage
+  //       setThisWorkspace(workspaces[0]);
+  //       setSlug(workspaces[0].slug);
+  //     }
+  //   }
+  //   // If slug is undefined, then eat 5 star, do nothing
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [slug]);
 
-  useEffect(() => {
-    // Filter the workspaces array to exclude thisWorkspace
-    const filteredWorkspaces = workspaces.filter(
-      (workspace) => workspace !== thisWorkspace
-    );
-    setOtherWorkspaces(filteredWorkspaces);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [thisWorkspace]);
+  // useEffect(() => {
+  //   // Filter the workspaces array to exclude thisWorkspace
+  //   const filteredWorkspaces = workspaces.filter(
+  //     (workspace) => workspace !== thisWorkspace
+  //   );
+  //   setOtherWorkspaces(filteredWorkspaces);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [thisWorkspace]);
 
-  const handleSetWorkspace = (slugKey: string) => {
-    setSlug(slugKey);
-    const foundWorkspace = workspaces.find(
-      (workspace) => workspace.slug === slugKey
-    );
-    if (foundWorkspace) {
-      setThisWorkspace(foundWorkspace);
-    }
-    // Set the State Storage to null
-    setStateNull();
-    window.location.href = `/${slugKey}/today`;
-  };
+  // const handleSetWorkspace = (slugKey: string) => {
+  //   setSlug(slugKey);
+  //   const foundWorkspace = workspaces.find(
+  //     (workspace) => workspace.slug === slugKey
+  //   );
+  //   if (foundWorkspace) {
+  //     setThisWorkspace(foundWorkspace);
+  //   }
+  //   // Set the State Storage to null
+  //   setStateNull();
+  //   window.location.href = `/${slugKey}/today`;
+  // };
 
-  if (!stateStorage) return null;
+  // if (!stateStorage) return null;
 
   return (
-    <div id="header">
-      <div className="flex items-center justify-between">
-        <DropdownMenu>
+    <div id="">
+      {/* <div className="flex items-center justify-between"> */}
+      <div className="bg-highlight h-5 w-5 leading-none rounded-md text-black uppercase grid place-content-center">
+        <Link href={`#`}>{workspaces[0].name.charAt(0)}</Link>
+      </div>
+      {/* <DropdownMenu>
           <DropdownMenuTrigger className="flex-grow group rounded-lg bg-sidebar-button-hover hover:bg-sidebar-button-active border border-divider outline-none focus:outline-none hover:shadow-md hover:shadow-black/50 flex px-2 py-[6px] justify-between gap-2 items-center">
             <div className="flex justify-start gap-2 items-center">
               <div className="bg-highlight h-5 w-5 leading-none rounded-md text-black uppercase grid place-content-center">
@@ -97,9 +100,9 @@ const SideHeader = (props: { accessToken: string }) => {
               setWorkspace={handleSetWorkspace}
             />
           </DropdownMenuContent>
-        </DropdownMenu>
-        {/* Create item Button */}
-        <Dialog open={open} onOpenChange={setIsOpen}>
+        </DropdownMenu> */}
+      {/* Create item Button */}
+      {/* <Dialog open={open} onOpenChange={setIsOpen}>
           <DialogTrigger asChild={true}>
             <button
               disabled={stateStorage.spaces.length === 0}
@@ -116,11 +119,11 @@ const SideHeader = (props: { accessToken: string }) => {
               setIsOpen={setIsOpen}
             />
           ) : null}
-        </Dialog>
-      </div>
+        </Dialog> */}
+      {/* </div> */}
 
-      <div className="my-3 flex flex-col gap-[2px] text-focus-text">
-        {/* <Link
+      {/* <div className="my-3 flex flex-col gap-[2px] text-focus-text"> */}
+      {/* <Link
           href={`/${slug}/updates`}
           className={`flex justify-start gap-2 items-center text-hx rounded-lg ${
             active === slug + "-updates"
@@ -132,7 +135,7 @@ const SideHeader = (props: { accessToken: string }) => {
           Updates
         </Link> */}
 
-        <Link
+      {/* <Link
           href={`/${slug}/inbox`}
           className={`flex justify-start gap-2 items-center text-hx rounded-lg ${
             active === slug + "-inbox"
@@ -153,8 +156,8 @@ const SideHeader = (props: { accessToken: string }) => {
         >
           <Activity className="ml-2" size={14} />
           Today
-        </Link>
-      </div>
+        </Link> */}
+      {/* </div> */}
     </div>
   );
 };

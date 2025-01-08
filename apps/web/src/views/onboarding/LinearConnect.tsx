@@ -1,34 +1,34 @@
 "use client";
-import axios from "axios";
-import { FC, useCallback, useEffect, useState } from "react";
 
+import { FC, useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Circle } from "lucide-react";
+import axios from "axios";
 
 type LinearProps = {
   token: string;
 };
 
 const LinearConnect: FC<LinearProps> = ({ token }) => {
-
   const [accessLinearToken, setAccessLinearToken] = useState<string | null>(null);
 
-
- 
   const handleConnect = useCallback(async () => {
     try {
       const response = await axios.get(`/api/auth/linear`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      console.log("response saju : ", response.data)
-      const { authUrl } = response.data
+      });
+      console.log("response saju : ", response.data);
+      const { authUrl } = response.data;
 
-      console.log("Redirecting to Linear OAuth URL:")
-      window.location.href = authUrl
+      console.log("Redirecting to Linear OAuth URL:");
+      window.location.href = authUrl;
     } catch (error) {
-      console.error("Error in initiating Linear OAuth login:", error)
+      console.error("Error in initiating Linear OAuth login:", error);
     }
-  }, [token])
+  }, [token]);
 
   useEffect(() => {
     if (accessLinearToken) {
@@ -37,15 +37,81 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
   }, [accessLinearToken]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
-      <h1 className="text-4xl font-bold mb-4">Connect with Linear</h1>
-      <p className="mb-6">Click the button below to connect with Linear and view all your issues here.</p>
-      <button
-        onClick={handleConnect}
-        className="px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-300 transition"
-      >
-        Connect to Linear
-      </button>
+    <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
+      <header className="flex items-center justify-between px-6 py-3 border-b border-white/10">
+        <span className="text-white font-medium">
+          userArray
+        </span>
+        <nav className="flex items-center gap-6">
+          <button 
+            onClick={() => window.open('https://github.com/sajdakabir/userarray', '_blank')}
+            className="text-sm text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          >
+            GitHub
+          </button>
+          <button 
+            onClick={() => window.open('https://userarray.com/changelog', '_blank')}
+            className="text-sm bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-md text-white transition-colors cursor-pointer"
+          >
+            Demo
+          </button>
+        </nav>
+      </header>
+
+      <main className="flex-1 flex items-center justify-center -mt-24">
+        <div className="w-full max-w-[320px] space-y-4">
+          <div className="text-center space-y-1">
+            <div className="flex justify-center mb-4">
+              <div className="p-3">
+                <Image
+                  src="/linear-white-logo.svg"
+                  alt="Linear"
+                  width={32}
+                  height={32}
+                />
+              </div>
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">
+              Connect with Linear
+            </h1>
+            <p className="text-sm text-zinc-400">
+              Automate issue workflow when tasks are created and updated
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="bg-[#0C0C0C] border border-zinc-800 rounded-lg p-4 space-y-3">
+              <div className="flex items-start gap-3">
+                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 fill-current" />
+                <p className="text-sm text-zinc-300">Linear automatically syncs issue status and updates in real-time.</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 fill-current" />
+                <p className="text-sm text-zinc-300">Track progress and collaborate with your team seamlessly.</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 fill-current" />
+                <p className="text-sm text-zinc-300">Linear will not require additional permissions.</p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Button 
+                onClick={handleConnect}
+                className="w-full bg-white text-black hover:bg-zinc-100 h-9 font-normal"
+              >
+                Connect Linear
+              </Button>
+              <button
+                onClick={() => window.location.href = '/dashboard'}
+                className="w-full text-sm text-zinc-400 hover:text-zinc-300"
+              >
+                I'll do this later
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

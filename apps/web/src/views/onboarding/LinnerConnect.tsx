@@ -1,40 +1,18 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Circle } from "lucide-react";
-import axios from "axios";
 
-type LinearProps = {
+type LinnerConnectProps = {
   token: string;
 };
 
-const LinearConnect: FC<LinearProps> = ({ token }) => {
-  const [accessLinearToken, setAccessLinearToken] = useState<string | null>(null);
-
-  const handleConnect = useCallback(async () => {
-    try {
-      const response = await axios.get(`/api/auth/linear`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log("response saju : ", response.data);
-      const { authUrl } = response.data;
-
-      console.log("Redirecting to Linear OAuth URL:");
-      window.location.href = authUrl;
-    } catch (error) {
-      console.error("Error in initiating Linear OAuth login:", error);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (accessLinearToken) {
-      alert(accessLinearToken); // This will alert the token once it's available
-    }
-  }, [accessLinearToken]);
+const LinnerConnect: FC<LinnerConnectProps> = ({ token }) => {
+  const handleConnect = async () => {
+    alert("Hello");
+  };
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
@@ -92,30 +70,28 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
               <div className="flex items-start gap-3">
                 <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 fill-current" />
                 <p className="text-sm text-zinc-300">Linear will not require additional permissions.</p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <Button 
-                onClick={handleConnect}
-                className="w-full bg-white text-black hover:bg-zinc-100 h-9 font-normal"
-              >
-                Connect Linear
-              </Button>
-              <button
-                onClick={() => window.location.href = '/dashboard'}
-                className="w-full text-sm text-zinc-400 hover:text-zinc-300"
-              >
-                I'll do this later
-              </button>
             </div>
           </div>
+
+            <div className="space-y-3">
+            <Button 
+              onClick={handleConnect}
+              className="w-full bg-white text-black hover:bg-zinc-100 h-9 font-normal"
+            >
+              Connect Linear
+            </Button>
+            <button
+              onClick={() => window.location.href = '/dashboard'}
+              className="w-full text-sm text-zinc-400 hover:text-zinc-300"
+            >
+              I'll do this later
+            </button>
+          </div>
         </div>
+      </div>
       </main>
     </div>
   );
 };
 
-export default LinearConnect;
-
-
+export default LinnerConnect;

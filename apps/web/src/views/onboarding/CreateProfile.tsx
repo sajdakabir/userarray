@@ -3,15 +3,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { GET_USER } from "@/utils/constants/api-endpoints";
-import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+
 const CreateProfile = (props: { accessToken: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  // const [workspaceSlug, setWorkspaceSlug] = useState<string>("");
   const [error, setError] = useState<string>("");
   
   useEffect(() => {
@@ -22,7 +21,6 @@ const CreateProfile = (props: { accessToken: string }) => {
             Authorization: `Bearer ${props.accessToken}`,
           },
         });
-      
         
         setFirstName(response.data && response.data.response?.firstName)
         setLastName(response.data && response.data.response?.lastName)
@@ -33,68 +31,32 @@ const CreateProfile = (props: { accessToken: string }) => {
 
     fetchUserData();
   }, [props.accessToken]);
+
   const handleSubmit = async () => {
     if (firstName==="") {
-      setError(firstName);
+      setError("Please enter your First name");
       return;
     }
-    if (lastName==="") {
+    if (lastName==="" && lastName !== undefined) {
       setError("Please enter your Last name");
       return;
     }
-    // } else if (!workspaceSlug) {
-    //   setError("Please enter a workspace name");
-    //   return;
-    // }
-
-    // // Validate workspace slug format
-    // const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-    // if (!slugRegex.test(workspaceSlug)) {
-    //   setError("Workspace name can only contain lowercase letters, numbers, and hyphens");
-    //   return;
-    // }
 
     setLoading(true);
 
     try {
-      // First update the user profile
-     const update_profile= await axios.patch(GET_USER, {
-        firstName:firstName,
-        lastName:lastName,
+      await axios.patch(GET_USER, {
+        firstName: firstName,
+        lastName: lastName,
         onboarding: {
           profile_complete: true
         }
-        
       }, {
         headers: {
           Authorization: "Bearer " + props.accessToken,
         },
       });
-      
 
-      // Then create the workspace
-      // await axios.post(USER_WORKSPACE, {
-      //   name: workspaceSlug,
-      //   slug: workspaceSlug.toLowerCase(),
-      // }, {
-      //   headers: {
-      //     Authorization: "Bearer " + props.accessToken,
-      //   },
-      // });
-
-      // Finally, mark workspace creation as complete
-      // await axios.patch(GET_USER, {
-      //   onboarding: {
-      //     workspace_create: true,
-      //     workspace_invite: true
-      //   },
-      // }, {
-      //   headers: {
-      //     Authorization: "Bearer " + props.accessToken,
-      //   },
-      // });
-
-      // On Success Refresh /onboarding page
       location.reload()
     } catch (error: any) {
       console.error(error);
@@ -108,32 +70,30 @@ const CreateProfile = (props: { accessToken: string }) => {
   };
 
   return (
-    <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="relative hidden h-full flex-col bg-[#18181B] p-10 text-white lg:flex border-r border-white/10">
-        <div className="absolute inset-0 bg-[#18181B]" />
-        <div className="relative z-20 flex items-center text-lg font-medium">
-          <Image
-            src="/new_logo.png"
-            alt="Logo"
-            width={40}
-            height={40}
-            className="mr-2"
-          />
-          march
-        </div>
-        <div className="relative z-20 mt-auto">
-          <blockquote className="space-y-2">
-            <p className="text-lg">
-              &ldquo;Create your workspace and start collaborating with your team. It's simple, efficient, and incredibly powerful.&rdquo;
-            </p>
-            <footer className="text-sm text-muted-foreground">Get Started</footer>
-          </blockquote>
-        </div>
-      </div>
-      <div className="relative p-4 lg:p-8 h-full flex items-center bg-[#09090B]">
-        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:30px_30px]" />
-        <div className="relative mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <div className="flex flex-col space-y-2 text-center">
+    <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
+      <header className="flex items-center justify-between px-6 py-3 border-b border-white/10">
+        <span className="text-white font-medium">
+          userArray
+        </span>
+        <nav className="flex items-center gap-6">
+          <button 
+            onClick={() => window.open('https://github.com/sajdakabir/userarray', '_blank')}
+            className="text-sm text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          >
+            GitHub
+          </button>
+          <button 
+            onClick={() => window.open('https://userarray.com/changelog', '_blank')}
+            className="text-sm bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-md text-white transition-colors cursor-pointer"
+          >
+            Demo
+          </button>
+        </nav>
+      </header>
+
+      <main className="flex-1 flex items-center justify-center -mt-24">
+        <div className="w-full max-w-[320px] space-y-4">
+          <div className="text-center space-y-1">
             <h1 className="text-2xl font-semibold tracking-tight text-white">
               Complete your profile
             </h1>
@@ -142,57 +102,53 @@ const CreateProfile = (props: { accessToken: string }) => {
             </p>
           </div>
 
-          <div className="grid gap-6">
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="firstName" className="text-zinc-100">
-                  First Name
-                </Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="John"
-                  autoComplete="given-name"
-                  className="bg-zinc-950/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-400 focus-visible:ring-zinc-500 focus-visible:ring-offset-0"
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="workspaceSlug" className="text-zinc-100">
-                  Last Name
-                </Label>
-                <Input
-                  id="workspaceSlug"
-                  name="workspaceSlug"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Last Name"
-                  className="bg-zinc-950/50 border-zinc-800 text-zinc-100 placeholder:text-zinc-400 focus-visible:ring-zinc-500 focus-visible:ring-offset-0"
-                />
-                {/* <p className="text-xs text-zinc-400">
-                  Only lowercase letters, numbers, and hyphens allowed
-                </p> */}
-                {error && (
-                  <p className="text-sm text-destructive">{error}</p>
-                )}
-              </div>
-
-              <Button 
-                onClick={handleSubmit}
-                disabled={loading}
-                className="w-full bg-zinc-50 text-zinc-900 hover:bg-zinc-200"
-              >
-                {loading && (
-                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-zinc-900 border-t-transparent" />
-                )}
-                Next
-              </Button>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName" className="text-sm text-zinc-400">
+                First Name
+              </Label>
+              <Input
+                id="firstName"
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="John"
+                autoComplete="given-name"
+                className="bg-[#0C0C0C] border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-zinc-500 focus-visible:ring-offset-0 h-9"
+              />
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="lastName" className="text-sm text-zinc-400">
+                Last Name (optional)
+              </Label>
+              <Input
+                id="lastName"
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Doe"
+                autoComplete="family-name"
+                className="bg-[#0C0C0C] border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-zinc-500 focus-visible:ring-offset-0 h-9"
+              />
+              {error && (
+                <p className="text-sm text-destructive">{error}</p>
+              )}
+            </div>
+
+            <Button 
+              onClick={handleSubmit}
+              disabled={loading}
+              className="w-full bg-white text-black hover:bg-zinc-100 h-9 font-normal"
+            >
+              {loading && (
+                <div className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-black border-t-transparent" />
+              )}
+              Continue
+            </Button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -51,7 +51,7 @@ const UserSchema = new Schema({
             type: Schema.Types.Boolean,
             default: false
         },
-        linner_connect: {
+        linear_connect: {
             type: Schema.Types.Boolean,
             default: false
         },

@@ -3,11 +3,11 @@ import axios from "axios";
 import { FC, useCallback, useEffect, useState } from "react";
 
 
-type LinnerProps = {
+type LinearProps = {
   token: string;
 };
 
-const LinnerConnect: FC<LinnerProps> = ({ token }) => {
+const LinearConnect: FC<LinearProps> = ({ token }) => {
 
   const [accessLinearToken, setAccessLinearToken] = useState<string | null>(null);
 
@@ -50,6 +50,6 @@ const LinnerConnect: FC<LinnerProps> = ({ token }) => {
   );
 };
 
-export default LinnerConnect;
+export default LinearConnect;
 
 

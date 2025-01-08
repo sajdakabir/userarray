@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { ACCESS_TOKEN, MAX_AGE, LINNER_TOKEN } from '@/utils/constants/cookie';
+import { ACCESS_TOKEN, MAX_AGE, LINEAR_TOKEN } from '@/utils/constants/cookie';
 
 export async function GET(request: any) {
   try {
@@ -57,7 +57,7 @@ export async function GET(request: any) {
     const accessTokenData = await accessTokenResponse.json();
 
 
-    cookies().set(LINNER_TOKEN, accessTokenData.accessToken, {
+    cookies().set(LINEAR_TOKEN, accessTokenData.accessToken, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -68,7 +68,7 @@ export async function GET(request: any) {
     console.log('accessTokenData', accessTokenData);
     const data = {
       onboarding: {
-        linner_connect: true, // Send the value as false as in Postman
+        linear_connect: true, // Send the value as false as in Postman
       },
     };
     
@@ -84,14 +84,9 @@ export async function GET(request: any) {
       }
     );
     const dataUser=await updateUser.json();
-    console.log('updateUser', dataUser);
 
     if (updateUser.status === 200) {
-      console.log("hi");
-
-
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/onboarding`);
-
     }
 
 

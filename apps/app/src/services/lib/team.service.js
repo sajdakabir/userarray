@@ -42,7 +42,7 @@ export const updateTeam = async (name, workspace, updatedData) => {
     return updateTeam;
 };
 
-export const findTeamByLinearId = async (linearTeamId) => {
-    const team = await Team.findOne({ linearTeamId });
+export const findTeamByLinearId = async (linearTeamId, userId) => {
+    const team = await Team.findOne({ linearTeamId , createdBy: userId});
     return team;
 };

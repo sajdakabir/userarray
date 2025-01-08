@@ -70,8 +70,6 @@ export const getLinearTeams = async (accessToken) => {
 };
 
 export const fetchTeamIssues = async (linearToken, linearTeamId) => {
-    console.log("fetching issues")  
-    console.log(linearToken, linearTeamId)
     const response = await axios.post(
         'https://api.linear.app/graphql',
         {
@@ -140,9 +138,9 @@ export const fetchTeamIssues = async (linearToken, linearTeamId) => {
     return issues;
 };
 
-export const saveIssuesToDatabase = async (issues, linearTeamId) => {
+export const saveIssuesToDatabase = async (issues, linearTeamId, userId) => {
     try {
-        const team = await findTeamByLinearId(linearTeamId);
+        const team = await findTeamByLinearId(linearTeamId, userId);
         if (!team) {
             throw new Error("Team not found");
         }
@@ -189,8 +187,8 @@ export const saveIssuesToDatabase = async (issues, linearTeamId) => {
               } else {
                 // Create a new issue
                 const newIssue = new Issue({
-                  linearId: id,
                   source: "linear",
+                  linearId: id,
                   title,
                   description,
                   number,
@@ -220,6 +218,7 @@ export const saveIssuesToDatabase = async (issues, linearTeamId) => {
         throw error;
     }
 };
+
 
 export const fetchCurrentCycle = async (linearToken, teamId) => {
     const response = await axios.post(

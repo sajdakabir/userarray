@@ -5,7 +5,6 @@ import { environment } from "../../loaders/environment.loader.js";
 export const getAccessTokenController = async (req, res, next) => {
     
     const { code } = req.query;
-    console.log('code', code);
     
     const workspace = res.locals.workspace;
     if (!code) {

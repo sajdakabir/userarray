@@ -1,12 +1,38 @@
 "use client";
 
+import { FC, useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
-const LinearConnect = (props: { accessToken: string }) => {
-  const handleAuthenticate = () => {
-    // TODO: Implement Linear authentication
-    console.log("Authenticating with Linear...");
-  };
+type LinearProps = {
+  token: string;
+};
+
+const LinearConnect: FC<LinearProps> = ({ token }) => {
+  const [accessLinearToken, setAccessLinearToken] = useState<string | null>(null);
+
+  const handleAuthenticate = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/auth/linear`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("response saju : ", response.data);
+      const { authUrl } = response.data;
+
+      console.log("Redirecting to Linear OAuth URL:");
+      window.location.href = authUrl;
+    } catch (error) {
+      console.error("Error in initiating Linear OAuth login:", error);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (accessLinearToken) {
+      alert(accessLinearToken); // This will alert the token once it's available
+    }
+  }, [accessLinearToken]);
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
@@ -98,12 +124,12 @@ const LinearConnect = (props: { accessToken: string }) => {
             >
               Authenticate with Linear
             </Button>
-            <button 
-              onClick={() => {/* Handle skip */}}
+      <button
+              onClick={() => window.location.href = '/dashboard'}
               className="w-full text-sm text-zinc-400 hover:text-white transition-colors"
-            >
+      >
               I'll do this later
-            </button>
+      </button>
           </div>
         </div>
       </main>

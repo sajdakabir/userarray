@@ -87,21 +87,20 @@ const ItemCard: FC<ItemCardProps> = ({ token, item, compact }) => {
                 {item.title}
               </p>
 
-              {!compact ? (
-                <>
-                  {item.description !== "<p></p>" ? (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: truncateString(item.description, 22),
-                      }}
-                      className="text-hx text-focus-text"
-                    />
-                  ) : // <span className="text-hx text-focus-text line-through">
-                  //   No description
-                  // </span>
-                  null}
-                </>
-              ) : null}
+              <>
+                {item && item.description && item.description !== "<p></p>" ? (
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: truncateString(item.description, 22),
+                    }}
+                    className="text-hx text-focus-text"
+                  />
+                ) : (
+                  <span className="text-hx text-focus-text line-through">
+                    No description
+                  </span>
+                )}
+              </>
 
               <div className="mt-2 flex justify-between items-center text-focus-text">
                 <div

@@ -13,7 +13,7 @@ const Plans = ({ params }: { params: { space: string; slug: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get(ACCESS_TOKEN);
   const accessToken = token?.value;
-
+  
   if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
     return redirect("/");
   }

@@ -13,6 +13,7 @@ type PastCycleItemProps = {
 };
 
 const PastCycleItem: FC<PastCycleItemProps> = ({ item, space }) => {
+
   const slug = userStore((state) => state.slug);
   const stateStorage = dataStore((state) => state.stateStorage);
 

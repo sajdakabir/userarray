@@ -6,13 +6,13 @@ interface MyComponentProps {
 }
 
 type PriorityIconProps = {
-  value: string;
+  value: Number;
   color: string;
 };
 
 export const GetPriority: FC<PriorityIconProps> = ({ value, color }) => {
   // Find the effort that matches the value
-  const prio = efforts.find((prio) => prio.value === value);
+  const prio = efforts.find((prio) => prio.value === value.toString());
   // If a matching effort was found, render the icon
   if (prio) {
     const Icon = prio.icon;

@@ -10,7 +10,8 @@ import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
 import { getPendingInvitations } from "@/server/fetchers/workspace/get-invitations";
 import ManageWorkspace from "@/views/onboarding/ManageWorkspace";
 import CreateWorkspace from "@/views/onboarding/CreateWorkspace";
-import LinnerConnect from "@/views/onboarding/LinnerConnect";
+import LinearConnect from "@/views/onboarding/LinearConnect";
+import TeamCreate from "@/views/onboarding/TeamCreate";
 
 export const metadata: Metadata = {
   title: "onboarding",
@@ -49,10 +50,17 @@ const Onboard = async () => {
     );
   }
   
-  if (!user.response.onboarding?.linner_connect) {
+  if (!user.response.onboarding?.linear_connect) {
     
     return (
-      <LinnerConnect token={accessToken}  />
+      <LinearConnect token={accessToken}  />
+    );
+  }
+
+  if (!user.response.onboarding?.team_Create) {
+    
+    return (
+      <TeamCreate token={accessToken}  />
     );
   }
   

@@ -14,6 +14,7 @@ export const createTeam = async (teamData, workspace) => {
     }
     workspace.teams.push(team._id);
     workspace.integration.linear.teamId = linearTeamId;
+    workspace.integration.linear.team = team._id;
     await workspace.save();
     return team;
 };
@@ -41,7 +42,7 @@ export const updateTeam = async (name, workspace, updatedData) => {
     return updateTeam;
 };
 
-export const findTeamByLinearId = async (linearTeamId) => {
-    const team = await Team.findOne({ linearTeamId });
+export const findTeamByLinearId = async (linearTeamId, userId) => {
+    const team = await Team.findOne({ linearTeamId , createdBy: userId});
     return team;
 };

@@ -1,7 +1,11 @@
-import { getAccessToken, getLinearTeams, fetchCurrentCycle } from "../../services/lib/linear.service.js";
+import { getAccessToken, getLinearTeams, fetchCurrentCycle, handleLinearWebhookEvent } from "../../services/lib/linear.service.js";
+import crypto from "crypto";
+import { environment } from "../../loaders/environment.loader.js";
 
 export const getAccessTokenController = async (req, res, next) => {
+    
     const { code } = req.query;
+    
     const workspace = res.locals.workspace;
     if (!code) {
         return res
@@ -36,4 +40,24 @@ export const getLinearIssuesController = async (req, res, next) => {
     
     const hmm = await fetchCurrentCycle("", "");
     res.status(200).json({ hmm });
+}
+
+export const handleLinearWebhook = async (req, res, next) => {
+    const rawBody = req.body.toString();
+    const payload = JSON.parse(rawBody);
+    const signature = crypto
+        .createHmac("sha256", environment.LINER_WEBHOOK_SECRET)
+        .update(rawBody)
+        .digest("hex");
+    if (signature !== req.headers["linear-signature"]) {
+        res.sendStatus(400);
+        return;
+    }
+    try {
+        await handleLinearWebhookEvent(payload);
+        res.status(200).send("Webhook event processed");
+    } catch (err) {
+        next(err);
+    }
+
 }

@@ -9,6 +9,7 @@ const IssueSchema = new Schema(
         default: () => uuid()
     },
     linearId: { type: String},
+    source: { type: String},
     title: { type: String, required: true },
     description: { type: String },
     number: { type: Number },
@@ -20,6 +21,7 @@ const IssueSchema = new Schema(
       {
         id: { type: String },
         name: { type: String },
+        color: { type: String },
       },
     ],
     dueDate: { type: Date },

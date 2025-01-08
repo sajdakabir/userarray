@@ -96,7 +96,7 @@ const SideFooter = () => {
               />
             ) : (
               <div className="text-[10px] h-5 w-5 bg-less-highlight text-black font-semibold rounded-md grid place-content-center">
-                {user.firstName ? GetAvatarFromName(user.firstName) : ''}
+                {user.firstName ? GetAvatarFromName(user.firstName, user.lastName ?? '') : ''}
               </div>
             )}
             {user.firstName}

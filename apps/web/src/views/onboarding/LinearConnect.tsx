@@ -59,7 +59,7 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
       </header>
 
       <main className="flex-1 flex items-center justify-center -mt-24">
-        <div className="w-full max-w-[320px] space-y-4">
+        <div className="w-full max-w-[420px] space-y-4">
           <div className="text-center space-y-1">
             <div className="flex justify-center mb-4">
               <div className="p-3">
@@ -75,23 +75,23 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
               Connect with Linear
             </h1>
             <p className="text-sm text-zinc-400">
-              Automate issue workflow when tasks are created and updated
+              mirror your Linear issues to userArray public board
             </p>
           </div>
 
           <div className="space-y-4">
             <div className="bg-[#0C0C0C] border border-zinc-800 rounded-lg p-4 space-y-3">
               <div className="flex items-start gap-3">
-                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 fill-current" />
-                <p className="text-sm text-zinc-300">Linear automatically syncs issue status and updates in real-time.</p>
+                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 flex-shrink-0" />
+                <p className="text-sm text-zinc-300">fully customizable two way sync issues, status and lebels in real-time.</p>
               </div>
               <div className="flex items-start gap-3">
-                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 fill-current" />
-                <p className="text-sm text-zinc-300">Track progress and collaborate with your team seamlessly.</p>
+                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 flex-shrink-0" />
+                <p className="text-sm text-zinc-300">let your users and contibutors view and comment on issues without needing to give them access to Linear.</p>
               </div>
               <div className="flex items-start gap-3">
-                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 fill-current" />
-                <p className="text-sm text-zinc-300">Linear will not require additional permissions.</p>
+                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 flex-shrink-0" />
+                <p className="text-sm text-zinc-300">one click convert any feedback, commments into linear issues and send them to triage</p>
               </div>
             </div>
 

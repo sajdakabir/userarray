@@ -15,6 +15,10 @@ import getEverything from "@/server/fetchers/workspace/get-everything";
 import { produce } from "immer";
 import { MyItems } from "@/lib/types/Items";
 import { MemberDayBoard, MyTodayResponse } from "@/lib/types/TodayBoard";
+import getMyTeams from "@/server/fetchers/teams/getMyTeams";
+import { StateTeam } from "@/lib/types/Teams";
+import getAllIssue from "@/server/fetchers/issue/getAllLinearIssue";
+import { Issue, IssueStatus } from "@/lib/types/Issue";
 
 
 /**
@@ -74,7 +78,9 @@ export type work = {
    * It includes the name, slug, and members of each workspace.
    */
   workspaces: Workspace[];
-
+  myTeams: StateTeam[];
+  issueStatus: IssueStatus[];
+  allLinearIssues: Issue[];
   /**
    * The state storage is a collection of data that is used to store the state of the application.
    * It includes information about the workspace, such as the name, members, spaces, and items.
@@ -104,6 +110,8 @@ export type work = {
    * @returns {Promise<boolean>} - Returns a promise that resolves to true if workspaces are fetched successfully, otherwise false.
    */
   fetchWorkspaces: (token: string) => Promise<boolean>;
+  fetchMyTeams: (token: string) => Promise<boolean>;
+  fetchAllIssues: (token: string, teamId: string) => Promise<boolean>;
 
   /**
    * Fetches the current user's today's items and note for a given workspace and sets the dayBoards state array with only current user's dayBoard.
@@ -215,10 +223,14 @@ export const userStore = create<userData>()(
 
 // This data will be available in the global state store but not in the local storage
 export const dataStore = create<work>()((set) => ({
+
   user: null,
   workspaces: [],
   stateStorage: null,
   dayBoards: [],
+  myTeams: [],
+  issueStatus: [],
+  allLinearIssues: [],
 
   fetchUser: async (token: string) => {
     const user: UserResponse | null = await getUser(token);
@@ -230,6 +242,7 @@ export const dataStore = create<work>()((set) => ({
   },
 
   fetchWorkspaces: async (token: string) => {
+
     const workspaces: UserWorkspaces | null = await getAllWorkspaces(token);
     if (workspaces) {
       set(() => ({ workspaces: workspaces.response }));
@@ -237,7 +250,39 @@ export const dataStore = create<work>()((set) => ({
     }
     return false;
   },
+  fetchMyTeams: async (token: string) => {
 
+
+    const workspaceName = localStorage.getItem('workspace_slug');
+    if (!workspaceName) {
+      console.error('Workspace slug not found in localStorage');
+      return false;
+    }
+    const my_teams = await getMyTeams(token, `workspaces/${workspaceName}/teams`);
+    if (my_teams && my_teams !== null) {
+      set((state) => ({ ...state, myTeams: my_teams }));  // Use the array directly
+      return true;
+    }
+    console.error('Failed to fetch teams or invalid response');
+    return false;
+  },
+
+  fetchAllIssues: async (token: string, teamId: string) => {
+    const workspaceName = localStorage.getItem('workspace_slug');
+    if (!workspaceName) {
+      console.error('Workspace slug not found in localStorage');
+      return false;
+    }
+    const all_issues = await getAllIssue(token, `workspaces/${workspaceName}/teams/${teamId}/issues`);
+    if (all_issues && all_issues !== null) {
+      const uniqueIssueStatuses = Array.from(new Map(all_issues.map(({ state }) => [state.id, state])).values());
+      set(() => ({ issueStatus: uniqueIssueStatuses }));  // Use the unique array directly
+      set((state) => ({...state, allLinearIssues: all_issues }));  // Use the array directly
+
+    }
+    console.error('Failed to fetch teams or invalid response');
+    return false;
+  },
   fetchCurrentUserToday: async (token: string, slug: string) => {
     try {
       const { data }: { data: MyTodayResponse } = await axios.get(

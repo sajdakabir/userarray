@@ -10,10 +10,11 @@ import { useRouter } from "next/navigation";
 import ItemDialog from "./ItemDialog";
 import ItemDropDown from "./ItemDropDown";
 import { Cycle } from "@/lib/types/Cycle";
+import { Issue } from "@/lib/types/Issue";
 
 type ItemCardProps = {
   token: string;
-  item: Item;
+  item: Issue;
   compact?: boolean;
 };
 
@@ -47,13 +48,13 @@ const ItemCard: FC<ItemCardProps> = ({ token, item, compact }) => {
 
   const spaceIndex = useMemo(() => {
     if (!stateStorage) return -1;
-    return stateStorage.spaces.findIndex((space) => space._id === item.space);
+    // return stateStorage.spaces.findIndex((space) => space._id === item.space);
   }, [item, stateStorage]);
 
   const thisCycle = useMemo<Cycle | undefined>(() => {
     if (!stateStorage) return undefined;
-    if (item.cycles.length === 0) return undefined;
-    return findCycle(stateStorage.spaces[spaceIndex].cycles, item.cycles[0]);
+    // if (item.cycles.length === 0) return undefined;
+    // return findCycle(stateStorage.spaces[spaceIndex].cycles, item.cycles[0]);
   }, [item, spaceIndex, stateStorage]);
 
   if (!stateStorage) return null;
@@ -71,19 +72,19 @@ const ItemCard: FC<ItemCardProps> = ({ token, item, compact }) => {
           onDragStart={handleDragStart}
           className="group flex flex-row item w-64 text-focus-text gap-3 px-3 py-2"
         >
-          <GetStatus value={item.status} />
+          <GetStatus value={item.state.name} />
 
           <div
-            onClick={() =>
-              router.push(
-                `/${slug}/${spaces[spaceIndex].name}/item/${item._id}`
-              )
-            }
+            // onClick={() =>
+            //   router.push(
+            //     `/${slug}/${spaces[spaceIndex].name}/item/${item._id}`
+            //   )
+            // }
             className="grow active:scale-100 duration-0"
           >
             <div className="text-left select-none">
               <p className="font-medium text-focus-text-hover text-hx">
-                {item.name}
+                {item.title}
               </p>
 
               {!compact ? (
@@ -106,10 +107,11 @@ const ItemCard: FC<ItemCardProps> = ({ token, item, compact }) => {
                 <div
                   className={`flex items-center gap-1 px-[6px] py-[2px] text-sm rounded-md opacity-70 group-hover:opacity-100 duration-300`}
                 >
-                  {item.effort ? (
+                  {item.priority ? (
                     <div className="text-[10px] h-5 leading-none flex items-center gap-x-1 px-1 py-[2px] rounded-sm border border-divider hover:bg-gray-600/30 hover:text-focus-text-hover">
-                      <GetPriority value={item.effort} color={"none"} />{" "}
-                      {item.effort.charAt(0).toUpperCase()}
+                      <GetPriority value={item.priority} color={"none"} />{" "}
+                      {/* {item.effort.charAt(0).toUpperCase()} */}
+                      {item.priority}
                     </div>
                   ) : null}
                   {thisCycle ? (
@@ -119,12 +121,12 @@ const ItemCard: FC<ItemCardProps> = ({ token, item, compact }) => {
                   ) : null}
                 </div>
                 <span className="text-xs text-focus-text">
-                  {spaces[spaceIndex].identifier}-{item.sequenceId}
+                  {/* {spaces[spaceIndex].identifier}-{item.sequenceId} */}
                 </span>
               </div>
             </div>
           </div>
-          <ItemDropDown token={token} space={spaces[spaceIndex]} item={item} />
+          {/* <ItemDropDown token={token} space={spaces[spaceIndex]} item={item} /> */}
         </div>
 
         {/* <ItemDialog

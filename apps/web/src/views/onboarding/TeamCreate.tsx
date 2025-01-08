@@ -25,7 +25,6 @@ const TeamCreate: FC<TeamCreateProps> = async ({ token }) => {
 
   return (
     <div>
-      <h3>Linear Teams:</h3>
       <SelectTeam token={token} response={response} />
     </div>
   );

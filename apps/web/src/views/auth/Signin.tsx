@@ -19,6 +19,7 @@ const Signin = () => {
   const isSignUp = searchParams.get("mode") === "signup";
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errortext, setErrorText] = useState<string>("");
@@ -63,12 +64,18 @@ const Signin = () => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
-      setLoading(true);
-      await LoginWithGoogle(codeResponse.code);
-      setLoading(false);
+      setGoogleLoading(true);
+      try {
+        await LoginWithGoogle(codeResponse.code);
+      } catch (error) {
+        console.error("Google login failed:", error);
+      } finally {
+        setGoogleLoading(false);
+      }
     },
     onError: () => {
       console.error("Google login failed");
+      setGoogleLoading(false);
     },
     flow: "auth-code",
   });
@@ -99,111 +106,96 @@ const Signin = () => {
         <div className="w-full max-w-[320px] space-y-4">
           <div className="text-center space-y-1">
             <h1 className="text-2xl font-semibold tracking-tight text-white">
-              {isSignUp ? "Create your account" : "Sign in to your account"}
+              {isSignUp ? "Create your account" : "Welcome back"}
             </h1>
             <p className="text-sm text-zinc-400">
-              {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
-              <button onClick={toggleMode} className="text-white hover:text-zinc-300">
-                {isSignUp ? "Sign in" : "Sign up"}
-              </button>
+              {isSignUp
+                ? "Create an account to get started"
+                : "Sign in to your account to continue"}
             </p>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             <Button
               variant="outline"
               type="button"
-              disabled={loading}
+              disabled={googleLoading}
               onClick={() => googleLogin()}
               className="w-full bg-[#0C0C0C] border border-zinc-800 text-white hover:bg-zinc-900 hover:text-zinc-100 h-9 font-normal"
             >
               <div className="flex items-center justify-center gap-2">
-                <Image
-                  src="/google-colored.svg"
-                  alt="Google"
-                  width={16}
-                  height={16}
-                />
+                {googleLoading ? (
+                  <div className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                ) : (
+                  <Image
+                    src="/google-colored.svg"
+                    alt="Google"
+                    width={16}
+                    height={16}
+                  />
+                )}
                 <span>Sign {isSignUp ? "up" : "in"} with Google</span>
               </div>
             </Button>
 
-            <div className="relative py-3">
+            <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-zinc-800" />
+                <span className="w-full border-t border-white/10" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-[#0C0C0C] px-2 text-zinc-500">Or continue with</span>
+                <span className="bg-[#0C0C0C] px-2 text-zinc-400">Or continue with</span>
               </div>
             </div>
 
             <form onSubmit={handleLoginWithEmail} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm text-zinc-400">
-                  Work Email
+                  Email address
                 </Label>
                 <Input
                   id="email"
                   name="email"
-                  placeholder="name@example.com"
                   type="email"
-                  autoCapitalize="none"
+                  placeholder="name@example.com"
                   autoComplete="email"
-                  autoCorrect="off"
-                  disabled={loading}
-                  onChange={() => setErrorText("")}
-                  className={`${
-                    errortext ? "ring-destructive" : ""
-                  } bg-[#0C0C0C] border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-zinc-500 focus-visible:ring-offset-0 h-9`}
+                  className="bg-[#0C0C0C] border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-zinc-500 focus-visible:ring-offset-0 h-9"
                 />
                 {errortext && (
-                  <p className="text-sm text-destructive">{errortext}</p>
+                  <p className="text-xs text-red-500">{errortext}</p>
                 )}
               </div>
 
-              {(success || error) && !magicsent && (
-                <div
-                  className={`${
-                    success ? "bg-emerald-500/15 text-emerald-500" : "bg-destructive/15 text-destructive"
-                  } flex items-center gap-2 rounded-md p-2 text-sm`}
-                >
-                  {success ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
-                  <span>
-                    {success
-                      ? "Magic Link sent to your email"
-                      : "Something went wrong!"}
-                  </span>
-                </div>
-              )}
-
-              <Button 
-                disabled={loading || magicsent} 
+              <Button
+                type="submit"
                 className="w-full bg-white text-black hover:bg-zinc-100 h-9 font-normal"
+                disabled={loading || magicsent}
               >
                 {loading && (
                   <div className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-black border-t-transparent" />
                 )}
-                {magicsent ? "Magic Link Sent" : "Send Magic Link"}
+                {magicsent ? (
+                  <CheckCircle2 className="mr-2 h-4 w-4 text-green-500" />
+                ) : error ? (
+                  <XCircle className="mr-2 h-4 w-4 text-red-500" />
+                ) : null}
+                {magicsent
+                  ? "Check your email"
+                  : `Sign ${isSignUp ? "up" : "in"} with email`}
               </Button>
             </form>
           </div>
 
-          <p className="text-center text-sm text-zinc-500">
-            By {isSignUp ? "signing up" : "signing in"}, you agree to our{" "}
-            <a
-              href="/terms"
-              className="text-zinc-400 hover:text-zinc-300"
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={toggleMode}
+              className="text-sm text-zinc-400 hover:text-white"
             >
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a
-              href="/privacy"
-              className="text-zinc-400 hover:text-zinc-300"
-            >
-              Privacy Policy
-            </a>
-          </p>
+              {isSignUp
+                ? "Already have an account? Sign in"
+                : "Don't have an account? Sign up"}
+            </button>
+          </div>
         </div>
       </main>
     </div>

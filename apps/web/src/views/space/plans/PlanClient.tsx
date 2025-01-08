@@ -10,64 +10,66 @@ import ItemCard from "@/components/smalls/items/ItemCard";
 import { UpdateItemsState } from "@/utils/state-manager/item-updater";
 import { Cycle } from "@/lib/types/Cycle";
 import { patchItem } from "@/server/patchers/item-patcher";
+import { usePathname } from "next/navigation";
 
 const PlanClient = (props: { token: string; slug: string; space: string }) => {
   // Global states
+  const pathname = usePathname();
   const setCurrent = userStore((state) => state.setCurrent);
   const stateStorage = dataStore((state) => state.stateStorage);
   const setStateStorage = dataStore((state) => state.setStateStorage);
-  const callMyTeams = dataStore((state) => state.fetchMyTeams);
-  const myTeams = dataStore((state) => state.myTeams);
+  // const callMyTeams = dataStore((state) => state.fetchMyTeams);
+  // const myTeams = dataStore((state) => state.myTeams);
   const allIssues = dataStore((state) => state.fetchAllIssues);
   const issueStatus = dataStore((state) => state.issueStatus);
   const allLinearIssues = dataStore((state) => state.allLinearIssues);
-
+  
   // Memoize the API call to fetch teams
-  const fetchMyTeams = useCallback(() => {
-    callMyTeams(props.token);
-  }, [callMyTeams, props.token]);
+  // const fetchMyTeams = useCallback(() => {
+  //   callMyTeams(props.token);
+  // }, [callMyTeams, props.token]);
 
-  useEffect(() => {
-    fetchMyTeams();
-  }, [fetchMyTeams]);
+  // useEffect(() => {
+  //   fetchMyTeams();
+  // }, [fetchMyTeams]);
 
   // Memoize the first team's ID
-  const teamId = useMemo(() => {
-    return myTeams.length > 0 ? myTeams[0]._id : null;
-  }, [myTeams]);
+  // const teamId = useMemo(() => {
+  //   return myTeams.length > 0 ? myTeams[0]._id : null;
+  // }, [myTeams]);
 
   useEffect(() => {
-    if (!teamId) return;
-    allIssues(props.token, teamId);
-  }, [teamId]);
+   
+    allIssues(props.token, pathname.split("/")[2]);
+  }, [pathname.split("/")[2]]);
 
   // Calculations
-  const spaceIndex = useMemo<number>(() => {
-    if (!stateStorage) return 0;
-    const spc_index = stateStorage.spaces.findIndex(
-      (space) => space.name === props.space
-    );
-    return spc_index;
-  }, [stateStorage, props.space]);
+  // const spaceIndex = useMemo<number>(() => {
+  //   if (!stateStorage) return 0;
+  //   const spc_index = stateStorage.spaces.findIndex(
+  //     (space) => space.name === props.space
+  //   );
+  //   return spc_index;
+  // }, [stateStorage, props.space]);
 
-  const current = useMemo<Cycle | undefined>(() => {
-    if (!stateStorage) return;
-    return stateStorage.spaces[spaceIndex].cycles.current;
-  }, [stateStorage, spaceIndex]);
+  // const current = useMemo<Cycle | undefined>(() => {
+  //   if (!stateStorage) return;
+  //   return stateStorage.spaces[spaceIndex].cycles.current;
+  // }, [stateStorage, spaceIndex]);
 
-  const upcoming = useMemo<Cycle[]>(() => {
-    if (!stateStorage) return [];
-    return stateStorage.spaces[spaceIndex].cycles.upcoming;
-  }, [stateStorage, spaceIndex]);
+  // const upcoming = useMemo<Cycle[]>(() => {
+  //   if (!stateStorage) return [];
+  //   return stateStorage.spaces[spaceIndex].cycles.upcoming;
+  // }, [stateStorage, spaceIndex]);
 
-  const [inboxItems, todoItems] = useMemo(() => {
-    if (!stateStorage) return [[], []];
-    const items_ = stateStorage.spaces[spaceIndex].items;
-    const items__ = items_.filter((itm) => itm.cycles.length === 0);
-    const inbox = items__.filter((item) => item.status === "inbox");
-    const todo = items__.filter((item) => item.status === "todo");
-    return [inbox, todo];
-  }, [stateStorage, spaceIndex]);
+  // const [inboxItems, todoItems] = useMemo(() => {
+  //   if (!stateStorage) return [[], []];
+  //   const items_ = stateStorage.spaces[spaceIndex].items;
+  //   const items__ = items_.filter((itm) => itm.cycles.length === 0);
+  //   const inbox = items__.filter((item) => item.status === "inbox");
+  //   const todo = items__.filter((item) => item.status === "todo");
+  //   return [inbox, todo];
+  // }, [stateStorage, spaceIndex]);
 
   // Local state
   const [inboxOpen, setInboxIsOpen] = useState<boolean>(false);
@@ -91,7 +93,7 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
       return;
     }
     item.status = "inbox";
-    UpdateItemsState(item, spaceIndex, stateStorage, setStateStorage, "update");
+    // UpdateItemsState(item, spaceIndex, stateStorage, setStateStorage, "update");
     await patchItem(item, props.slug, props.space, item.uuid, props.token);
   };
 
@@ -104,7 +106,7 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
       return;
     }
     item.status = "todo";
-    UpdateItemsState(item, spaceIndex, stateStorage, setStateStorage, "update");
+    // UpdateItemsState(item, spaceIndex, stateStorage, setStateStorage, "update");
     await patchItem(item, props.slug, props.space, item.uuid, props.token);
   };
 
@@ -125,7 +127,7 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
 
       <div className="overflow-hidden ml-16">
         <div className="text-sm flex justify-start gap-x-10 pr-8">
-          <div
+          {/* <div
             onDrop={handleInboxDrop}
             onDragOver={handleDragOver}
             className="w-[295px] flex flex-col"
@@ -174,7 +176,7 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
                 You don&apos;t have any inbox items yet
               </div>
             )}
-          </div>
+          </div> */}
 
           {issueStatus &&
             issueStatus.length !== 0 &&
@@ -208,13 +210,13 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
                           <Plus size={16} />
                         </button>
                       </DialogTrigger>
-                      <CreateItem
+                      {/* <CreateItem
                         token={props.token}
                         status={statuses[1]}
                         isPlan
                         space={stateStorage.spaces[spaceIndex]}
                         setIsOpen={setTodoIsOpen}
-                      />
+                      /> */}
                     </Dialog>
                   </div>
 

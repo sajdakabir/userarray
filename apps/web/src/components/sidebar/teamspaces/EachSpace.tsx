@@ -11,11 +11,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { userStore } from "@/utils/store/zustand";
 
-const EachSpace = (props: { space: CompactSpace; isOpen: boolean }) => {
+const EachSpace = (props: { space: CompactSpace; isOpen: boolean,key:string }) => {
   const [isOpen, setIsOpen] = useState<boolean>(props.isOpen);
   const slug = userStore((state) => state.slug);
   const active = userStore((state) => state.current);
-
+  
+  
   return (
     <Collapsible
       open={isOpen}
@@ -46,10 +47,10 @@ const EachSpace = (props: { space: CompactSpace; isOpen: boolean }) => {
             }  text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider`}
           >
             <Zap size={14} />
-            Active
+            Cycle
           </Link>
           <Link
-            href={`/${slug}/${props.space.name}/plan`}
+            href={`/${slug}/${props.space._id}/plan`}
             className={`${
               active === props.space.name + "-plan"
                 ? "bg-sidebar-button-active text-focus-text-hover"

@@ -21,8 +21,8 @@ const Workspace = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <Sidebar accessToken={accessToken} />
-      <div className="h-screen w-[1px] bg-divider" />
+      
+     
       <Today accessToken={accessToken} slug={params.slug} />
     </>
   );

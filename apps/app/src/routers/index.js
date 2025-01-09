@@ -4,6 +4,7 @@ import WorkspacesRouter from "./lib/workspace.route.js";
 import UserRouter from "./core/user.route..js";
 import IntegrationRouter from "./lib/integration.route.js";
 import { WorkspaceMiddleware } from "../middlewares/workspace.middleware.js";
+import PublicRoute from "../routers/lib/public.route.js"
 
 /**
  * @param {import('express').Application} app
@@ -14,6 +15,7 @@ const initRoutes = (app) => {
     app.use("/users", JWTMiddleware, UserRouter);
     app.use("/workspaces", JWTMiddleware, WorkspacesRouter);
     app.use("/linear", JWTMiddleware, IntegrationRouter);
+    app.use('/public', PublicRoute)
 
 
     app.get("/", async (req, res) => {

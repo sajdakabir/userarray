@@ -1,4 +1,5 @@
 import { getAllIssues, getIssue, updateIssue, getCurrentCycleIssue, getTeamCurrentCycleIssues } from "../../services/lib/issue.service.js"
+import { getWorkspaceProfile } from "../../services/lib/workspace.service.js"
 
 export const getAllIssuesController = async (req, res, next) => {
    try {
@@ -50,6 +51,17 @@ export const getTeamCurrentCycleIssuesController = async (req, res, next) => {
         const workspace = res.locals.workspace
         const { team } = req.params
         const issues = await getTeamCurrentCycleIssues(workspace, team)
+        res.status(200).json({ issues })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getAllPublicIssuesController = async (req,res,next) =>{
+    try {
+        const { workspace:slug }= req.params
+        const workspace = await getWorkspaceProfile(slug)
+        const issues = await getAllIssues(workspace, workspace.teams[0]._id);
         res.status(200).json({ issues })
     } catch (err) {
         next(err)

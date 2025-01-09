@@ -11,18 +11,21 @@ import { UpdateItemsState } from "@/utils/state-manager/item-updater";
 import { Cycle } from "@/lib/types/Cycle";
 import { patchItem } from "@/server/patchers/item-patcher";
 import { usePathname } from "next/navigation";
+import IssueCard from "@/components/issueCard/IsshueCard";
 
 const PlanClient = (props: { token: string; slug: string; space: string }) => {
   // Global states
+ 
+  // const setStateStorage = dataStore((state) => state.setStateStorage);
+  // const callMyTeams = dataStore((state) => state.fetchMyTeams);
+  // const myTeams = dataStore((state) => state.myTeams);
   const pathname = usePathname();
   const setCurrent = userStore((state) => state.setCurrent);
   const stateStorage = dataStore((state) => state.stateStorage);
-  const setStateStorage = dataStore((state) => state.setStateStorage);
-  // const callMyTeams = dataStore((state) => state.fetchMyTeams);
-  // const myTeams = dataStore((state) => state.myTeams);
   const allIssues = dataStore((state) => state.fetchAllIssues);
   const issueStatus = dataStore((state) => state.issueStatus);
   const allLinearIssues = dataStore((state) => state.allLinearIssues);
+  
   
   // Memoize the API call to fetch teams
   // const fetchMyTeams = useCallback(() => {
@@ -40,7 +43,7 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
 
   useEffect(() => {
    
-    allIssues(props.token, pathname.split("/")[2]);
+    allIssues(props.token, pathname.split("/")[2],'plan');
   }, [pathname.split("/")[2]]);
 
   // Calculations
@@ -84,31 +87,20 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
     e.preventDefault();
   };
 
-  const handleInboxDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    if (!stateStorage) return;
-    const data = e.dataTransfer.getData("text/plain");
-    let item = JSON.parse(data);
-    if (item.status === "inbox") {
-      return;
-    }
-    item.status = "inbox";
-    // UpdateItemsState(item, spaceIndex, stateStorage, setStateStorage, "update");
-    await patchItem(item, props.slug, props.space, item.uuid, props.token);
-  };
+  // const handleInboxDrop = async (e: React.DragEvent) => {
+  //   e.preventDefault();
+  //   if (!stateStorage) return;
+  //   const data = e.dataTransfer.getData("text/plain");
+  //   let item = JSON.parse(data);
+  //   if (item.status === "inbox") {
+  //     return;
+  //   }
+  //   item.status = "inbox";
+  //   // UpdateItemsState(item, spaceIndex, stateStorage, setStateStorage, "update");
+  //   await patchItem(item, props.slug, props.space, item.uuid, props.token);
+  // };
 
-  const handleTodoDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    if (!stateStorage) return;
-    const data = e.dataTransfer.getData("text/plain");
-    let item = JSON.parse(data);
-    if (item.status === "todo") {
-      return;
-    }
-    item.status = "todo";
-    // UpdateItemsState(item, spaceIndex, stateStorage, setStateStorage, "update");
-    await patchItem(item, props.slug, props.space, item.uuid, props.token);
-  };
+ 
 
   if (!stateStorage) return null;
 
@@ -125,8 +117,7 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
         </h4>
       </div>
 
-      <div className="overflow-hidden ml-16">
-        <div className="text-sm flex justify-start gap-x-10 pr-8">
+      
           {/* <div
             onDrop={handleInboxDrop}
             onDragOver={handleDragOver}
@@ -177,69 +168,11 @@ const PlanClient = (props: { token: string; slug: string; space: string }) => {
               </div>
             )}
           </div> */}
+          
+          <IssueCard  issue={allLinearIssues} issueStatus={issueStatus} />
 
-          {issueStatus &&
-            issueStatus.length !== 0 &&
-            issueStatus.map((state) => {
-              const taskCount = allLinearIssues.filter(issue => issue.state.id === state.id).length;
-              const allTasks = allLinearIssues.filter(issue => issue.state.id === state.id);
-              return (
-                <div
-                  key={state.id}
-                  onDrop={handleTodoDrop}
-                  onDragOver={handleDragOver}
-                  className="w-[295px] flex flex-col"
-                >
-                  <div className="flex items-center justify-between px-4">
-                    <h4 className="flex items-center gap-1 text-focus-text-hover font-semibold">
-                      <CheckSquare
-                        size={16}
-                        className="mr-1 text-less-highlight"
-                      />
-                      {state.name}
-                      <span className="text-nonfocus-text font-normal">
-                        {taskCount} tasks
-                      </span>
-                    </h4>
-                    <Dialog open={todoOpen} onOpenChange={setTodoIsOpen}>
-                      <DialogTrigger
-                        className="outline-none focus:outline-none"
-                        asChild={true}
-                      >
-                        <button className="text-focus-text-hover rounded-md hover:bg-sidebar p-1">
-                          <Plus size={16} />
-                        </button>
-                      </DialogTrigger>
-                      {/* <CreateItem
-                        token={props.token}
-                        status={statuses[1]}
-                        isPlan
-                        space={stateStorage.spaces[spaceIndex]}
-                        setIsOpen={setTodoIsOpen}
-                      /> */}
-                    </Dialog>
-                  </div>
-
-                  {taskCount !== 0 ? (
-                    <div className="flex flex-col gap-y-2 mt-6 pt-2 mb-1 pb-4 overflow-hidden hover:overflow-y-auto px-4 overflow-x-hidden">
-                      {allTasks.map((task) => (
-                        <ItemCard
-                          key={task.uuid}
-                          token={props.token}
-                          item={task}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="mt-8 text-focus-text text-sm ml-4">
-                      You don&apos;t have any todo items yet
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-        </div>
-      </div>
+         
+       
     </section>
   );
 };

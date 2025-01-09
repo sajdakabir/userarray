@@ -5,7 +5,7 @@ import {
   Workspace,
   WorkspaceMember,
 } from "@/lib/types/Workspaces";
-import { GET_USER, USER_WORKSPACE } from "@/utils/constants/api-endpoints";
+import { BACKEND_URL, GET_USER, USER_WORKSPACE } from "@/utils/constants/api-endpoints";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getUser } from "@/server/fetchers/user/getdetails";
@@ -19,6 +19,7 @@ import getMyTeams from "@/server/fetchers/teams/getMyTeams";
 import { StateTeam } from "@/lib/types/Teams";
 import getAllIssue from "@/server/fetchers/issue/getAllLinearIssue";
 import { Issue, IssueStatus } from "@/lib/types/Issue";
+import { error } from "console";
 
 
 /**
@@ -81,6 +82,8 @@ export type work = {
   myTeams: StateTeam[];
   issueStatus: IssueStatus[];
   allLinearIssues: Issue[];
+  cycleIssueStatus: IssueStatus[];
+  cycleAllLinearIssues: Issue[];
   /**
    * The state storage is a collection of data that is used to store the state of the application.
    * It includes information about the workspace, such as the name, members, spaces, and items.
@@ -111,7 +114,7 @@ export type work = {
    */
   fetchWorkspaces: (token: string) => Promise<boolean>;
   fetchMyTeams: (token: string) => Promise<boolean>;
-  fetchAllIssues: (token: string, teamId: string) => Promise<boolean>;
+  fetchAllIssues: (token: string, teamId: string, type: string) => Promise<boolean>;
 
   /**
    * Fetches the current user's today's items and note for a given workspace and sets the dayBoards state array with only current user's dayBoard.
@@ -231,7 +234,8 @@ export const dataStore = create<work>()((set) => ({
   myTeams: [],
   issueStatus: [],
   allLinearIssues: [],
-
+  cycleIssueStatus: [],
+  cycleAllLinearIssues: [],
   fetchUser: async (token: string) => {
     const user: UserResponse | null = await getUser(token);
     if (user) {
@@ -267,20 +271,36 @@ export const dataStore = create<work>()((set) => ({
     return false;
   },
 
-  fetchAllIssues: async (token: string, teamId: string) => {
+  fetchAllIssues: async (token, teamId, type) => {
     const workspaceName = localStorage.getItem('workspace_slug');
     if (!workspaceName) {
       console.error('Workspace slug not found in localStorage');
       return false;
     }
-    const all_issues = await getAllIssue(token, `workspaces/${workspaceName}/teams/${teamId}/issues`);
-    if (all_issues && all_issues !== null) {
-      const uniqueIssueStatuses = Array.from(new Map(all_issues.map(({ state }) => [state.id, state])).values());
-      set(() => ({ issueStatus: uniqueIssueStatuses }));  // Use the unique array directly
-      set((state) => ({...state, allLinearIssues: all_issues }));  // Use the array directly
-
+    let url;
+    if (type === "plan") {
+      url = `${BACKEND_URL}/workspaces/${workspaceName}/teams/${teamId}/issues`;
+    } else if (type === "cycle") {
+      url = `${BACKEND_URL}/workspaces/${workspaceName}/teams/${teamId}/cycles/current/issues`;
     }
-    console.error('Failed to fetch teams or invalid response');
+    if (!url) return false;
+
+    const all_issues = await getAllIssue(token, url);
+
+    if (all_issues) {
+      const uniqueIssueStatuses = Array.from(new Map(all_issues.map(({ state }) => [state.id, state])).values());
+
+
+      if (type === "plan") {
+        set(() => ({ issueStatus: uniqueIssueStatuses }));
+        set(() => ({ allLinearIssues: all_issues }));
+      } else if (type === "cycle") {
+        set(() => ({ cycleIssueStatus: uniqueIssueStatuses }));
+        set(() => ({ cycleAllLinearIssues: all_issues }));
+      }
+      return true;
+    }
+    console.error('Failed to fetch issues or invalid response');
     return false;
   },
   fetchCurrentUserToday: async (token: string, slug: string) => {

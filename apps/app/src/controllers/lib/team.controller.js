@@ -1,7 +1,8 @@
-import { getSpaceByIdentifier, daleteSpace } from "../../services/lib/workspace.service.js"
+import { getSpaceByIdentifier, daleteSpace, getWorkspaceProfile } from "../../services/lib/workspace.service.js"
 import { createTeam, getAllTeam, updateTeam } from "../../services/lib/team.service.js";
 import { CreateTeamPayload, UpdateTeamPayload } from "../../payloads/lib/team.payload.js";
 import { linearQueue } from "../../loaders/bullmq.loader.js";
+import { tryCatch } from "bullmq";
 
 export const createTeamController = async (req, res, next) => {
     try {
@@ -116,6 +117,23 @@ export const deleteTeamController = async (req, res, next) => {
         next(err);
     }
 };
+
+export const getAllPublicTeamsController = async ( req, res, next ) => {
+    const { workspace: slug } = req.params;
+        try{
+
+            const workspace = await getWorkspaceProfile(slug)
+
+            res.json({
+                status: 200,
+                response: workspace.teams
+            });
+
+        } catch(err){
+            next(err)
+        }
+
+}
 
 const daleteSpaceController = async (req, res, next) => {
     try {

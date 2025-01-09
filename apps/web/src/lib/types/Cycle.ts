@@ -1,5 +1,8 @@
 import { Space } from "./Spaces";
-
+export type assign={
+  id: string;
+  name: string;
+}
 export type Cycle = {
   _id: string;
   name: string;

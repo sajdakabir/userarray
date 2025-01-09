@@ -1,15 +1,16 @@
 import { Issue } from "@/lib/types/Issue";
-import { BACKEND_URL } from "@/utils/constants/api-endpoints";
 
-const getAllIssue = async (token: string, slug: string) => {
+const getAllIssue = async (token: string, url: string) => {
    
   try {
-   const response = await fetch(`${BACKEND_URL}/${slug}`, {
+   const response = await fetch(url, {
       headers: {
         Authorization: "Bearer " + token,
       },
     });
     if (!response.ok) {
+      console.log(response);
+      
       return null;
     }
 
@@ -17,6 +18,7 @@ const getAllIssue = async (token: string, slug: string) => {
     
     
     const issues:Issue[]=eve.issues;
+    
     return issues;
   } catch (error) {
     console.error("Error:", error);

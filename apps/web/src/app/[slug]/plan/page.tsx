@@ -5,8 +5,8 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ACCESS_TOKEN } from "@/utils/constants/cookie";
-import getPublicIssue from "@/server/fetchers/issue/getPublicIssue";
 import { BACKEND_URL } from "@/utils/constants/api-endpoints";
+import getPublicIssue from "@/server/fetchers/issue/getPublicIssue";
 // Dynamic SSG Page Component
 const Page = async ({ params }: { params: { slug: string } }) => {
   const cookieStore = cookies();
@@ -16,11 +16,11 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
     return redirect("/");
   }
+
   // Fetch issues with null handling
   const all_issues = await getPublicIssue(
-    `${BACKEND_URL}/public/${params.slug}/cycles/current/issues/`
+    `${BACKEND_URL}/public/workspaces/${params.slug}/issues/`
   );
-
 
   if (!all_issues) return redirect("/error?status=500");
   // Extract unique issue statuses safely
@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
-      <h1>Current Issues for {params.slug}</h1>
+      <h1>All Issues for {params.slug}</h1>
 
       <IssueCard
         issue={all_issues}

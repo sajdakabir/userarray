@@ -13,12 +13,12 @@ import { Cycle } from "@/lib/types/Cycle";
 import { Issue } from "@/lib/types/Issue";
 
 type ItemCardProps = {
-  token: string;
+  // token: string;
   item: Issue;
   compact?: boolean;
 };
 
-const ItemCard: FC<ItemCardProps> = ({ token, item, compact }) => {
+const ItemCard: FC<ItemCardProps> = ({  item, compact }) => {
   // Global states
   const stateStorage = dataStore((state) => state.stateStorage);
   const slug = userStore((state) => state.slug);

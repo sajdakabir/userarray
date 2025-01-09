@@ -57,6 +57,17 @@ export const getTeamCurrentCycleIssuesController = async (req, res, next) => {
     }
 }
 
+export const getPublicTeamCurrentCycleIssuesController = async ( req,res,next ) =>{
+    try {
+        const { workspace:slug }= req.params
+        const workspace = await getWorkspaceProfile(slug)
+        const issues = await getTeamCurrentCycleIssues(workspace, workspace.teams[0]._id)
+        res.status(200).json({ issues })
+    } catch (err) {
+        next(err)
+    }
+}
+
 export const getAllPublicIssuesController = async (req,res,next) =>{
     try {
         const { workspace:slug }= req.params

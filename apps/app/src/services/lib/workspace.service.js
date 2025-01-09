@@ -6,6 +6,7 @@ import { Item } from "../../models/lib/item.model.js";
 import { Label } from "../../models/lib/label.model.js";
 
 const getWorkspaceProfile = async (slug) => {
+
     const workspace = await Workspace.findOne({
         slug,
         isDeleted: false

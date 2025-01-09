@@ -10,6 +10,7 @@ import { getLabels, createLabels } from "../../services/lib/label.service.js";
 import { getCycles, createCycle } from "../../services/lib/cycle.service.js";
 import { getRoadmaps } from "../../services/lib/roadmap.service.js";
 import { CreateWorkspacePayload, UpdateWorkspacePayload } from "../../payloads/lib/workspace.payload.js";
+import { getWorkspaceProfile } from "../../services/lib/workspace.service.js";
 
 const WorkSpaceAvailabilityCheckController = async (req, res, next) => {
     try {
@@ -149,6 +150,21 @@ const deleteWorkspaceController = async (req, res, next) => {
         next(err);
     }
 };
+
+export const getWorkspacePublicProfileController = async(req, res, next) => {
+    try {
+    const { slug } = req.query
+
+    const workspace = await getWorkspaceProfile(slug);
+
+    res.json({
+        status: 200,
+        response: workspace
+    });
+} catch (err) {
+    next(err);
+}
+}
 
 const archiveWorkspaceController = async () => {};
 

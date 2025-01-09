@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { ACCESS_TOKEN } from "@/utils/constants/cookie";
 import { redirect } from "next/navigation";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
+import Sidebar from "@/components/sidebar/Sidebar";
 
 const SlugLayout = async ({
   children,
@@ -37,13 +38,14 @@ const SlugLayout = async ({
   }
 
   return (
-    <main className="h-screen flex gap-0 justify-between">
+    <main className="h-screen flex-col gap-0 justify-between">
       <DataProvider
         slug={params.slug}
         token={accessToken}
         workspces={workspaces.response}
         thisWorkspace={found}
       >
+         <Sidebar accessToken={accessToken}/>
         {children}
       </DataProvider>
     </main>

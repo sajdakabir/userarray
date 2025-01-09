@@ -53,60 +53,60 @@ const Spaces = (props: { accessToken: string }) => {
 
   if (!stateStorage) return null;
 
-  const updateStateStorage = async (space: SingleSpace) => {
-    let ws = workspaces;
-    const index = workspaces.findIndex((w) => w.slug === slug);
-    let work = ws[index];
-    work.teams.push(space.response);
-    ws[index] = work;
-    setWorkspaces(ws);
-    await buildStateStorage(props.accessToken, slug, work);
-  };
+  // const updateStateStorage = async (space: SingleSpace) => {
+  //   let ws = workspaces;
+  //   const index = workspaces.findIndex((w) => w.slug === slug);
+  //   let work = ws[index];
+  //   work.teams.push(space.response);
+  //   ws[index] = work;
+  //   setWorkspaces(ws);
+  //   await buildStateStorage(props.accessToken, slug, work);
+  // };
 
-  const createSpace = async () => {
-    if (!spaceName || !spaceId) {
-      setError("please enter a name and Identifier");
-      return;
-    } else if (spaceName.includes(" ") || spaceId.includes(" ")) {
-      setError("Name and identifier can't contain spaces!");
-      return;
-    }
+  // const createSpace = async () => {
+  //   if (!spaceName || !spaceId) {
+  //     setError("please enter a name and Identifier");
+  //     return;
+  //   } else if (spaceName.includes(" ") || spaceId.includes(" ")) {
+  //     setError("Name and identifier can't contain spaces!");
+  //     return;
+  //   }
 
-    setLoading(true);
+  //   setLoading(true);
 
-    try {
-      const { data } = await axios.post(
-        USER_WORKSPACE + `/${slug}/spaces`,
-        {
-          name: spaceName,
-          identifier: spaceId,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + props.accessToken,
-          },
-        }
-      );
-      toast({
-        title: "Space created successfully!",
-      });
-      isOpen(false);
-      // update the state storage with the latest data
-      await updateStateStorage(data);
-    } catch (error) {
-      const e = error as AxiosError;
-      console.error(e.message);
-      toast({
-        variant: "destructive",
-        title: "Something Went Wrong!",
-      });
-    }
-    setLoading(false);
-  };
+  //   try {
+  //     const { data } = await axios.post(
+  //       USER_WORKSPACE + `/${slug}/spaces`,
+  //       {
+  //         name: spaceName,
+  //         identifier: spaceId,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: "Bearer " + props.accessToken,
+  //         },
+  //       }
+  //     );
+  //     toast({
+  //       title: "Space created successfully!",
+  //     });
+  //     isOpen(false);
+  //     // update the state storage with the latest data
+  //     await updateStateStorage(data);
+  //   } catch (error) {
+  //     const e = error as AxiosError;
+  //     console.error(e.message);
+  //     toast({
+  //       variant: "destructive",
+  //       title: "Something Went Wrong!",
+  //     });
+  //   }
+  //   setLoading(false);
+  // };
 
   return (
     <div className="w-full">
-      <p className="text-xs my-2 mx-2 flex items-center justify-between text-nonfocus-text">
+      {/* <p className="text-xs my-2 mx-2 flex items-center justify-between text-nonfocus-text">
         <span>Teamspaces</span>
 
         <Dialog open={open} onOpenChange={isOpen}>
@@ -177,7 +177,7 @@ const Spaces = (props: { accessToken: string }) => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </p>
+      </p> */}
 
       {spaces.length > 0 ? (
         <div className="flex flex-col gap-2 w-full pr-2">
@@ -185,7 +185,7 @@ const Spaces = (props: { accessToken: string }) => {
             <EachSpace
               key={space._id}
               space={space}
-              isOpen={spaces.length < 3 ? true : false}
+              
             />
           ))}
         </div>

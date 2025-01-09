@@ -14,9 +14,12 @@ const SpaceLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <Sidebar accessToken={accessToken} />
-      <div className="h-screen w-[1px] bg-divider"></div>
+      {/* <Sidebar accessToken={accessToken}/> */}
+      {/* <div className="h-screen w-[1px] bg-divider"></div> */}
+      <div className="mt-3">
+
       {children}
+      </div>
     </>
   );
 };

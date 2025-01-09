@@ -2,44 +2,45 @@
 
 import { CompactSpace } from "@/lib/types/Spaces";
 import { ChevronDown, Zap, Archive, Orbit, Route } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+// import {
+//   Collapsible,
+//   CollapsibleContent,
+//   CollapsibleTrigger,
+// } from "@/components/ui/collapsible";
 import { useState } from "react";
 import Link from "next/link";
 import { userStore } from "@/utils/store/zustand";
 
-const EachSpace = (props: { space: CompactSpace; isOpen: boolean,key:string }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(props.isOpen);
+const EachSpace = (props: { space: CompactSpace;key:string }) => {
   const slug = userStore((state) => state.slug);
   const active = userStore((state) => state.current);
   
   
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="w-full text-focus-text"
-    >
-      <CollapsibleTrigger className="border border-transparent hover:border-divider hover:bg-sidebar-button-active hover:shadow-md hover:shadow-black/30 flex items-center justify-between rounded-lg px-2 py-1 w-full">
-        <p
-          className="flex items-center text-sm justify-start gap-2 group"
-          data-state={isOpen ? "open" : "closed"}
-        >
-          <ChevronDown
-            className="transition-transform duration-300 group-data-[state=open]:rotate-180"
-            size={18}
-          />
-          {props.space.name}
-        </p>
-      </CollapsibleTrigger>
+    // <Collapsible
+    //   // open={isOpen}
+    //   // onOpenChange={setIsOpen}
+    //   className="w-full text-focus-text"
+    // >
+    //   <CollapsibleTrigger className="border border-transparent hover:border-divider hover:bg-sidebar-button-active hover:shadow-md hover:shadow-black/30 flex items-center justify-between rounded-lg px-2 py-1 w-full">
+    //     <p
+    //       className="flex items-center text-sm justify-start gap-2 group"
+        
+    //     >
+    //       <ChevronDown
+    //         className="transition-transform duration-300 group-data-[state=open]:rotate-180"
+    //         size={18}
+    //       />
+    //       {props.space.name}
+    //     </p>
+    //   </CollapsibleTrigger>
 
-      <CollapsibleContent>
-        <div className="flex flex-col mt-2 pl-3 gap-[2px]">
+     
+     
+    // </Collapsible>
+        <div className="flex  mt-2 pl-3 gap-[2px]">
           <Link
-            href={`/${slug}/${props.space.name}/active`}
+            href={`/${slug}/${props.space._id}/cycle`}
             className={`${
               active === props.space.name + "-cycle"
                 ? "bg-sidebar-button-active text-focus-text-hover"
@@ -83,8 +84,6 @@ const EachSpace = (props: { space: CompactSpace; isOpen: boolean,key:string }) =
             Archive
           </Link> */}
         </div>
-      </CollapsibleContent>
-    </Collapsible>
   );
 };
 

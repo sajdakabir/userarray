@@ -39,13 +39,14 @@ const SideFooter = () => {
   };
 
   return (
-    <div className="flex flex-col bottom-0 left-0 max-w-72 bg-sidebar">
-      <div
+    <>
+    {/* // <div className="flex flex-col bottom-0 left-0 max-w-72 bg-sidebar"> */}
+      {/* <div
         id="seperator"
         className="h-[1px] bg-classic-button-hover mx-2 mb-1"
-      ></div>
+      ></div> */}
 
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none focus:outline-none group">
             <div className="flex text-focus-text hover:text-focus-text-hover items-center text-sm gap-2 px-2 py-[6px] w-full group-data-[state=open]:bg-sidebar-button-active group-data-[state=open]:text-focus-text-hover rounded-lg">
@@ -82,9 +83,26 @@ const SideFooter = () => {
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+      </div> */}
 
-      <DropdownMenu>
+
+<div className="flex text-sm font-medium items-center gap-2 text-white">
+            {user.avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={user.avatar}
+                alt="avatar"
+                className="h-5 w-5 rounded-md bg-avatar"
+              />
+            ) : (
+              <div className="text-[10px] h-5 w-5 bg-less-highlight text-black font-semibold rounded-md grid place-content-center">
+                {user.firstName ? GetAvatarFromName(user.firstName, user.lastName ?? '') : ''}
+              </div>
+            )}
+            {user.firstName}
+          </div>
+
+      {/* <DropdownMenu>
         <DropdownMenuTrigger className="mt-1 group border border-divider outline-none focus:outline-none text-focus-text hover:text-focus-text-hover flex justify-between items-center gap-2 px-2 py-[6px] w-full bg-sidebar-button-hover hover:bg-sidebar-button-active rounded-lg hover:shadow-md hover:shadow-black/45">
           <div className="flex text-sm font-medium items-center gap-2">
             {user.avatar ? (
@@ -132,8 +150,9 @@ const SideFooter = () => {
             </button>
           </div>
         </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+      </DropdownMenu> */}
+    {/* // </div> */}
+    </>
   );
 };
 

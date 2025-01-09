@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "@/utils/constants/api-endpoints";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronDown } from "lucide-react";
+import axios from "axios";
 
 type TeamCreateProps = {
   token: string;
@@ -31,29 +32,32 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+  
     if (!selectedTeamId || !workspaceName) {
       alert("Please select a team and ensure workspace is set.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     const teamObject = response.find(
       (team) => team.id.toString() === selectedTeamId
     );
+  
     if (!teamObject) {
       alert("Team not found in response.");
       setLoading(false);
       return;
     }
-
+  
     const data = {
       linearTeamId: teamObject.id,
       name: teamObject.name,
       key: teamObject.key,
     };
-
+  
     try {
+      // Create team via POST request
       const postResponse = await fetch(
         `${BACKEND_URL}/workspaces/${workspaceName}/teams/`,
         {
@@ -65,36 +69,69 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
           body: JSON.stringify(data),
         }
       );
-
-      if (postResponse.ok) {
-        router.push("/dashboard");
-      } else {
+  
+      if (!postResponse.ok) {
         alert("Failed to create team. Please try again.");
+       
+        return;
+      }
+  
+      // Update onboarding status
+      const onboardingData = {
+        onboarding: {
+          team_create: true,
+        },
+        hasFinishedOnboarding: true,
+      };
+  
+      // Sending PATCH request to update user information
+      const patchResponse = await axios.patch(
+        `${BACKEND_URL}/users/me`,
+        onboardingData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (patchResponse.status === 200) {
+        setLoading(false);
+        router.push("/workspace");
+      } else {
+        alert("Failed to update user onboarding.");
       }
     } catch (error) {
       console.error("Error creating team:", error);
       alert("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);  // Ensure loading is set to false after completion
     }
-    setLoading(false);
   };
+  
+  
 
-  const selectedTeam = response.find(team => team.id.toString() === selectedTeamId);
+  const selectedTeam = response.find(
+    (team) => team.id.toString() === selectedTeamId
+  );
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
       <header className="flex items-center justify-between px-5 py-2.5 border-b border-white/10">
-        <span className="text-white font-medium text-sm">
-          userArray
-        </span>
+        <span className="text-white font-medium text-sm">userArray</span>
         <nav className="flex items-center gap-4">
-          <button 
-            onClick={() => window.open('https://github.com/sajdakabir/userarray', '_blank')}
+          <button
+            onClick={() =>
+              window.open("https://github.com/sajdakabir/userarray", "_blank")
+            }
             className="text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer"
           >
             GitHub
           </button>
-          <button 
-            onClick={() => window.open('https://userarray.com/changelog', '_blank')}
+          <button
+            onClick={() =>
+              window.open("https://userarray.com/changelog", "_blank")
+            }
             className="text-xs bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-md text-white transition-colors cursor-pointer"
           >
             Demo
@@ -106,9 +143,9 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
         <div className="w-full max-w-[360px] space-y-5">
           <div className="flex flex-col items-center space-y-3">
             <div className="w-10 h-10">
-              <img 
-                src="/linear-white-logo.svg" 
-                alt="Linear Logo" 
+              <img
+                src="/linear-white-logo.svg"
+                alt="Linear Logo"
                 className="w-full h-full"
               />
             </div>
@@ -125,19 +162,40 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
           <div className="bg-white/5 rounded-md p-3 space-y-3">
             <div className="flex items-start gap-2.5">
               <div className="mt-0.5 text-white">
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    d="M20 6L9 17l-5-5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </div>
               <p className="text-xs text-white">
-                Issues and current cycle with status from your Linear team will be publicly visible at userarray/{workspaceName}
+                Issues and current cycle with status from your Linear team will
+                be publicly visible at userarray/{workspaceName}
               </p>
             </div>
 
             <div className="flex items-start gap-2.5">
               <div className="mt-0.5 text-white">
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    d="M20 6L9 17l-5-5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </div>
               <p className="text-xs text-white">
@@ -154,10 +212,14 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
                 className="w-full bg-[#0C0C0C] border border-zinc-800 rounded-md px-3 py-2 text-left text-white text-sm focus:outline-none focus:ring-2 focus:ring-white/10 transition-colors hover:bg-white/5"
               >
                 <div className="flex items-center justify-between">
-                  <span className={selectedTeam ? 'text-white' : 'text-zinc-500'}>
-                    {selectedTeam ? selectedTeam.name : 'Select a team'}
+                  <span
+                    className={selectedTeam ? "text-white" : "text-zinc-500"}
+                  >
+                    {selectedTeam ? selectedTeam.name : "Select a team"}
                   </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-zinc-400 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                  />
                 </div>
               </button>
 
@@ -188,7 +250,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
             </div>
 
             <div className="space-y-3">
-              <Button 
+              <Button
                 type="submit"
                 disabled={loading || !selectedTeamId}
                 className="w-full bg-white hover:bg-zinc-100 text-black h-8 text-sm font-normal disabled:opacity-50 disabled:cursor-not-allowed"
@@ -198,9 +260,9 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
                 )}
                 Continue with Linear
               </Button>
-              <button 
+              <button
                 type="button"
-                onClick={() => router.push('/dashboard')}
+                onClick={() => router.push("/dashboard")}
                 className="w-full text-xs text-zinc-400 hover:text-white transition-colors"
               >
                 I'll do this later
@@ -213,9 +275,9 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2">
         <div className="flex gap-1.5">
           {[...Array(7)].map((_, i) => (
-            <div 
-              key={i} 
-              className={`w-1 h-1 rounded-full ${i === 6 ? 'bg-white' : 'bg-white/20'}`}
+            <div
+              key={i}
+              className={`w-1 h-1 rounded-full ${i === 6 ? "bg-white" : "bg-white/20"}`}
             />
           ))}
         </div>

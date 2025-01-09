@@ -281,6 +281,7 @@ export const dataStore = create<work>()((set) => ({
     if (type === "plan") {
       url = `${BACKEND_URL}/workspaces/${workspaceName}/teams/${teamId}/issues`;
     } else if (type === "cycle") {
+
       url = `${BACKEND_URL}/workspaces/${workspaceName}/teams/${teamId}/cycles/current/issues`;
     }
     if (!url) return false;

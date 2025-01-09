@@ -1,3 +1,4 @@
+'use client'
 import { Item } from "@/lib/types/Items";
 import { FC, useMemo, useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
@@ -19,13 +20,14 @@ type ItemCardProps = {
 };
 
 const ItemCard: FC<ItemCardProps> = ({  item, compact }) => {
-  // Global states
-  const stateStorage = dataStore((state) => state.stateStorage);
-  const slug = userStore((state) => state.slug);
-  // Local states
-  const [open, setIsOpen] = useState<boolean>(false);
-
-  const router = useRouter();
+ 
+//   const stateStorage = dataStore((state) => state.stateStorage);
+//   const slug = userStore((state) => state.slug);
+//   // Local states
+//   const [open, setIsOpen] = useState<boolean>(false);
+//  console.log("item",item);
+ 
+//   const router = useRouter();
 
   // const [textColor, bgColor] = useMemo<[string, string]>(() => {
   //   let color = "text-red-600";
@@ -46,30 +48,32 @@ const ItemCard: FC<ItemCardProps> = ({  item, compact }) => {
   //   return [color, bgColor];
   // }, [item]);
 
-  const spaceIndex = useMemo(() => {
-    if (!stateStorage) return -1;
-    // return stateStorage.spaces.findIndex((space) => space._id === item.space);
-  }, [item, stateStorage]);
+  // const spaceIndex = useMemo(() => {
+  //   if (!stateStorage) return -1;
+  //   // return stateStorage.spaces.findIndex((space) => space._id === item.space);
+  // }, [item, stateStorage]);
 
-  const thisCycle = useMemo<Cycle | undefined>(() => {
-    if (!stateStorage) return undefined;
-    // if (item.cycles.length === 0) return undefined;
-    // return findCycle(stateStorage.spaces[spaceIndex].cycles, item.cycles[0]);
-  }, [item, spaceIndex, stateStorage]);
+  // const thisCycle = useMemo<Cycle | undefined>(() => {
+  //   if (!stateStorage) return undefined;
+  //   // if (item.cycles.length === 0) return undefined;
+  //   // return findCycle(stateStorage.spaces[spaceIndex].cycles, item.cycles[0]);
+  // }, [item, spaceIndex, stateStorage]);
 
-  if (!stateStorage) return null;
-  const spaces = stateStorage.spaces;
-  // Drag operation
-  const handleDragStart = (e: React.DragEvent) => {
-    e.dataTransfer.setData("text/plain", JSON.stringify(item));
-  };
+  // if (!stateStorage) return null;
+  // const spaces = stateStorage.spaces;
+  // // Drag operation
+  // const handleDragStart = (e: React.DragEvent) => {
+  //   e.dataTransfer.setData("text/plain", JSON.stringify(item));
+  // };
 
   return (
     <DropdownMenu>
-      <Dialog open={open} onOpenChange={setIsOpen}>
+      <Dialog 
+      // open={open} onOpenChange={setIsOpen}
+      >
         <div
           draggable={true}
-          onDragStart={handleDragStart}
+          // onDragStart={handleDragStart}
           className="group flex flex-row item w-64 text-focus-text gap-3 px-3 py-2"
         >
           <GetStatus value={item.state.name} />
@@ -113,11 +117,11 @@ const ItemCard: FC<ItemCardProps> = ({  item, compact }) => {
                       {item.priority}
                     </div>
                   ) : null}
-                  {thisCycle ? (
+                  {/* {thisCycle ? (
                     <div className="text-xs px-1 py-[1px] flex items-center gap-x-1 rounded-sm border border-divider hover:bg-gray-600/30 font-light hover:text-focus-text-hover">
                       <Zap size={12} /> {thisCycle.sequenceId}
                     </div>
-                  ) : null}
+                  ) : null} */}
                 </div>
                 <span className="text-xs text-focus-text">
                   {/* {spaces[spaceIndex].identifier}-{item.sequenceId} */}

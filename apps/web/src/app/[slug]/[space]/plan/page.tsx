@@ -19,11 +19,14 @@ const Plans = ({ params }: { params: { space: string; slug: string } }) => {
   }
 
   return (
+    <>
     <PlanClient
       token={accessToken}
       slug={params.slug}
       space={params.space}
-    />
+      />
+     
+      </>
   );
 };
 

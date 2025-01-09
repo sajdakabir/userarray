@@ -1,6 +1,5 @@
 "use client";
 
-import { CompactSpace } from "@/lib/types/Spaces";
 import { ChevronDown, Zap, Archive, Orbit, Route } from "lucide-react";
 // import {
 //   Collapsible,
@@ -10,8 +9,9 @@ import { ChevronDown, Zap, Archive, Orbit, Route } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { userStore } from "@/utils/store/zustand";
+import { StateTeam } from "@/lib/types/Teams";
 
-const EachSpace = (props: { space: CompactSpace;key:string }) => {
+const EachSpace = (props: { space: StateTeam;key:string }) => {
   const slug = userStore((state) => state.slug);
   const active = userStore((state) => state.current);
   

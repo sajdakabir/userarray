@@ -58,7 +58,7 @@ const Onboard = async () => {
   }
 
   if (!user.response.onboarding?.team_Create) {
-    
+      
     return (
       <TeamCreate token={accessToken}  />
     );

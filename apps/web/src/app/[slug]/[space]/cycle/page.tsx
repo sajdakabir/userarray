@@ -18,7 +18,6 @@ const Cycle = ({ params }: { params: { space: string; slug: string } }) => {
   if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
     return redirect("/");
   }
-
   return (
     <CycleClient
       token={accessToken}

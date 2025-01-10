@@ -8,10 +8,11 @@ import ItemCard from "../smalls/items/ItemCard";
 interface IssueCardProps {
   issue: Issue[];
   issueStatus: IssueStatus[];
-  token:string
+  token:string,
+  myWorkSpace:boolean
 }
 
-const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus,token }) => {
+const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus,token,myWorkSpace }) => {
   return (
     <div className="overflow-hidden ml-16">
       <div className="text-sm flex justify-start gap-x-10 pr-8">

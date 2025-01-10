@@ -49,8 +49,7 @@ const getCyclesController = async (req, res, next) => {
 export const getTeamCurrentCyclesController = async (req, res, next) => {
     try {
         const workspace = res.locals.workspace;
-        const { team } = req.params;
-        const cycles = await getTeamCurrentCycles(workspace._id, team);
+        const cycles = await getTeamCurrentCycles(workspace._id, workspace.teams[0]._id);
         res.json({
             status: 200,
             response: cycles

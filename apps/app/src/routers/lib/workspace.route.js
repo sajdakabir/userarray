@@ -59,14 +59,14 @@ router.route("/:workspace/teams/:team/").patch(updateTeamController) //done
 router.route("/:workspace/teams/:team/").delete(deleteTeamController) //done
 
 // cycle controllers below
-router.route("/:workspace/teams/:team/cycles/current/").get(getTeamCurrentCyclesController)
-router.route("/:workspace/teams/:team/cycles/current/issues/").get(getTeamCurrentCycleIssuesController)
+router.route("/:workspace/cycles/current/").get(getTeamCurrentCyclesController)
+router.route("/:workspace/cycles/current/issues/").get(getTeamCurrentCycleIssuesController)
 
 // Issue controllers below
-router.route("/:workspace/teams/:team/issues/").get(getAllIssuesController)
-router.route("/:workspace/teams/:team/issues/cycle").get(getCurrentCycleIssueController)
-router.route("/:workspace/teams/:team/issues/:issue/").get(getIssueController)
-router.route("/:workspace/teams/:team/issues/:issue/").patch(updateIssueController)
+router.route("/:workspace/issues/").get(getAllIssuesController)
+router.route("/:workspace/issues/cycle").get(getCurrentCycleIssueController)
+router.route("/:workspace/issues/:issue/").get(getIssueController)
+router.route("/:workspace/issues/:issue/").patch(updateIssueController)
 
 
 router.use("/:workspace/spaces/:space", SpaceMiddleware)

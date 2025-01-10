@@ -1,61 +1,64 @@
 "use client";
 
-import EachSpace from "./EachSpace";
 import { Orbit, Zap } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { dataStore } from "@/utils/store/zustand";
+import { useMemo, useState, useEffect } from "react";
+import Link from "next/link";
 
-const Spaces = (props: { accessToken: string }) => {
-  const router = useRouter();
-  const myTeams = dataStore((state) => state.myTeams);
-  const fetchTeam = dataStore((state) => state.fetchMyTeams);
+const Spaces = ({ accessToken }: { accessToken: string }) => {
   const [workspace, setWorkspace] = useState<string | null>(null);
 
+  // Memoize workspace and avoid re-renders
+  const memoizedWorkspace = useMemo(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("workspace_slug");
+    }
+    return null;
+  }, []);
+
   useEffect(() => {
-    const workspaceSlug = localStorage.getItem("workspace_slug");
-    if (workspaceSlug) {
-      setWorkspace(workspaceSlug);
-    } else {
-      router.push("/");
-      return; // Prevent further execution
-    }
-
-    if (props.accessToken) {
-      fetchTeam(props.accessToken);
-    }
-  }, [props.accessToken, router, fetchTeam]);
-
-  if (!myTeams.length) {
-    return (
-      <div className="flex items-center gap-3 text-sm text-zinc-600">
-        <button className="flex gap-1 mt-2 items-center" disabled>
-          <Zap size={14} /> Cycle
-        </button>
-        <button className="flex gap-1 mt-2 items-center" disabled>
-          <Orbit size={14} /> Plan
-        </button>
-      </div>
-    );
-  }
+    setWorkspace(memoizedWorkspace);
+  }, [memoizedWorkspace]);
 
   return (
     <div className="w-full">
-      {myTeams.length > 0 ? (
-        <div className="flex flex-col gap-2 w-full pr-2">
-          {myTeams.map((space) => (
-            <EachSpace space={space} key={space._id}  workspace={workspace ?? ""}  />
-          ))}
-        </div>
-      ) : (
-        <div className="pr-2 mt-16 max-w-60 flex flex-col gap-y-4 text-center text-focus-text text-sm">
-          <p className="px-4">Your workspace is empty!</p>
-          <button className="underline text-focus-text-hover">
-            Create a space
-          </button>
-          <p className="px-6">To organize your team works</p>
-        </div>
-      )}
+      <div className="flex mt-2 pl-3 gap-[2px]">
+        {/* Render only when workspace is available */}
+        {workspace ? (
+          <>
+            <Link
+              href={`/${workspace}/cycle`}
+              className="text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider"
+            >
+              <Zap size={14} />
+              Cycle
+            </Link>
+            <Link
+              href={`/${workspace}/plan`}
+              className="text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider"
+            >
+              <Orbit size={14} />
+              Plan
+            </Link>
+          </>
+        ) : (
+          <>
+            <button
+              disabled
+              className="text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent text-zinc-500"
+            >
+              <Zap size={14} />
+              Cycle
+            </button>
+            <button
+              disabled
+              className="text-hx text-zinc-500 flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent "
+            >
+              <Orbit size={14} />
+              Plan
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 };

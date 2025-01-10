@@ -47,8 +47,7 @@ export const getCurrentCycleIssueController = async (req, res, next) => {
 export const getTeamCurrentCycleIssuesController = async (req, res, next) => {
     try {
         const workspace = res.locals.workspace
-        const { team } = req.params
-        const issues = await getTeamCurrentCycleIssues(workspace, team)
+        const issues = await getTeamCurrentCycleIssues(workspace, workspace.teams[0]._id)
         res.status(200).json({ issues })
     } catch (err) {
         next(err)

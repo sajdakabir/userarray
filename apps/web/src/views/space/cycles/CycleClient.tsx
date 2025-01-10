@@ -1,36 +1,26 @@
 "use client";
 
-import { statuses } from "@/lib/types/Items";
-import { dataStore, userStore } from "@/utils/store/zustand";
-import { useEffect } from "react";
-
-import { usePathname } from "next/navigation";
+import { dataStore } from "@/utils/store/zustand";
 import { Orbit } from "lucide-react";
+import { useEffect, useRef } from "react";
+
+import { BACKEND_URL } from "@/utils/constants/api-endpoints";
 import IssueCard from "@/components/issueCard/IsshueCard";
 
-const CycleClient = (props: { token: string; slug: string; space: string }) => {
-  
-  const pathname = usePathname();
-  const setCurrent = userStore((state) => state.setCurrent);
+const CycleClient = ({ token, slug }: { token: string; slug: string }) => {
   const allIssues = dataStore((state) => state.fetchAllIssues);
-  const cycleIssueStatus = dataStore((state) => state.cycleIssueStatus);
-  const cycleAllLinearIssues = dataStore((state) => state.cycleAllLinearIssues);
-  
+  const issueStatus = dataStore((state) => state.cycleIssueStatus);
+  const allLinearIssues = dataStore((state) => state.cycleAllLinearIssues);
+
+  // Using useRef to avoid re-rendering
+  const workSpaceRef = useRef<boolean>(false);
+
   useEffect(() => {
-    allIssues(props.token, pathname.split("/")[2], "cycle");
-  }, [pathname.split("/")[2]]);
-
-  
- 
-  useEffect(() => {
-    setCurrent(`${props.space}-plan`);
-  }, [props.space, setCurrent]);
-
-  // Drag and Drop
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
+    const myWorkSpace = localStorage.getItem("workspace_slug") === slug;
+    workSpaceRef.current = myWorkSpace;
+    const url = token && myWorkSpace ? `${BACKEND_URL}/workspaces/${slug}/cycles/current/issues/`: `${BACKEND_URL}/public/${slug}/cycles/current/issues`;
+    allIssues(token, url, "cycle");
+  }, [token, slug]);
 
   return (
     <section className="h-screen flex flex-col gap-y-12 flex-grow right-0 bg-dashboard pt-8 z-50 ">
@@ -45,7 +35,12 @@ const CycleClient = (props: { token: string; slug: string; space: string }) => {
         </h4>
       </div>
 
-      <IssueCard issue={cycleAllLinearIssues} token={props.token} issueStatus={cycleIssueStatus} />
+      <IssueCard
+        token={token}
+        issue={allLinearIssues}
+        issueStatus={issueStatus}
+        myWorkSpace={workSpaceRef.current} // Using ref value without causing re-render
+      />
     </section>
   );
 };

@@ -7,7 +7,7 @@ import { getUser } from "@/server/fetchers/user/getdetails";
 import { UserResponse } from "@/lib/types/Users";
 
 export const metadata: Metadata = {
-  title: "March | Workspace",
+  title: "userarray | Workspace",
   description: "Workspace dashboard page",
 };
 

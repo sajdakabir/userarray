@@ -9,13 +9,7 @@ import { BACKEND_URL } from "@/utils/constants/api-endpoints";
 import getPublicIssue from "@/server/fetchers/issue/getPublicIssue";
 // Dynamic SSG Page Component
 const Page = async ({ params }: { params: { slug: string } }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
-
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
   // Fetch issues with null handling
   const all_issues = await getPublicIssue(

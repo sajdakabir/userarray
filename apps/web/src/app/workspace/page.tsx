@@ -12,13 +12,8 @@ export const metadata: Metadata = {
 };
 
 const Workspace = async () => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
   
   const user: UserResponse | null = await getUser(accessToken);
   

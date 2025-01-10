@@ -8,13 +8,8 @@ const SingleActive = ({
 }: {
   params: { space: string; slug: string; id: string };
 }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
 
   return (
     <ActiveClient token={accessToken} space={params.space} id={params.id} />

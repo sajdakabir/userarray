@@ -14,13 +14,7 @@ const Item = ({
 }: {
   params: { space: string; slug: string; item: string };
 }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
-
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
   return (
     <ItemClient token={accessToken} space={params.space} id={params.item} />

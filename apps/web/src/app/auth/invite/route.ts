@@ -9,15 +9,11 @@ export async function GET(request: Request) {
   const slug = searchParams.get("slug");
   const invitationId = searchParams.get("invitationId");
 
-  const cookieStore = cookies();
-  const toke = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = toke?.value;
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
+
 
   let redirectUrl = `/error?status=403&message=Invalid+invitation+link`;
 
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
 
   if (!slug || !invitationId) {
     return redirect(redirectUrl);

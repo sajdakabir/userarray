@@ -19,14 +19,7 @@ export const metadata: Metadata = {
 };
 
 const Onboard = async () => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
-
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
-
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
   const user: UserResponse | null = await getUser(accessToken);
   const workspaces: UserWorkspaces | null = await getAllWorkspaces(accessToken);
 
@@ -34,12 +27,6 @@ const Onboard = async () => {
     return redirect("/error?status=500");
   }
 
-  // If the user has already finished onboarding, redirect
-  // if (!user.response.lastWorkspace) {
-  //   return redirect("/workspace");
-  // }
-
-  // Check the user progress
   if (user.response.onboarding?.profile_complete===false) {
     return <CreateProfile accessToken={accessToken} />;
   }

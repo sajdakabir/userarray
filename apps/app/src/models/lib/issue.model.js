@@ -46,6 +46,10 @@ const IssueSchema = new Schema(
     linearTeamId: { type: String},
     team: { type: Schema.Types.ObjectId, ref: 'Team' },
     workspace: { type: Schema.Types.ObjectId, ref: 'Workspace' },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+  },
     isArchived: {
         type: Boolean,
         default: false

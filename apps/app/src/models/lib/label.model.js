@@ -21,10 +21,8 @@ const LabelSchema = new Schema({
         type: Number,
         default: 0
     },
-    space: {
-        type: Schema.Types.ObjectId,
-        ref: 'Space'
-        // required: true
+    linearTeamId: { 
+        type: String
     },
     workspace: {
         type: Schema.Types.ObjectId,

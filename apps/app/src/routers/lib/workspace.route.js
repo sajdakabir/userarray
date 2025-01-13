@@ -53,10 +53,6 @@ import {
 } from "../../controllers/lib/label.controller.js";
 
 import {
-  getItemActivityController,
-  getCycleActivityController,
-} from "../../controllers/lib/activity.controller.js";
-import {
   createItemCommentController,
   getItemCommentsController,
   updateItemCommentController,
@@ -139,16 +135,6 @@ router
   .route("/:workspace/spaces/:space/items/:item/")
   .delete(deleteItemController);
 
-
-// Item Activities controller
-router
-  .route("/:workspace/spaces/:space/items/:item/history/")
-  .get(getItemActivityController);
-
-// Cycle Activites controller
-router
-  .route("/:workspace/spaces/:space/cycles/:cycle/history/")
-  .get(getCycleActivityController);
 
 // Item Comments controllers
 router

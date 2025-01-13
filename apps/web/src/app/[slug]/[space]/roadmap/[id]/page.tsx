@@ -14,13 +14,8 @@ const Page = ({
 }: {
   params: { space: string; slug: string; id: string };
 }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
 
   const integerId = parseInt(params.id);
   if (isNaN(integerId)) {

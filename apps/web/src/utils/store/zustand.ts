@@ -114,7 +114,7 @@ export type work = {
    */
   fetchWorkspaces: (token: string) => Promise<boolean>;
   fetchMyTeams: (token: string) => Promise<boolean>;
-  fetchAllIssues: (token: string, teamId: string, type: string) => Promise<boolean>;
+  fetchAllIssues: (token: string, url: string, type: string) => Promise<boolean>;
 
   /**
    * Fetches the current user's today's items and note for a given workspace and sets the dayBoards state array with only current user's dayBoard.
@@ -226,7 +226,7 @@ export const userStore = create<userData>()(
 
 // This data will be available in the global state store but not in the local storage
 export const dataStore = create<work>()((set) => ({
-
+  
   user: null,
   workspaces: [],
   stateStorage: null,
@@ -271,20 +271,14 @@ export const dataStore = create<work>()((set) => ({
     return false;
   },
 
-  fetchAllIssues: async (token, teamId, type) => {
+  fetchAllIssues: async (token, url, type) => {
     const workspaceName = localStorage.getItem('workspace_slug');
     if (!workspaceName) {
       console.error('Workspace slug not found in localStorage');
       return false;
     }
-    let url;
-    if (type === "plan") {
-      url = `${BACKEND_URL}/workspaces/${workspaceName}/teams/${teamId}/issues`;
-    } else if (type === "cycle") {
-      url = `${BACKEND_URL}/workspaces/${workspaceName}/teams/${teamId}/cycles/current/issues`;
-    }
-    if (!url) return false;
-
+   
+    console.log("urldddd",url)
     const all_issues = await getAllIssue(token, url);
 
     if (all_issues) {

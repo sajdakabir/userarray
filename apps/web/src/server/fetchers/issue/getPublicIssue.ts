@@ -1,17 +1,16 @@
 import { Issue } from "@/lib/types/Issue";
 
-const getAllIssue = async (token: string | null, url: string): Promise<Issue[] | null> => {
+const getPublicIssue = async (url: string): Promise<Issue[] | null> => {
+    console.log("url",url)
     try {
         const response = await fetch(url, {
-          
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
             method: "GET",
-            next:{
-              revalidate:1000
-            }
-            
+            headers: {
+                "Content-Type": "application/json",
+            },
+            next: {
+                revalidate: 1000, // 1000 seconds for ISR (Incremental Static Regeneration)
+            },
         });
 
         if (!response.ok) {
@@ -20,21 +19,18 @@ const getAllIssue = async (token: string | null, url: string): Promise<Issue[] |
         }
 
         const data = await response.json();
-
-        // Ensure issues exist and match the expected type
+        
         if (!data.issues || !Array.isArray(data.issues)) {
             console.error("Invalid response format:", data);
             return null;
         }
 
-        // Type assertion for safety
-        const issues: Issue[] = data.issues;
-
-        return issues;
+        // Explicitly casting the data to Issue[]
+        return data.issues as Issue[];
     } catch (error) {
         console.error("Error fetching issues:", error);
         return null;
     }
 };
 
-export default getAllIssue;
+export default getPublicIssue;

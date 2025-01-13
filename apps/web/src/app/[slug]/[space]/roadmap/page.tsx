@@ -10,13 +10,8 @@ export const metadata: Metadata = {
 };
 
 const Roadmaps = ({ params }: { params: { space: string; slug: string } }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
 
   return (
     <RoadmapClient token={accessToken} slug={params.slug} space={params.space} />

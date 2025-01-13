@@ -10,13 +10,8 @@ export const metadata: Metadata = {
 };
 
 const page = ({ params }: { params: { id: string; slug: string } }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
 
   return (
     <Archives token={accessToken} spaceId={params.id} slug={params.slug} />

@@ -7,18 +7,13 @@ import { getUser } from "@/server/fetchers/user/getdetails";
 import { UserResponse } from "@/lib/types/Users";
 
 export const metadata: Metadata = {
-  title: "March | Workspace",
+  title: "userarray | Workspace",
   description: "Workspace dashboard page",
 };
 
 const Workspace = async () => {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ACCESS_TOKEN);
-  const accessToken = token?.value;
+  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
 
-  if (!cookieStore.has(ACCESS_TOKEN) || !accessToken) {
-    return redirect("/");
-  }
   
   const user: UserResponse | null = await getUser(accessToken);
   

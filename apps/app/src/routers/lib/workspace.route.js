@@ -20,6 +20,7 @@ import {
   getEverything,
 } from "../../controllers/lib/workspace.controller.js";
 import {
+  createIssuesController,
   getAllIssuesController,
   getIssueController,
   updateIssueController,
@@ -96,6 +97,7 @@ router
   .get(getTeamCurrentCycleIssuesController);
 
 // Issue controllers below
+router.route("/:workspace/issues/").post(createIssuesController);
 router.route("/:workspace/issues/").get(getAllIssuesController);
 router.route("/:workspace/issues/cycle").get(getCurrentCycleIssueController);
 router.route("/:workspace/issues/:issue/").get(getIssueController);

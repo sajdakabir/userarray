@@ -170,42 +170,7 @@ const getArchivedItemController = async (req, res, next) => {
     }
 }
 
-const getUserWorkSpaceItemsController = async (req, res, next) => {
-    try {
-        const workspace = res.locals.workspace;
-        const me = res.locals.user;
-        const inbox = await getUserWorkSpaceItems(workspace, me);
-        const today = await getUsersTodayWorkSpaceItems(workspace, me);
-        res.json({
-            status: 200,
-            response: {
-                inbox,
-                today
-            }
-        });
-    } catch (err) {
-        next(err);
-    }
-};
 
-const getUsersTodayWorkSpaceItemsController = async (req, res, next) => {
-    try {
-        const workspace = res.locals.workspace;
-        const me = res.locals.user;
-        const { current, overdue } = await getUsersTodayWorkSpaceItems(workspace, me);
-        const note = await getUserTodayNote(workspace._id, me._id);
-        res.json({
-            status: 200,
-            response: {
-                note,
-                current,
-                overdue
-            }
-        });
-    } catch (err) {
-        next(err);
-    }
-};
 
 const getMembersTodayWorkItemsControlle = async (req, res, next) => {
     try {
@@ -249,8 +214,6 @@ export {
     getArchivedItemController,
     unarchiveItemController,
     archiveItemController,
-    getUserWorkSpaceItemsController,
-    getUsersTodayWorkSpaceItemsController,
     getMembersTodayWorkItemsControlle,
     getMembersWorkItemsByDateControlle
 };

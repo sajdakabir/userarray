@@ -45,8 +45,6 @@ import {
   getArchivedItemController,
   unarchiveItemController,
   archiveItemController,
-  getUserWorkSpaceItemsController,
-  getUsersTodayWorkSpaceItemsController,
   getMembersTodayWorkItemsControlle,
   getMembersWorkItemsByDateControlle,
 } from "../../controllers/lib/item.controller.js";
@@ -58,7 +56,6 @@ import {
   deleteLabelController,
 } from "../../controllers/lib/label.controller.js";
 
-import { SpaceMiddleware } from "../../middlewares/space.middleware.js";
 import {
   getItemActivityController,
   getCycleActivityController,
@@ -69,16 +66,7 @@ import {
   updateItemCommentController,
   deleteItemCommentController,
   getItemCommentController,
-  createCycleCommentController,
-  getCycleCommentsController,
-  updateCycleCommentController,
-  getCycleCommentController,
-  deleteCycleCommentController,
 } from "../../controllers/lib/comment.controller.js";
-import {
-  createUpdateNoteController,
-  getMembersNoteController,
-} from "../../controllers/lib/note.controller.js";
 
 const router = Router();
 
@@ -125,7 +113,6 @@ router
 router
   .route("/:workspace/items/:member/:date/")
   .get(getMembersWorkItemsByDateControlle);
-router.route("/:workspace/notes/:member/:date/").get(getMembersNoteController);
 
 // Team controllers below
 router.route("/:workspace/teams/").post(createTeamController); //done

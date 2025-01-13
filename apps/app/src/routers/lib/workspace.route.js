@@ -35,15 +35,7 @@ import {
 import {
   getTeamCurrentCyclesController,
 } from "../../controllers/lib/cycle.controller.js";
-import {
-  createItemController,
-  getItemsController,
-  getItemController,
-  updateItemController,
-  deleteItemController,
-  getMembersTodayWorkItemsControlle,
-  getMembersWorkItemsByDateControlle,
-} from "../../controllers/lib/item.controller.js";
+
 import {
   createLabelController,
   getLabelsController,
@@ -51,14 +43,6 @@ import {
   updateLabelController,
   deleteLabelController,
 } from "../../controllers/lib/label.controller.js";
-
-import {
-  createItemCommentController,
-  getItemCommentsController,
-  updateItemCommentController,
-  deleteItemCommentController,
-  getItemCommentController,
-} from "../../controllers/lib/comment.controller.js";
 
 const router = Router();
 
@@ -98,13 +82,6 @@ router
 
 router.route("/:workspace/members/leave/").delete(leaveWorkspaceController);
 
-// Team members work item
-router
-  .route("/:workspace/items/:member/today/")
-  .get(getMembersTodayWorkItemsControlle);
-router
-  .route("/:workspace/items/:member/:date/")
-  .get(getMembersWorkItemsByDateControlle);
 
 // Team controllers below
 router.route("/:workspace/teams/").post(createTeamController); //done
@@ -123,35 +100,6 @@ router.route("/:workspace/issues/").get(getAllIssuesController);
 router.route("/:workspace/issues/cycle").get(getCurrentCycleIssueController);
 router.route("/:workspace/issues/:issue/").get(getIssueController);
 router.route("/:workspace/issues/:issue/").patch(updateIssueController);
-
-// Items controllers
-router.route("/:workspace/spaces/:space/items/").post(createItemController);
-router.route("/:workspace/spaces/:space/items/").get(getItemsController);
-router.route("/:workspace/spaces/:space/items/:item/").get(getItemController);
-router
-  .route("/:workspace/spaces/:space/items/:item/")
-  .patch(updateItemController);
-router
-  .route("/:workspace/spaces/:space/items/:item/")
-  .delete(deleteItemController);
-
-
-// Item Comments controllers
-router
-  .route("/:workspace/spaces/:space/items/:item/comments/")
-  .post(createItemCommentController);
-router
-  .route("/:workspace/spaces/:space/items/:item/comments/")
-  .get(getItemCommentsController);
-router
-  .route("/:workspace/spaces/:space/items/:item/comments/:comment/")
-  .patch(updateItemCommentController);
-router
-  .route("/:workspace/spaces/:space/items/:item/comments/:comment/")
-  .get(getItemCommentController);
-router
-  .route("/:workspace/spaces/:space/items/:item/comments/:comment/")
-  .delete(deleteItemCommentController);
 
 // Labels
 router.route("/:workspace/spaces/:space/labels/").post(createLabelController);

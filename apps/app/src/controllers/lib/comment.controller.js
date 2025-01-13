@@ -1,4 +1,4 @@
-import { createItemComment, getItemComments, getItemComment, updateItemComment, deleteItemComment, createCycleComment, getCycleComments, updateCycleComment, getCycleComment, deleteCycleComment } from "../../services/lib/comment.service.js";
+import { createItemComment, getItemComments, getItemComment, updateItemComment, deleteItemComment } from "../../services/lib/comment.service.js";
 
 const createItemCommentController = async (req, res, next) => {
     try {

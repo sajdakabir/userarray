@@ -1,5 +1,4 @@
 import { ItemComment } from "../../models/lib/item.model.js";
-import { CycleComment } from "../../models/lib/cycleComment.model.js"
 
 const createItemComment = async (data, space, user, item) => {
     const newComment = new ItemComment({
@@ -88,89 +87,11 @@ const deleteItemComment = async (space, commentId, item) => {
     return 'OK';
 }
 
-const createCycleComment = async (data, space, user, cycle) => {
-    const newComment = new CycleComment({
-        ...data,
-        space: space._id,
-        workspace: space.workspace,
-        cycle,
-        actor: user
-    });
-
-    const savedComment = await newComment.save();
-    return savedComment;
-}
-
-const getCycleComments = async (cycle, space) => {
-    const cycleComments = await CycleComment.find({
-        cycle,
-        space: space._id,
-        workspace: space.workspace
-    })
-
-    if (!cycleComments) {
-        const error = new Error("Cycle comments not found");
-        error.statusCode = 404;
-        throw error;
-    }
-
-    return cycleComments;
-}
-
-const updateCycleComment = async (cycle, updatedData, space, commentId) => {
-    const currentInstance = await CycleComment.findOne({
-        cycle,
-        uuid: commentId,
-        workspace: space.workspace,
-        space: space._id
-    });
-    if (!currentInstance) {
-        const error = new Error("Cycle comment not found");
-        error.statusCode = 500;
-        throw error;
-    }
-    Object.assign(currentInstance, updatedData);
-    await currentInstance.save();
-    return currentInstance;
-}
-
-const getCycleComment = async (cycle, commentId, space) => {
-    const cycleComment = await CycleComment.findOne({
-        uuid: commentId,
-        cycle,
-        space: space._id,
-        workspace: space.workspace
-    });
-
-    if (!cycleComment) {
-        const error = new Error("Cycle comment not found");
-        error.statusCode = 404;
-        throw error;
-    }
-
-    return cycleComment;
-}
-
-const deleteCycleComment = async (space, commentId, cycle) => {
-    await CycleComment.findOneAndDelete({
-        uuid: commentId,
-        cycle,
-        space: space._id,
-        workspace: space.workspace
-    });
-
-    return 'OK';
-}
 
 export {
     createItemComment,
     getItemComments,
     getItemComment,
     updateItemComment,
-    deleteItemComment,
-    createCycleComment,
-    getCycleComments,
-    updateCycleComment,
-    getCycleComment,
-    deleteCycleComment
+    deleteItemComment
 }

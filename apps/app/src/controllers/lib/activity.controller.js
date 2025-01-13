@@ -1,5 +1,5 @@
 import { getItemActivites, getCycleActivites, mergeAndSortActivitiesAndComments } from "../../services/lib/activity.service.js";
-import { getCycleComments, getItemComments } from "../../services/lib/comment.service.js";
+import {  getItemComments } from "../../services/lib/comment.service.js";
 
 const getItemActivityController = async (req, res, next) => {
     try {
@@ -31,14 +31,14 @@ const getCycleActivityController = async (req, res, next) => {
         const { cycle: id } = req.params;
         const space = res.locals.space;
         const cycleActivities = await getCycleActivites(id, space);
-        const cycleComments = await getCycleComments(id, space);
+        // const cycleComments = await getCycleComments(id, space);
         if (req.query.activityType === 'cycleProperty') {
             return res.status(200).json(cycleActivities);
         }
 
-        if (req.query.activityType === 'cycleComment') {
-            return res.status(200).json(cycleComments);
-        }
+        // if (req.query.activityType === 'cycleComment') {
+        //     return res.status(200).json(cycleComments);
+        // }
 
         const resultList = mergeAndSortActivitiesAndComments(cycleActivities, cycleComments);
 

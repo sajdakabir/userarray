@@ -27,7 +27,7 @@ const WorkspaceFinder = (props: { accessToken: string; user: User }) => {
     // Proceed if workspaces exist and workspaceName is found in localStorage
     if (workspaceName && myTeams !== null && myTeams.length > 0) {
       // Navigate to the correct workspace's cycle page
-      router.push(`/${workspaceName}/${myTeams[0]._id}/cycle`);
+      router.push(`/${workspaceName}/cycle`);
     }
   }, [myTeams]);
 

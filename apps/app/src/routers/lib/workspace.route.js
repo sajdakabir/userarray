@@ -33,17 +33,6 @@ import {
   deleteTeamController,
 } from "../../controllers/lib/team.controller.js";
 import {
-  createCycleController,
-  getCyclesController,
-  getCycleController,
-  updateCycleController,
-  deleteCycleController,
-  addItemsToCycleController,
-  addUserFavoriteCycleController,
-  getUserFavoriteCyclesController,
-  deleteUserFavoriteCycleController,
-  getCycleItemsController,
-  deleteCycleItemController,
   getTeamCurrentCyclesController,
 } from "../../controllers/lib/cycle.controller.js";
 import {

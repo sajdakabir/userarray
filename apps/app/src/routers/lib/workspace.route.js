@@ -41,10 +41,6 @@ import {
   getItemController,
   updateItemController,
   deleteItemController,
-  getArchivedItemsController,
-  getArchivedItemController,
-  unarchiveItemController,
-  archiveItemController,
   getMembersTodayWorkItemsControlle,
   getMembersWorkItemsByDateControlle,
 } from "../../controllers/lib/item.controller.js";
@@ -143,19 +139,6 @@ router
   .route("/:workspace/spaces/:space/items/:item/")
   .delete(deleteItemController);
 
-// Items Archives controllers
-router
-  .route("/:workspace/spaces/:space/archive/:item/")
-  .patch(archiveItemController);
-router
-  .route("/:workspace/spaces/:space/archivedItems/")
-  .get(getArchivedItemsController);
-router
-  .route("/:workspace/spaces/:space/archivedItems/:item/")
-  .get(getArchivedItemController);
-router
-  .route("/:workspace/spaces/:space/unarchive/:item/")
-  .patch(unarchiveItemController);
 
 // Item Activities controller
 router

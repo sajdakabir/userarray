@@ -5,7 +5,7 @@ import { generateRandomPassword, sendEmail, readTemplateFile } from "../../utils
 // import { generateJWTToken } from "../../utils/jwt.service.js";
 import { environment } from "../../loaders/environment.loader.js";
 import { createTeam } from "../../services/lib/team.service.js";
-import { getUserWorkSpaceItems, getItems, getArchivedItems } from "../../services/lib/item.service.js";
+import { getUserWorkSpaceItems, getItems } from "../../services/lib/item.service.js";
 import { getLabels, createLabels } from "../../services/lib/label.service.js";
 
 
@@ -471,7 +471,6 @@ const getEverything = async (req, res, next) => {
 
             const teamLabels = await getLabels(workspace._id, team._id);
             const teamItems = await getItems(workspace._id, team._id);
-            const teamArchivedItems = await getArchivedItems(workspace._id, team._id);
 
             teamData.labels = teamLabels;
             teamData.items = teamItems;

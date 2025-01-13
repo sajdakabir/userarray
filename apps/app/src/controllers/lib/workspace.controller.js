@@ -5,7 +5,6 @@ import { generateRandomPassword, sendEmail, readTemplateFile } from "../../utils
 // import { generateJWTToken } from "../../utils/jwt.service.js";
 import { environment } from "../../loaders/environment.loader.js";
 import { createTeam } from "../../services/lib/team.service.js";
-import { getUserWorkSpaceItems, getItems } from "../../services/lib/item.service.js";
 import { getLabels, createLabels } from "../../services/lib/label.service.js";
 
 
@@ -425,35 +424,12 @@ const leaveWorkspaceController = async (req, res, next) => {
         next(err);
     }
 };
-// const getEverything = async (req, res, next) => {
-//     try {
-//         const workspace = res.locals.workspace;
-//         const user = res.locals.user;
-//         const members = await getAllWorkspaceMembers(workspace._id);
-//         const my = await getUserWorkSpaceItems(workspace, user);
-//         const items = await getWorkSpaceItems(workspace);
-//         const labels = await getWorkSpaceLabels(workspace);
-//         res.json({
-//             status: 200,
-//             response: {
-//                 workspace,
-//                 members,
-//                 my,
-//                 labels,
-//                 items
-//             }
-//         });
-//     } catch (err) {
-//         next(err);
-//     }
-// };
 
 const getEverything = async (req, res, next) => {
     try {
         const workspace = res.locals.workspace;
         const user = res.locals.user;
         const members = await getAllWorkspaceMembers(workspace._id);
-        const inbox = await getUserWorkSpaceItems(workspace, user);
         const response = {
             status: 200,
             response: {

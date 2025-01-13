@@ -134,16 +134,4 @@ router.route("/:workspace/spaces/:space/labels/:label/").get(getLabelController)
 router.route("/:workspace/spaces/:space/labels/:label/").patch(updateLabelController)
 router.route("/:workspace/spaces/:space/labels/:label/").delete(deleteLabelController)
 
-// Roadmap controllers below
-router.route("/:workspace/spaces/:space/roadmaps/").post(createRoadmapController)
-router.route("/:workspace/spaces/:space/roadmaps/").get(getRoadmapsController)
-router.route("/:workspace/spaces/:space/roadmaps/:roadmap/").get(getRoadmapController)
-router.route("/:workspace/spaces/:space/roadmaps/:roadmap/").patch(updateRoadmapController)
-router.route("/:workspace/spaces/:space/roadmaps/:roadmap/").delete(deleteRoadmapController)
-
-// Roadmap Items controllers
-router.route("/:workspace/spaces/:space/roadmaps/:roadmap/roadmapItems/").post(addItemsToRoadmapController)
-router.route("/:workspace/spaces/:space/roadmaps/:roadmap/roadmapItems/").get(getRoadmapItemsController)
-router.route("/:workspace/spaces/:space/roadmaps/:roadmap/roadmapItems/:item/").delete(deleteRoadmapItemController)
-
 export default router;

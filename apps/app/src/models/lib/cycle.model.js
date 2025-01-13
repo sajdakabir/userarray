@@ -49,40 +49,8 @@ const CycleSchema = new Schema({
 });
 
 
-const CycleFavoriteSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    cycle: {
-        type: Schema.Types.ObjectId,
-        ref: 'Cycle',
-        required: true
-    }
-}, {
-    timestamps: true
-});
-
-CycleSchema.pre('save', async function (next) {
-    if (this.isNew) {
-        try {
-            const lastCycle = await Cycle.findOne({ space: this.space }).sort({ sequenceId: -1 }).limit(1);
-            this.sequenceId = lastCycle ? lastCycle.sequenceId + 1 : 1;
-            this.name = this.name || `Week ${this.sequenceId}`;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    next();
-});
-
 const Cycle = db.model('Cycle', CycleSchema, 'cycles')
-// const CycleItem = db.model('CycleItem', CycleItemSchema, 'cycle-items')
-const CycleFavorite = db.model('CycleFavorite', CycleFavoriteSchema, 'cycle-favorites')
 
 export {
-    Cycle,
-    CycleFavorite
+    Cycle
 }

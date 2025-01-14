@@ -60,3 +60,11 @@ export const getAllFeedback = async (workspace, team) => {
     });
     return issues;
 }
+
+export const searchIssue = async (workspace, query) => {
+    const issues = await Issue.find({
+        workspace: workspace._id,
+        $text: { $search: query }
+    });
+    return issues;
+}

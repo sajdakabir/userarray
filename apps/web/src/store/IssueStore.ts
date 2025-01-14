@@ -26,6 +26,7 @@ export const useIssueStore = create<UseIssueStore>((set) => ({
         try {
           
             const allIssues = await getAllIssue(token, url);
+           
 
             if (allIssues && allIssues.length > 0) {
                 const uniqueIssueStatuses = Array.from(
@@ -41,6 +42,7 @@ export const useIssueStore = create<UseIssueStore>((set) => ({
             }
         } catch (error) {
             console.error('Error fetching issues:', error);
+           
         } finally {
             set({ isLoading: false });
         }

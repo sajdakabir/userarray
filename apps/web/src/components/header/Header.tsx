@@ -40,7 +40,8 @@ const Header: React.FC<HeaderProps> = ({ user, workSpace }) => {
                   <Zap size={14} />
                   Feedback
                 </Link>:<Link
-                  href={`#`}
+                                  href={`/${path.split("/")[1]}/feedback`}
+
                   className="text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider text-zinc-100"
                 >
                   <Zap size={14} />

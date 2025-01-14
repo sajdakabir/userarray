@@ -1,45 +1,36 @@
-// FeedbackList.tsx
-import React from "react";
+'use client'
+import React, { useEffect } from "react";
 import FeedbackItem from "./FeedbackItem";
 import Sidebar from "./Sidebar";
 import FeedBackSubmit from "./FeedBackSubmit";
+import { useFeedBackStore } from "@/store/feebackStore";
+import { BACKEND_URL } from "@/config/apiConfig";
 
-interface FeedbackData {
-  title: string;
-  description: string;
-  user: string;
-  time: string;
-  votes: number;
-}
 
 interface FeedbackListProps {
-  token: string |null;
+  token: string;
   slug: string;
-  workspace: string;
+  workspace: boolean |null;
 }
 
-const feedbackData: FeedbackData[] = [
-  {
-    title: "Display links as links in comments",
-    description: "When I put a link in the comment, it's shown as text...",
-    user: "Vladimir Ikryanov",
-    time: "22 hours ago",
-    votes: 1,
-  },
-  {
-    title: "Embed widget",
-    description:
-      "Would be great if there's a widget embed especially for WordPress site.",
-    user: "Guest",
-    time: "2 days ago",
-    votes: 2,
-  },
-];
 
-const FeedbackList: React.FC<FeedbackListProps> = ({ token }) => {
+const FeedbackList: React.FC<FeedbackListProps> = ({ token,slug,workspace }) => {
+
+
+    const {isLoading,allFeedback,fetchAllFeedback}=useFeedBackStore()
+
+    useEffect(()=>{
+        const url = token && workspace 
+            ? `${BACKEND_URL}/public/workspaces/${slug}/feedback/`  
+            : `${BACKEND_URL}/public/workspaces/${slug}/feedback/`;  
+        
+        fetchAllFeedback(token, url);
+    },[slug, token, workspace])
+
+        if(isLoading) return <> ...Loading </>
   return (
     <>
-      {token?.slice(0, 2)}
+      
       <div className="max-w-4xl mx-auto flex justify-between my-5 items-center">
         <h1 className="text-white text-xl">All Feedback </h1>
         <div>
@@ -52,8 +43,8 @@ const FeedbackList: React.FC<FeedbackListProps> = ({ token }) => {
 
       <div className="max-w-4xl mx-auto grid grid-cols-12 gap-4">
         <div className="col-span-8">
-          {feedbackData.map((item, index) => (
-            <FeedbackItem key={index} {...item} />
+          {allFeedback.map((item, index) => (
+            <FeedbackItem key={index} token={token} feedback={item} />
           ))}
         </div>
         <div className="col-span-4 flex flex-col gap-4">

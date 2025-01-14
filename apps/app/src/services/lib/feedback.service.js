@@ -13,3 +13,12 @@ export const createFeedback = async (requestedData, user, workspace) => {
     const issue = await newIssue.save();
     return issue;
 }
+
+export const getAllFeedback = async (workspace, team) => {
+    const issues = await Issue.find({
+        workspace: workspace._id,
+        team: team,
+        source: "feedback"
+    });
+    return issues;
+}

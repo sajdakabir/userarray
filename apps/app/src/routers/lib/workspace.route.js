@@ -54,7 +54,8 @@ router
   .route("/workspace-slug-check/")
   .get(WorkSpaceAvailabilityCheckController); //done
 
-  router.route("/:workspace/feedback/").post(createFeedbackController)
+// feedback controllers below
+router.route("/:workspace/feedback/").post(createFeedbackController)
 
 router.use("/:workspace", WorkspaceMiddleware); //done
 router.route("/:workspace/").get(getWorkspaceProfileController); //done

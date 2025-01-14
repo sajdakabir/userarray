@@ -54,11 +54,12 @@ router
   .route("/workspace-slug-check/")
   .get(WorkSpaceAvailabilityCheckController); //done
 
+  router.route("/:workspace/feedback/").post(createFeedbackController)
+
 router.use("/:workspace", WorkspaceMiddleware); //done
 router.route("/:workspace/").get(getWorkspaceProfileController); //done
 router.route("/:workspace/").patch(updateWorkspaceController); //done
 router.route("/:workspace/").delete(deleteWorkspaceController); //done
-router.route("/:workspace/feedback/").post(createFeedbackController)
 
 // TODO: need to take a look according to userarray needs
 

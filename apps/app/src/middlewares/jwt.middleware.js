@@ -12,7 +12,6 @@ const JWTMiddleware = async (req, res, next) => {
         }
         const token = header.split(' ')[1]
         const checkIfBlacklisted = await BlackList.findOne({ token: token });
-        console.log("checkIfBlacklisted: ", checkIfBlacklisted);
         if (checkIfBlacklisted) {
             return res
                 .status(401)

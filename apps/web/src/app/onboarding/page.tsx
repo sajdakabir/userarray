@@ -37,15 +37,17 @@ const Onboard = async () => {
 
   // If workspace creation is already done, fetch workspaces
   const workSpace: Workspace |null = await getAllWorkspaces(accessToken);
-
+ 
+  
   if (workSpace===null) {
     return <CreateWorkspace accessToken={accessToken} />;
   }
-
-  if (!user.onboarding?.linear_connect) {
+  console.log('user',user);
+  
+  if (user.onboarding.linear_connect===false) {
     return <LinearConnect token={accessToken} />;
   }
-  if (!user.onboarding?.team_Create) {
+  if (user.onboarding.team_create===false) {
       
     return (
       <TeamCreate token={accessToken} workspace={workSpace?.slug} />

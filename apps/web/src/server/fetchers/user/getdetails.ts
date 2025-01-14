@@ -16,7 +16,6 @@ export const getUser = async (accessToken: string): Promise<User | null> => {
     }
 
     const data = await response.json();
-    console.log("data",data);
     
     const user: User = data.response; 
     return user;

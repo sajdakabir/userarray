@@ -54,7 +54,7 @@ const Onboard = async () => {
     );
   }
 
-  return redirect(`/${workSpace.slug}/cycle`);
+  return redirect(`/${workSpace.slug}/feedback`);
 };
 
 

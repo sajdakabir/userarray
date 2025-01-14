@@ -12,12 +12,14 @@ const JWTMiddleware = async (req, res, next) => {
         }
         const token = header.split(' ')[1]
         const checkIfBlacklisted = await BlackList.findOne({ token: token });
+        console.log("checkIfBlacklisted: ", checkIfBlacklisted);
         if (checkIfBlacklisted) {
             return res
                 .status(401)
                 .json({ message: "This token has expired. Please login" });
         }
         const payload = await verifyJWTToken(token);
+
         req.user = payload;
         next();
     } catch (err) {

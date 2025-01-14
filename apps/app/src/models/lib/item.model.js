@@ -46,12 +46,10 @@ const ItemSchema = new Schema({
     space: {
         type: Schema.Types.ObjectId,
         ref: 'Space'
-        // required: true
     },
     workspace: {
         type: Schema.Types.ObjectId,
         ref: 'Workspace'
-        // required: true
     },
     roadmaps: [{
         type: Schema.Types.ObjectId,

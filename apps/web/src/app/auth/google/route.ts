@@ -1,10 +1,10 @@
-import { BACKEND_URL } from "@/utils/constants/api-endpoints";
+import { BACKEND_URL } from "@/config/apiConfig";
 import {
   ACCESS_TOKEN,
   MAX_AGE,
   REFRESH_TOKEN,
-} from "@/utils/constants/cookie";
-import { LoginResponse } from "@/lib/types/Authentication";
+} from "@/config/constant/cookie";
+import { LoginResponse } from "@/types/Authentication";
 import axios, { AxiosError } from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -30,8 +30,12 @@ export async function GET(request: Request) {
       }
     );
     const res: LoginResponse = data;
-    console.log(res);
-    cookies().set(ACCESS_TOKEN, res.response.accessToken, {
+  
+
+    // Await the cookies and set the cookies
+    const cookieStore = await cookies();
+
+    cookieStore.set(ACCESS_TOKEN, res.response.accessToken, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -39,7 +43,7 @@ export async function GET(request: Request) {
       path: "/",
     });
 
-    cookies().set(REFRESH_TOKEN, res.response.refreshToken, {
+    cookieStore.set(REFRESH_TOKEN, res.response.refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -51,7 +55,7 @@ export async function GET(request: Request) {
   } catch (error) {
     const e = error as AxiosError;
     console.error(e.message);
-    console.log(e.response?.data);
+   
   }
 
   return redirect(redirectUrl);

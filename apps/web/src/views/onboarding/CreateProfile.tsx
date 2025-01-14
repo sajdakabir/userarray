@@ -2,10 +2,10 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { GET_USER } from "@/utils/constants/api-endpoints";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { GET_USER } from "@/config/apiConfig";
 
 const CreateProfile = (props: { accessToken: string }) => {
   const [loading, setLoading] = useState<boolean>(false);

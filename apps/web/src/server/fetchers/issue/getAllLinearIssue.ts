@@ -1,4 +1,4 @@
-import { Issue } from "@/lib/types/Issue";
+import { Issue } from "@/types/Issue";
 
 const getAllIssue = async (token: string | null, url: string): Promise<Issue[] | null> => {
     try {

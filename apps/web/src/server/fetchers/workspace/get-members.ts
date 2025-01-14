@@ -1,5 +1,5 @@
 import { USER_WORKSPACE } from "@/utils/constants/api-endpoints";
-import { WorkspaceMembers } from "@/lib/types/Workspaces";
+import { WorkspaceMembers } from "@/types/Workspaces";
 
 export const getMembers = async (accessToken: string, slug: string) => {
   let response: Response;

@@ -1,29 +1,27 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FC } from "react";
-import { LinearTeam } from "@/lib/types/linearTeam";
 import { useRouter } from "next/navigation";
-import { BACKEND_URL } from "@/utils/constants/api-endpoints";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronDown } from "lucide-react";
 import axios from "axios";
+import { LinearTeam } from "@/types/linearTeam";
+import { BACKEND_URL } from "@/config/apiConfig";
+import Image from "next/image";
 
 type TeamCreateProps = {
   token: string;
   response: LinearTeam[];
+  workspace:string
 };
 
-const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
+const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
   const router = useRouter();
   const [selectedTeamId, setSelectedTeamId] = useState<string>("");
-  const [workspaceName, setWorkspaceName] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const storedWorkspace = localStorage.getItem("workspace_slug");
-    setWorkspaceName(storedWorkspace);
-  }, []);
+  
 
   const handleTeamSelect = (teamId: string) => {
     setSelectedTeamId(teamId);
@@ -33,7 +31,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
   
-    if (!selectedTeamId || !workspaceName) {
+    if (!selectedTeamId || !workspace) {
       alert("Please select a team and ensure workspace is set.");
       return;
     }
@@ -59,7 +57,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
     try {
       // Create team via POST request
       const postResponse = await fetch(
-        `${BACKEND_URL}/workspaces/${workspaceName}/teams/`,
+        `${BACKEND_URL}/workspaces/${workspace}/teams/`,
         {
           method: "POST",
           headers: {
@@ -97,7 +95,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
   
       if (patchResponse.status === 200) {
         setLoading(false);
-        router.push("/workspace");
+        router.push(`/${workspace}/cycle`);
       } else {
         alert("Failed to update user onboarding.");
       }
@@ -143,9 +141,11 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
         <div className="w-full max-w-[360px] space-y-5">
           <div className="flex flex-col items-center space-y-3">
             <div className="w-10 h-10">
-              <img
+              <Image
                 src="/linear-white-logo.svg"
                 alt="Linear Logo"
+                width={40}
+                height={40}
                 className="w-full h-full"
               />
             </div>
@@ -154,7 +154,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
                 Sync Linear team with your userArray public board
               </h1>
               <p className="text-xs text-zinc-400">
-                Choose a team to connect with "{workspaceName}"
+                Choose a team to connect with {workspace}
               </p>
             </div>
           </div>
@@ -178,7 +178,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
               </div>
               <p className="text-xs text-white">
                 Issues and current cycle with status from your Linear team will
-                be publicly visible at userarray/{workspaceName}
+                be publicly visible at userarray/{workspace}
               </p>
             </div>
 
@@ -265,7 +265,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response }) => {
                 onClick={() => router.push("/dashboard")}
                 className="w-full text-xs text-zinc-400 hover:text-white transition-colors"
               >
-                I'll do this later
+                I will  do this later
               </button>
             </div>
           </form>

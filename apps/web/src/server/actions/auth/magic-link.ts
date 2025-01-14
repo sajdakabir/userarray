@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import axios, { AxiosError } from "axios";
-import { LoginResponse } from "@/lib/types/Authentication";
+import { LoginResponse } from "@/types/Authentication";
 import { MAGIC_VERIFY } from "@/utils/constants/api-endpoints";
 import {
   ACCESS_TOKEN,

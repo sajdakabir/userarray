@@ -1,16 +1,14 @@
-import { Issue } from "@/lib/types/Issue";
+import { Issue } from "@/types/Issue";
 
 const getPublicIssue = async (url: string): Promise<Issue[] | null> => {
-    console.log("url",url)
+
     try {
         const response = await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
-            next: {
-                revalidate: 1000, // 1000 seconds for ISR (Incremental Static Regeneration)
-            },
+            cache: "no-cache",
         });
 
         if (!response.ok) {

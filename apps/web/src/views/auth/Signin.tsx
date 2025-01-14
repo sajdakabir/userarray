@@ -1,17 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import axios, { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 import LoginWithGoogle from "@/server/actions/auth/google-login";
-import { MAGIC_LOGIN } from "@/utils/constants/api-endpoints";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useSearchParams, useRouter } from "next/navigation";
+import { MAGIC_LOGIN } from "@/config/constant/cookie";
 
 const Signin = () => {
   const searchParams = useSearchParams();

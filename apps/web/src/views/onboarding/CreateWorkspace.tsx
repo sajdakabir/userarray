@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { GET_USER, USER_WORKSPACE } from "@/utils/constants/api-endpoints";
+import { GET_USER, USER_WORKSPACE } from "@/config/apiConfig";
 
 const CreateWorkspace = (props: { accessToken: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -70,13 +70,9 @@ const CreateWorkspace = (props: { accessToken: string }) => {
       }, authHeader);
 
       location.reload();
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
-      } else {
-        setError("Something went wrong!");
-      }
+     
     }
     setLoading(false);
   };

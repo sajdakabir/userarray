@@ -1,5 +1,16 @@
 import { Issue } from "../../models/lib/issue.model.js"
 
+export const createIssues = async (workspace, data) => {
+    const newIssue = new Issue({
+        ...data,
+        source: "userarray",
+        workspace: workspace._id,
+        team: workspace.teams[0]._id
+    })
+    const savedIssue = await newIssue.save()
+    return savedIssue
+}
+
 export const getAllIssues = async (workspace, team) => {
    const issues = await Issue.find({
       workspace: workspace._id,

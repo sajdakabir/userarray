@@ -1,5 +1,4 @@
-import { createItem, getItem, updateItem, deleteItem, getItems, getArchivedItem, unarchiveItem, archiveItem, getArchivedItems, getUserWorkSpaceItems, getUsersTodayWorkSpaceItems, getMembersTodayWorkItems, getMembersWorkItemsByDate } from "../../services/lib/item.service.js";
-import { getUserTodayNote } from "../../services/lib/note.server.js";
+import { createItem, getItem, updateItem, deleteItem, getItems, getMembersTodayWorkItems, getMembersWorkItemsByDate } from "../../services/lib/item.service.js";
 import { itemActivityQueue } from "../../loaders/bullmq.loader.js";
 import moment from "moment-timezone";
 import { ItemPayload } from "../../payloads/lib/item.payload.js";
@@ -113,99 +112,6 @@ const deleteItemController = async (req, res, next) => {
     }
 }
 
-const getArchivedItemsController = async (req, res, next) => {
-    try {
-        const space = res.locals.space;
-
-        const groupedItemsMap = await getArchivedItems(space.workspace, space._id);
-
-        res.json({
-            status: 200,
-            response: groupedItemsMap
-        });
-    } catch (err) {
-        next(err);
-    }
-}
-
-const unarchiveItemController = async (req, res, next) => {
-    try {
-        const { item: id } = req.params;
-        const space = res.locals.space;
-        const item = await unarchiveItem(space, id)
-        res.json({
-            status: 200,
-            response: item
-        });
-    } catch (err) {
-        next(err);
-    }
-}
-
-const archiveItemController = async (req, res, next) => {
-    try {
-        const { item: id } = req.params;
-        const space = res.locals.space;
-        const item = await archiveItem(space, id)
-        res.json({
-            status: 200,
-            response: item
-        });
-    } catch (err) {
-        next(err);
-    }
-}
-
-const getArchivedItemController = async (req, res, next) => {
-    try {
-        const { item: id } = req.params;
-        const space = res.locals.space;
-        const item = await getArchivedItem(space, id)
-        res.json({
-            status: 200,
-            response: item
-        });
-    } catch (err) {
-        next(err);
-    }
-}
-
-const getUserWorkSpaceItemsController = async (req, res, next) => {
-    try {
-        const workspace = res.locals.workspace;
-        const me = res.locals.user;
-        const inbox = await getUserWorkSpaceItems(workspace, me);
-        const today = await getUsersTodayWorkSpaceItems(workspace, me);
-        res.json({
-            status: 200,
-            response: {
-                inbox,
-                today
-            }
-        });
-    } catch (err) {
-        next(err);
-    }
-};
-
-const getUsersTodayWorkSpaceItemsController = async (req, res, next) => {
-    try {
-        const workspace = res.locals.workspace;
-        const me = res.locals.user;
-        const { current, overdue } = await getUsersTodayWorkSpaceItems(workspace, me);
-        const note = await getUserTodayNote(workspace._id, me._id);
-        res.json({
-            status: 200,
-            response: {
-                note,
-                current,
-                overdue
-            }
-        });
-    } catch (err) {
-        next(err);
-    }
-};
 
 const getMembersTodayWorkItemsControlle = async (req, res, next) => {
     try {
@@ -245,12 +151,6 @@ export {
     getItemController,
     updateItemController,
     deleteItemController,
-    getArchivedItemsController,
-    getArchivedItemController,
-    unarchiveItemController,
-    archiveItemController,
-    getUserWorkSpaceItemsController,
-    getUsersTodayWorkSpaceItemsController,
     getMembersTodayWorkItemsControlle,
     getMembersWorkItemsByDateControlle
 };

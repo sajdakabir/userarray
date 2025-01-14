@@ -5,10 +5,9 @@ import { generateRandomPassword, sendEmail, readTemplateFile } from "../../utils
 // import { generateJWTToken } from "../../utils/jwt.service.js";
 import { environment } from "../../loaders/environment.loader.js";
 import { createTeam } from "../../services/lib/team.service.js";
-import { getUserWorkSpaceItems, getItems, getArchivedItems } from "../../services/lib/item.service.js";
 import { getLabels, createLabels } from "../../services/lib/label.service.js";
-import { getCycles, createCycle } from "../../services/lib/cycle.service.js";
-import { getRoadmaps } from "../../services/lib/roadmap.service.js";
+
+
 import { CreateWorkspacePayload, UpdateWorkspacePayload } from "../../payloads/lib/workspace.payload.js";
 import { getWorkspaceProfile } from "../../services/lib/workspace.service.js";
 
@@ -425,35 +424,12 @@ const leaveWorkspaceController = async (req, res, next) => {
         next(err);
     }
 };
-// const getEverything = async (req, res, next) => {
-//     try {
-//         const workspace = res.locals.workspace;
-//         const user = res.locals.user;
-//         const members = await getAllWorkspaceMembers(workspace._id);
-//         const my = await getUserWorkSpaceItems(workspace, user);
-//         const items = await getWorkSpaceItems(workspace);
-//         const labels = await getWorkSpaceLabels(workspace);
-//         res.json({
-//             status: 200,
-//             response: {
-//                 workspace,
-//                 members,
-//                 my,
-//                 labels,
-//                 items
-//             }
-//         });
-//     } catch (err) {
-//         next(err);
-//     }
-// };
 
 const getEverything = async (req, res, next) => {
     try {
         const workspace = res.locals.workspace;
         const user = res.locals.user;
         const members = await getAllWorkspaceMembers(workspace._id);
-        const inbox = await getUserWorkSpaceItems(workspace, user);
         const response = {
             status: 200,
             response: {
@@ -471,9 +447,6 @@ const getEverything = async (req, res, next) => {
 
             const teamLabels = await getLabels(workspace._id, team._id);
             const teamItems = await getItems(workspace._id, team._id);
-            const teamArchivedItems = await getArchivedItems(workspace._id, team._id);
-            const teamCycle = await getCycles(workspace._id, team._id);
-            const teamRoadmap = await getRoadmaps(workspace._id, team._id);
 
             teamData.labels = teamLabels;
             teamData.items = teamItems;

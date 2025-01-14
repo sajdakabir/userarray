@@ -75,17 +75,6 @@ const getSpaceByIdentifierController = async (req, res, next) => {
     }
 };
 
-const getSpaceByNameController = async (req, res, next) => {
-    try {
-        const space = res.locals.space;
-        res.json({
-            status: 200,
-            response: space
-        });
-    } catch (err) {
-        next(err);
-    }
-};
 
 export const updateTeamController = async (req, res, next) => {
     try {
@@ -135,22 +124,8 @@ export const getAllPublicTeamsController = async ( req, res, next ) => {
 
 }
 
-const daleteSpaceController = async (req, res, next) => {
-    try {
-        const workspace = res.locals.workspace;
-        const space = res.locals.space
-        await daleteSpace(space, workspace);
-        res.json({
-            status: 200,
-            message: "Space deleted successfully"
-        });
-    } catch (err) {
-        next(err);
-    }
-};
+
 
 export {
     getSpaceByIdentifierController,
-    getSpaceByNameController,
-    daleteSpaceController
 };

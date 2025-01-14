@@ -40,7 +40,7 @@ const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
             </button>
 
             <Link
-              href="/"
+              href="#"
               className="flex items-center text-[#666] hover:text-black transition-colors text-sm"
             >
               <span className="font-medium">userarray</span>

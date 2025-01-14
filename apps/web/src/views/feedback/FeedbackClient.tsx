@@ -1,72 +1,35 @@
 "use client";
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ThumbsUp, MessageSquare, Plus } from 'lucide-react';
 import CreateFeedbackModal from '@/components/modals/CreateFeedbackModal';
+import { Feedback, FeedbackStatus } from '@/types/Feedback';
+import { useFeedBackStore } from '@/store';
+import { BACKEND_URL } from '@/config/apiConfig';
 
 interface FeedbackClientProps {
-  token?: string;
-  slug?: string;
+  token: string;
+  slug: string;
   workspace?: boolean | null;
 }
 
-const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => {
+const FeedbackClient: FC<FeedbackClientProps> = ({token, slug }) => {
   const [activeStatus, setActiveStatus] = useState("open");
   const [isModalOpen, setIsModalOpen] = useState(false);
+    const {feedBackStatus,allFeedback,fetchAllFeedback}=useFeedBackStore()
+    console.log("feedBackStatus",feedBackStatus);
+    
 
   const handleSubmitFeedback = (title: string, description: string, label: string) => {
     // TODO: Implement feedback submission with label
     console.log('Submitting feedback:', { title, description, label });
   };
 
-  const feedbackStatus = [
-    { id: "open", name: "Open" },
-    { id: "inProgress", name: "In Progress" },
-    { id: "closed", name: "Closed" }
-  ];
+  useEffect(()=>{
+    fetchAllFeedback(token,`${BACKEND_URL}/public/workspaces/${slug}/feedback/`)
+  },[slug])
 
-  const mockFeedback = [
-    {
-      id: '1',
-      title: 'Add dark mode support',
-      description: 'Would be great to have a dark mode option for better visibility at night.',
-      status: 'open',
-      votes: 42,
-      comments: 8,
-    },
-    {
-      id: '2',
-      title: 'Mobile app version',
-      description: 'Please consider developing a mobile app for easier access on the go.',
-      status: 'inProgress',
-      votes: 35,
-      comments: 12,
-    },
-    {
-      id: '3',
-      title: 'Keyboard shortcuts',
-      description: 'Add keyboard shortcuts for common actions to improve productivity.',
-      status: 'inProgress',
-      votes: 28,
-      comments: 5,
-    },
-    {
-      id: '4',
-      title: 'Export data feature',
-      description: 'Need ability to export data in CSV format',
-      status: 'closed',
-      votes: 15,
-      comments: 3,
-    },
-    {
-      id: '5',
-      title: 'Better search filters',
-      description: 'Add more advanced search filters and sorting options',
-      status: 'closed',
-      votes: 22,
-      comments: 7,
-    }
-  ];
+  
 
   const getStatusColor = (status: string) => {
     const colors: { [key: string]: string } = {
@@ -104,17 +67,17 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
             {/* Status List */}
             <div className="w-48 flex-shrink-0 pt-4" style={{ backgroundColor: '#FFF' }}>
               <div className="flex flex-col gap-2">
-                {feedbackStatus.map((state) => (
+                {feedBackStatus.map((state:FeedbackStatus) => (
                   <button
-                    key={state.id}
-                    onClick={() => scrollToStatus(state.id)}
+                    key={state.name}
+                    onClick={() => scrollToStatus(state.name)}
                     className={`text-sm py-1.5 px-3 rounded-lg transition-colors relative text-left ${
-                      activeStatus === state.id 
+                      activeStatus === state.name 
                         ? 'text-black font-medium'
                         : 'text-[#666] hover:text-black'
                     }`}
                   >
-                    {activeStatus === state.id && (
+                    {activeStatus === state.name && (
                       <div 
                         className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 rounded-full"
                         style={{ backgroundColor: getStatusColor(state.name) }}
@@ -129,17 +92,17 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
             {/* Content */}
             <div className="flex-1 overflow-y-auto pr-4">
               <div className="flex flex-col pb-16">
-                {feedbackStatus.map((state) => {
-                  const statusFeedback = mockFeedback.filter(
-                    (item) => item.status.toLowerCase() === state.id
+                {feedBackStatus.map((state:FeedbackStatus) => {
+                  const statusFeedback = allFeedback.filter(
+                    (item:Feedback) => item.state.name === state.name
                   );
 
                   return (
                     <div
-                      key={state.id}
-                      id={`status-${state.id}`}
+                      key={state.name}
+                      id={`status-${state.name}`}
                       data-status-section
-                      data-status-id={state.id}
+                      data-status-id={state.name}
                       className="w-full group"
                     >
                       <div className="flex items-center gap-2 px-1 py-1.5 hover:bg-[#F8F8F8] rounded-lg mt-8 first:mt-0">
@@ -154,9 +117,9 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
                       </div>
 
                       <div className="space-y-2 mt-2">
-                        {statusFeedback.map((feedback) => (
+                        {statusFeedback.map((feedback:Feedback) => (
                           <div
-                            key={feedback.id}
+                            key={feedback._id}
                             className="px-3 py-1.5 hover:bg-[#F8F8F8] transition-colors duration-200 cursor-pointer rounded-lg"
                           >
                             <div className="flex items-center gap-3">
@@ -179,11 +142,11 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
                               <div className="flex items-center gap-3 shrink-0">
                                 <div className="flex items-center gap-1">
                                   <ThumbsUp size={14} className="text-[#666]" />
-                                  <span className="text-xs text-[#666]">{feedback.votes}</span>
+                                  <span className="text-xs text-[#666]">{feedback?.like}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <MessageSquare size={14} className="text-[#666]" />
-                                  <span className="text-xs text-[#666]">{feedback.comments}</span>
+                                  <span className="text-xs text-[#666]">{feedback?.comments}</span>
                                 </div>
                               </div>
                             </div>
@@ -200,6 +163,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
       </div>
       <CreateFeedbackModal 
         isOpen={isModalOpen}
+        slug={slug}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmitFeedback}
       />

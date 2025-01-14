@@ -1,4 +1,9 @@
-export type Feedback = {
+export interface FeedbackStatus {
+    name:string
+}
+
+export interface Feedback {
+    state: FeedbackStatus;
     _id: string;
     source: string;
     title: string;
@@ -9,8 +14,12 @@ export type Feedback = {
     isArchived: boolean;
     isDeleted: boolean;
     uuid: string;
-    labels: string[];
-    createdAt: string; 
-    updatedAt: string; 
-  };
-  
+    labels: [];
+    createdAt: string;
+    updatedAt: string;
+    type: string;
+    like: null | number;
+    comments:string|null;
+    comment: null | string;
+    __v: number;
+}

@@ -5,6 +5,7 @@ import { SmilePlus, Image, ChevronDown, X } from 'lucide-react';
 
 interface CreateFeedbackModalProps {
   isOpen: boolean;
+  slug:string;
   onClose: () => void;
   onSubmit: (title: string, description: string, label: string) => void;
 }
@@ -17,6 +18,7 @@ const LABELS = [
 
 const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
   isOpen,
+  slug,
   onClose,
   onSubmit,
 }) => {

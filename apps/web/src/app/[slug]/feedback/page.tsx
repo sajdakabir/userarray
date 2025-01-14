@@ -1,6 +1,7 @@
 import { ACCESS_TOKEN } from "@/config/constant/cookie";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
 import { Workspace } from "@/types/workspace";
+import FeedbackClient from "@/views/feedback/FeedbackClient";
 import FeedbackList from "@/views/feedback/FeedbackList";
 import { cookies } from "next/headers";
 
@@ -26,7 +27,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <FeedbackList
+      <FeedbackClient
         token={accessToken}
         slug={slug}
         workspace={myWorkSpace}

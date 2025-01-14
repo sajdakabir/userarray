@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { ACCESS_TOKEN } from "@/utils/constants/cookie";
 import CreateProfile from "@/views/onboarding/CreateProfile";
-import { UserWorkspaces } from "@/lib/types/Workspaces";
-import { UserResponse } from "@/lib/types/Users";
+import { User } from "@/types/Users";
 import { getUser } from "@/server/fetchers/user/getdetails";
-import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
-import { getPendingInvitations } from "@/server/fetchers/workspace/get-invitations";
-import ManageWorkspace from "@/views/onboarding/ManageWorkspace";
-import CreateWorkspace from "@/views/onboarding/CreateWorkspace";
 import LinearConnect from "@/views/onboarding/LinearConnect";
+import { ACCESS_TOKEN } from "@/config/constant/cookie";
+import CreateWorkspace from "@/views/onboarding/CreateWorkspace";
+import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
+import { Workspace } from "@/types/workspace";
+import Signin from "@/views/auth/Signin";
 import TeamCreate from "@/views/onboarding/TeamCreate";
 
 export const metadata: Metadata = {
@@ -19,39 +18,42 @@ export const metadata: Metadata = {
 };
 
 const Onboard = async () => {
-  const accessToken = cookies().get(ACCESS_TOKEN)?.value as string;
-  const user: UserResponse | null = await getUser(accessToken);
-  const workspaces: UserWorkspaces | null = await getAllWorkspaces(accessToken);
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(ACCESS_TOKEN)?.value as string;
 
-  if (!user || !workspaces) {
-    return redirect("/error?status=500");
+  const user: User | null = await getUser(accessToken);
+  
+  if (!user) {
+    return <Signin />;
   }
 
-  if (user.response.onboarding?.profile_complete===false) {
+  if (!user.onboarding?.profile_complete) {
     return <CreateProfile accessToken={accessToken} />;
   }
-  if (!user.response.onboarding?.workspace_create) {
-    const pending = await getPendingInvitations(accessToken);
-    return (
-      <ManageWorkspace token={accessToken} invitations={pending.response} />
-    );
+
+  if (!user.onboarding?.workspace_create) {
+    return <CreateWorkspace accessToken={accessToken} />;
   }
-  
-  if (!user.response.onboarding?.linear_connect) {
-    
+
+  // If workspace creation is already done, fetch workspaces
+  const workSpace: Workspace |null = await getAllWorkspaces(accessToken);
+
+  if (workSpace===null) {
+    return <CreateWorkspace accessToken={accessToken} />;
+  }
+
+  if (!user.onboarding?.linear_connect) {
+    return <LinearConnect token={accessToken} />;
+  }
+  if (!user.onboarding?.team_Create) {
+      
     return (
-      <LinearConnect token={accessToken}  />
+      <TeamCreate token={accessToken} workspace={workSpace?.slug} />
     );
   }
 
-  if (!user.response.onboarding?.team_Create) {
-      
-    return (
-      <TeamCreate token={accessToken}  />
-    );
-  }
-  
-  return redirect("/workspace");
+  return redirect(`/${workSpace.slug}/cycle`);
 };
+
 
 export default Onboard;

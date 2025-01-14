@@ -1,5 +1,5 @@
 import { USER_WORKSPACE } from "@/utils/constants/api-endpoints";
-import { SingleItem } from "@/lib/types/Items";
+import { SingleItem } from "@/types/Items";
 import axios, { AxiosError } from "axios";
 
 export const patchItem = async (

@@ -7,6 +7,7 @@ import { createLinearCurrentCycle } from "../services/lib/cycle.service.js";
 
 const processLinearJob = async (job) => {
     const { accessToken, linearTeamId, teamId, userId } = job.data;
+    console.log("team: ", teamId);
     try {
 
         const issues = await fetchTeamIssues(accessToken, linearTeamId);

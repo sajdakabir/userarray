@@ -1,24 +1,25 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { ACCESS_TOKEN, MAX_AGE, LINEAR_TOKEN } from '@/utils/constants/cookie';
+import { ACCESS_TOKEN, MAX_AGE, LINEAR_TOKEN } from '@/config/constant/cookie';
+import { error } from 'console';
 
-export async function GET(request: any) {
+export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
 
-    console.log("code", code)
     if (!code) {
       return NextResponse.json({ error: 'Code is required' }, { status: 400 });
     }
 
-    const cookieStore = cookies();
+    const cookieStore = await cookies();  // Await the cookies promise
     const tokenCookie = cookieStore.get(ACCESS_TOKEN);
     const accessToken = tokenCookie?.value;
 
     if (!accessToken) {
       return NextResponse.redirect('/');
     }
+
     const workspacesResponse = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/workspaces/`,
       {
@@ -56,8 +57,8 @@ export async function GET(request: any) {
 
     const accessTokenData = await accessTokenResponse.json();
 
-
-    cookies().set(LINEAR_TOKEN, accessTokenData.accessToken, {
+    // Set the LINEAR_TOKEN in cookies after awaiting cookieStore
+    cookieStore.set(LINEAR_TOKEN, accessTokenData.accessToken, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -65,13 +66,12 @@ export async function GET(request: any) {
       path: "/",
     });
 
-    console.log('accessTokenData', accessTokenData);
     const data = {
       onboarding: {
         linear_connect: true, // Send the value as false as in Postman
       },
     };
-    
+
     const updateUser = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me/`,
       {
@@ -83,17 +83,15 @@ export async function GET(request: any) {
         },
       }
     );
-    const dataUser=await updateUser.json();
 
     if (updateUser.status === 200) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/onboarding`);
     }
 
+    return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
 
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: err }, { status: 500 });
+    return NextResponse.json({ error: error || 'Internal Server Error' }, { status: 500 });
   }
 }
-
-

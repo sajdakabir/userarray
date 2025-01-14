@@ -1,4 +1,4 @@
-import { BACKEND_URL } from "@/utils/constants/api-endpoints";
+import { BACKEND_URL } from "@/config/apiConfig";
 
 const getLinearAllTeam = async (token:string,linearToken:string,slug: string,) => {
    

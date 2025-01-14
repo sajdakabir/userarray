@@ -1,12 +1,12 @@
 "use server";
 
-import { COMMON_LOGIN } from "@/utils/constants/api-endpoints";
 import {
   ACCESS_TOKEN,
+  COMMON_LOGIN,
   MAX_AGE,
   REFRESH_TOKEN,
-} from "@/utils/constants/cookie";
-import { LoginResponse } from "@/lib/types/Authentication";
+} from "@/config/constant/cookie";
+import { LoginResponse } from "@/types/Authentication";
 import axios, { AxiosError } from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -25,8 +25,8 @@ const CustomLogin = async (email: string, password: string) => {
     console.log(e.response);
     return;
   }
-
-  cookies().set(ACCESS_TOKEN, res.response.accessToken, {
+  const cookieStore = await cookies();
+  cookieStore.set(ACCESS_TOKEN, res.response.accessToken, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
@@ -34,7 +34,7 @@ const CustomLogin = async (email: string, password: string) => {
     path: "/",
   });
 
-  cookies().set(REFRESH_TOKEN, res.response.refreshToken, {
+  cookieStore.set(REFRESH_TOKEN, res.response.refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",

@@ -1,5 +1,5 @@
 import { USER_WORKSPACE } from "@/utils/constants/api-endpoints";
-import { Everything } from "@/lib/types/Everything";
+import { Everything } from "@/types/Everything";
 
 const getEverything = async (token: string, slug: string) => {
   let response: Response;

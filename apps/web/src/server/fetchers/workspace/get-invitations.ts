@@ -1,5 +1,5 @@
 import { GET_USER } from "@/utils/constants/api-endpoints";
-import { PendingInvitations } from "@/lib/types/Workspaces";
+import { PendingInvitations } from "@/types/Workspaces";
 import axios from "axios";
 
 export const getPendingInvitations = async (accessToken: string) => {

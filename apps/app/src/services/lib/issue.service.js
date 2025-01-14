@@ -15,10 +15,10 @@ export const getAllIssues = async (workspace, team) => {
     const issues = await Issue.find({
        workspace: workspace._id,
        team: team,
-       source: "feedback"
+       source: { $ne: "feedback" }
     });
     return issues;
- }
+}
 export const getIssue = async (workspace, team, id) => {
    const issue = await Issue.findOne({
       workspace: workspace._id,

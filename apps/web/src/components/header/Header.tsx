@@ -32,6 +32,22 @@ const Header: React.FC<HeaderProps> = ({ user, workSpace }) => {
           <div className="flex flex-col h-full justify-between pb-3 overflow-y-auto">
             <div className="flex mt-2 pl-3 gap-[2px]">
               {/* Cycle Link */}
+              
+              {workSpace?.slug?<Link
+                  href={`/${workSpace.slug}/feedback`}
+                  className="text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider text-zinc-100"
+                >
+                  <Zap size={14} />
+                  Feedback
+                </Link>:<Link
+                  href={`#`}
+                  className="text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider text-zinc-100"
+                >
+                  <Zap size={14} />
+                  Cycle
+                </Link>}
+
+
               {workSpace?.slug ? (
                 <Link
                   href={`/${workSpace.slug}/cycle`}

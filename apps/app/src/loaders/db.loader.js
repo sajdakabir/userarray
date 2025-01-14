@@ -9,4 +9,6 @@ import { environment } from "./environment.loader.js";
 const db = createConnection(environment.MONGO_URL, {
     autoIndex: false
 })
+
 export { db }
+

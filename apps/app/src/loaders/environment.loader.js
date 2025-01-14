@@ -29,5 +29,6 @@ export const environment = {
     LINEAR_REDIRECT_URL: process.env.LINEAR_REDIRECT_URL,
     LINEAR_WH_SECRET: process.env.LINEAR_WH_SECRET,
     NGROK_AUTH_TOKEN: process.env.NGROK_AUTH_TOKEN,
-    LINER_WEBHOOK_SECRET: process.env.LINER_WEBHOOK_SECRET
+    LINER_WEBHOOK_SECRET: process.env.LINER_WEBHOOK_SECRET,
+    LINEAR_API_URL: process.env.LINEAR_API_URL,
 }

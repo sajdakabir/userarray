@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Issue } from "../../models/lib/issue.model.js";
-
-const LINEAR_API_URL = 'https://api.linear.app/graphql';
+import { environment } from '../../loaders/environment.loader.js';
 
 export const createFeedback = async (requestedData, user, workspace) => {
     const linearTeamId = workspace.integration.linear.teamId;     
@@ -25,7 +24,7 @@ export const createFeedback = async (requestedData, user, workspace) => {
     };
 
     try {
-        const response = await axios.post(LINEAR_API_URL, {
+        const response = await axios.post(environment.LINEAR_API_URL, {
             query: `
                 mutation CreateIssue($input: IssueCreateInput!) {
                     issueCreate(input: $input) {

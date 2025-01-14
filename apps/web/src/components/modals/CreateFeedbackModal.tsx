@@ -5,8 +5,8 @@ import { SmilePlus, Image, ChevronDown, X } from 'lucide-react';
 
 interface CreateFeedbackModalProps {
   isOpen: boolean;
-  slug:string;
-  onClose: () => void;
+  isLoading:boolean;
+  onClose: () => void,
   onSubmit: (title: string, description: string, label: string) => void;
 }
 
@@ -18,7 +18,7 @@ const LABELS = [
 
 const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
   isOpen,
-  slug,
+  isLoading,
   onClose,
   onSubmit,
 }) => {
@@ -46,12 +46,13 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
   const handleClose = () => {
     setTitle('');
     setDescription('');
-    onClose();
+    onClose()
   };
 
   const handleSubmit = () => {
     onSubmit(title, description, selectedLabel.id);
-    handleClose();
+    setTitle('');
+    setDescription('');
   };
 
   return (
@@ -146,6 +147,9 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
 
         {/* Footer */}
         <div className="flex justify-end px-4 py-3 border-t border-gray-100">
+          {isLoading?<>
+          loading
+          </>:
           <button
             onClick={handleSubmit}
             disabled={!title.trim()}
@@ -156,7 +160,7 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
             }`}
           >
             Submit feedback
-          </button>
+          </button>}
         </div>
       </div>
     </div>

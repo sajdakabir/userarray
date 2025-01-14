@@ -52,6 +52,7 @@ const IssueSchema = new Schema(
   },
   liked:{
     type: Number,
+    default: 0
   },
   isArchived: {
       type: Boolean,

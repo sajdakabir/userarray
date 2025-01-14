@@ -12,13 +12,13 @@ export const createIssues = async (workspace, data) => {
 }
 
 export const getAllIssues = async (workspace, team) => {
-   const issues = await Issue.find({
-      workspace: workspace._id,
-      team: team
-   })
-   return issues
-}
-
+    const issues = await Issue.find({
+       workspace: workspace._id,
+       team: team,
+       source: "feedback"
+    });
+    return issues;
+ }
 export const getIssue = async (workspace, team, id) => {
    const issue = await Issue.findOne({
       workspace: workspace._id,

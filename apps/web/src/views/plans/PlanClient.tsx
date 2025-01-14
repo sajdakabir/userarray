@@ -27,17 +27,22 @@ const PlanClient = ({
     fetchAllIssues(token, url, "plan");
   }, [token, slug, fetchAllIssues]);
 
-  // if (!isLoading) return <Spinner />;
-
   return (
-    <section className="h-screen flex flex-col flex-grow" style={{ backgroundColor: '#171717' }}>
-      <div className="flex-1 overflow-auto">
-        <IssueCard
-          token={token}
-          issue={allLinearIssues}
-          issueStatus={issueStatus}
-          myWorkSpace={workspace}
-        />
+    <section 
+      className="h-screen flex flex-col flex-grow relative" 
+      style={{ backgroundColor: '#FFF' }}
+    >
+      <div className="flex-1 h-full overflow-auto" style={{ backgroundColor: '#FFF' }}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 py-6">
+          <div className="space-y-2 pb-16">
+            <IssueCard
+              token={token}
+              issue={allLinearIssues}
+              issueStatus={issueStatus}
+              myWorkSpace={workspace}
+            />
+          </div>
+        </div>
       </div>
     </section>
   );

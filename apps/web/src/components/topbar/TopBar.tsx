@@ -14,56 +14,56 @@ const TopBar: FC<TopBarProps> = ({ workspace }) => {
   const isActivePath = (path: string) => pathname.includes(path);
 
   return (
-    <div className="h-16 border-b border-[#30363d] bg-[#171717] flex items-center px-6 sticky top-0 z-50">
-      <div className="flex items-center gap-2 flex-1">
+    <div className="h-16 border-b border-[#E3E3E3] bg-white flex items-center px-4 sticky top-0 z-50">
+      <div className="flex items-center gap-1.5 flex-1 text-sm">
         {/* Logo and Name */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex items-center mr-1">
-            <span className="text-[#424a53] font-medium text-xl">(</span>
-            <span className="text-[#424a53] font-medium text-xl">)</span>
+        <Link href="/" className="flex items-center gap-1.5 text-[#666] hover:text-black transition-colors">
+          <div className="flex items-center">
+            <span className="font-normal">(</span>
+            <span className="font-normal">)</span>
           </div>
-          <span className="text-focus-text-hover font-semibold text-lg">userarray</span>
+          <span className="font-medium">userarray</span>
         </Link>
 
         {/* Separator */}
-        <span className="text-[#424a53] mx-2">/</span>
+        <span className="text-[#E3E3E3] mx-1.5">/</span>
 
         {/* Workspace Name */}
         <Link 
           href={`/${workspace}`}
-          className="text-focus-text-hover font-semibold hover:text-nonfocus-text transition-colors text-lg"
+          className="text-[#666] font-medium hover:text-black transition-colors"
         >
           {workspace}
         </Link>
 
         {/* Navigation Links */}
-        <div className="flex items-center gap-6 ml-10">
+        <div className="flex items-center ml-8 gap-5">
           <Link
             href={`/${workspace}/feedback`}
-            className={`text-base px-3 py-1.5 rounded-md transition-colors ${
+            className={`px-2 py-1 transition-colors ${
               isActivePath('/feedback')
-                ? 'text-focus-text-hover bg-[#1F1F1F]'
-                : 'text-nonfocus-text hover:text-focus-text-hover'
+                ? 'text-black font-medium'
+                : 'text-[#666] hover:text-black'
             }`}
           >
             Feedback
           </Link>
           <Link
             href={`/${workspace}/plan`}
-            className={`text-base px-3 py-1.5 rounded-md transition-colors ${
+            className={`px-2 py-1 transition-colors ${
               isActivePath('/plan')
-                ? 'text-focus-text-hover bg-[#1F1F1F]'
-                : 'text-nonfocus-text hover:text-focus-text-hover'
+                ? 'text-black font-medium'
+                : 'text-[#666] hover:text-black'
             }`}
           >
             All Issues
           </Link>
           <Link
             href={`/${workspace}/cycle`}
-            className={`text-base px-3 py-1.5 rounded-md transition-colors ${
+            className={`px-2 py-1 transition-colors ${
               isActivePath('/cycle')
-                ? 'text-focus-text-hover bg-[#1F1F1F]'
-                : 'text-nonfocus-text hover:text-focus-text-hover'
+                ? 'text-black font-medium'
+                : 'text-[#666] hover:text-black'
             }`}
           >
             Current Cycle
@@ -73,8 +73,8 @@ const TopBar: FC<TopBarProps> = ({ workspace }) => {
 
       {/* Profile Section */}
       <div className="flex items-center">
-        <button className="p-2.5 rounded-full hover:bg-[#1F1F1F] transition-colors">
-          <User size={22} className="text-focus-text-hover" />
+        <button className="p-1.5 rounded-full hover:bg-[#F8F8F8] transition-colors">
+          <User size={18} className="text-[#666]" />
         </button>
       </div>
     </div>

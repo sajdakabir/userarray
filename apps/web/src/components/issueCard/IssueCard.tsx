@@ -80,7 +80,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
   return (
     <div className="w-full h-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 flex gap-8">
       {/* Status List */}
-      <div className="w-48 flex-shrink-0 pt-4" style={{ backgroundColor: '#171717' }}>
+      <div className="w-48 flex-shrink-0 pt-4" style={{ backgroundColor: '#FFF' }}>
         <div className="flex flex-col gap-2">
           {issueStatus.map((state) => (
             <button
@@ -88,8 +88,8 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
               onClick={() => scrollToStatus(state.id)}
               className={`text-sm py-1.5 px-3 rounded-lg transition-colors relative text-left ${
                 activeStatus === state.id 
-                  ? 'text-focus-text-hover font-medium'
-                  : 'text-nonfocus-text hover:text-focus-text-hover'
+                  ? 'text-black font-medium'
+                  : 'text-[#666] hover:text-black'
               }`}
             >
               {activeStatus === state.id && (
@@ -108,7 +108,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
       <div 
         ref={contentRef}
         className="flex-1 overflow-y-auto h-[calc(100vh-2rem)] pr-4 relative"
-        style={{ backgroundColor: '#171717' }}
+        style={{ backgroundColor: '#FFF' }}
       >
         <div className="flex flex-col pb-16 min-h-full">
           {issueStatus &&
@@ -127,9 +127,9 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
                   data-status-id={state.id}
                   className="w-full group min-h-[200px]"
                 >
-                  <div className="flex items-center gap-2 px-1 py-1.5 hover:bg-[#1F1F1F] rounded-lg group-first:mt-0 mt-1">
+                  <div className="flex items-center gap-2 px-1 py-1.5 hover:bg-[#F8F8F8] rounded-lg group-first:mt-0 mt-1">
                     <div className="flex items-center gap-2 flex-1">
-                      <span className="text-focus-text-hover font-medium text-sm">
+                      <span className="text-black font-medium text-sm">
                         {state.name}
                       </span>
                     </div>

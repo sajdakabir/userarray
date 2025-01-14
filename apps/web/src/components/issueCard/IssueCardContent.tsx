@@ -41,42 +41,42 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
   };
 
   return (
-    <div className="px-3 py-1.5 hover:bg-[#1F1F1F] transition-colors duration-200 cursor-pointer">
+    <div className="px-3 py-1.5 hover:bg-[#F8F8F8] transition-colors duration-200 cursor-pointer">
       <div className="flex items-center justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <p className="text-focus-text-hover text-sm truncate">
+            <p className="text-black text-sm truncate">
               {item.title}
             </p>
             {item.priority && (
-              <span 
-                className="shrink-0 text-xs"
-                style={{ color: statusColor }}
+              <span
+                className="px-1.5 py-0.5 rounded text-xs"
+                style={getLabelStyle(item.priority)}
               >
-                P{item.priority}
+                {item.priority}
               </span>
             )}
           </div>
-          {item?.description && item.description !== "<p></p>" ? (
-            <span
+
+          {item.description ? (
+            <div
               dangerouslySetInnerHTML={{
                 __html: truncateString(item.description, 100),
               }}
-              className="text-xs text-focus-text block line-clamp-2"
+              className="text-xs text-[#666] block line-clamp-2"
             />
           ) : (
-            <span className="text-xs text-focus-text block italic opacity-60">
+            <span className="text-xs text-[#666] block italic opacity-60">
               No description
             </span>
           )}
-        </div>
-        <div className="flex items-center gap-1.5 shrink-0">
+
           {item.labels && item.labels.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {item.labels.slice(0, 2).map((label) => (
-                <span 
-                  key={label.id}
-                  className="text-xs px-1.5 py-0.5 rounded-full whitespace-nowrap"
+            <div className="flex flex-wrap gap-1 mt-2">
+              {item.labels.map((label, index) => (
+                <span
+                  key={index}
+                  className="px-1.5 py-0.5 rounded text-xs"
                   style={getLabelStyle(label.color)}
                 >
                   {label.name}
@@ -84,7 +84,7 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
               ))}
             </div>
           )}
-          <span className="text-xs text-nonfocus-text whitespace-nowrap">
+          <span className="text-xs text-[#666] whitespace-nowrap">
             {item?.dueDate && new Date(item.dueDate).toLocaleDateString()}
           </span>
         </div>

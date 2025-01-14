@@ -2,6 +2,7 @@
 
 import { FC, useState } from 'react';
 import { ThumbsUp, MessageSquare, Plus } from 'lucide-react';
+import CreateFeedbackModal from '@/components/modals/CreateFeedbackModal';
 
 interface FeedbackClientProps {
   token?: string;
@@ -11,6 +12,13 @@ interface FeedbackClientProps {
 
 const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => {
   const [activeStatus, setActiveStatus] = useState("open");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSubmitFeedback = (title: string, description: string, label: string) => {
+    // TODO: Implement feedback submission with label
+    console.log('Submitting feedback:', { title, description, label });
+  };
+
   const feedbackStatus = [
     { id: "open", name: "Open" },
     { id: "inProgress", name: "In Progress" },
@@ -85,7 +93,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
             <h2 className="text-xl font-semibold text-black">Feedback</h2>
             <button 
               className="flex items-center gap-2 px-3 py-1.5 text-[#666] border border-[#E3E3E3] rounded-lg hover:border-[#666] transition-colors text-sm"
-              onClick={() => {/* TODO: Open feedback form */}}
+              onClick={() => setIsModalOpen(true)}
             >
               <Plus size={16} />
               New feedback
@@ -134,7 +142,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
                       data-status-id={state.id}
                       className="w-full group"
                     >
-                      <div className="flex items-center gap-2 px-1 py-1.5 hover:bg-[#F8F8F8] rounded-lg mt-4 first:mt-0">
+                      <div className="flex items-center gap-2 px-1 py-1.5 hover:bg-[#F8F8F8] rounded-lg mt-8 first:mt-0">
                         <div className="flex items-center gap-2 flex-1">
                           <span className="text-black font-medium text-sm">
                             {state.name}
@@ -145,7 +153,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
                         </div>
                       </div>
 
-                      <div className="space-y-1 mt-1">
+                      <div className="space-y-2 mt-2">
                         {statusFeedback.map((feedback) => (
                           <div
                             key={feedback.id}
@@ -190,6 +198,11 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspace }) => 
           </div>
         </div>
       </div>
+      <CreateFeedbackModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleSubmitFeedback}
+      />
     </section>
   );
 };

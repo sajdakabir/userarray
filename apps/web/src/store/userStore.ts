@@ -1,9 +1,9 @@
-import { User } from '@/types/Users';
+import { GET_USER } from '@/config/apiConfig';
 import { create } from 'zustand';
 
 interface UserProfile {
     isLoading: boolean;
-    myProfile: User | null;
+    myProfile: UserProfile | null;
     logout: () => void;
     fetchUser: (token: string) => Promise<boolean>;
 }
@@ -20,7 +20,7 @@ export const useUserStore = create<UserProfile>((set) => ({
         set({ isLoading: true });
         try {
 
-            const response = await fetch('/api/user/profile', {
+            const response = await fetch(GET_USER, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

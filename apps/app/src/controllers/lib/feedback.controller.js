@@ -1,4 +1,4 @@
-import { createFeedback, getAllFeedback } from '../../services/lib/feedback.service.js';
+import { createFeedback, getAllFeedback, searchIssue } from '../../services/lib/feedback.service.js';
 import { getWorkspaceProfile } from '../../services/lib/workspace.service.js';
 
 export const createFeedbackController  = async (req, res, next) => {        
@@ -18,6 +18,16 @@ export const getAllFeedbackController = async (req, res, next) => {
         console.log("hmm");
         const workspace = await getWorkspaceProfile(req.params.workspace);
         const issues = await getAllFeedback(workspace, workspace.teams[0]._id)
+        res.status(200).json({ issues })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const searchIssueController = async (req, res, next) => {
+    try {
+        const workspace = await getWorkspaceProfile(req.params.workspace);
+        const issues = await searchIssue(workspace, req.query.q)
         res.status(200).json({ issues })
     } catch (err) {
         next(err)

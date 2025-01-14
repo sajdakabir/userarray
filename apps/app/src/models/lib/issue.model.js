@@ -62,7 +62,7 @@ const IssueSchema = new Schema(
   { timestamps: true }
 );
 
-
+IssueSchema.index({ title: 'text', description: 'text' });
 const Issue = db.model('Issue', IssueSchema, 'issues')
 
 export {

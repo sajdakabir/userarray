@@ -150,19 +150,22 @@ const deleteWorkspaceController = async (req, res, next) => {
     }
 };
 
-export const getWorkspacePublicProfileController = async(req, res, next) => {
+export const getWorkspacePublicProfileController = async (req, res, next) => {
     try {
-    const { slug } = req.query
+        const { slug } = req.query;
 
-    const workspace = await getWorkspaceProfile(slug);
+        const workspace = await getWorkspaceProfile(slug);
 
-    res.json({
-        status: 200,
-        response: workspace
-    });
-} catch (err) {
-    next(err);
-}
+        // Remove the integration field from the workspace object
+        const { integration, ...publicWorkspace } = workspace.toObject();
+
+        res.json({
+            status: 200,
+            response: publicWorkspace
+        });
+    } catch (err) {
+        next(err);
+    }
 }
 
 const archiveWorkspaceController = async () => {};

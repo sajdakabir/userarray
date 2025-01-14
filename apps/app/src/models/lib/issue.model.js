@@ -25,8 +25,8 @@ const IssueSchema = new Schema(
       },
     ],
     dueDate: { type: Date },
-    createdAt: { type: Date, required: true },
-    updatedAt: { type: Date, required: true },
+    createdAt: { type: Date },
+    updatedAt: { type: Date },
     priority: { type: Number },
     project: {
       id: { type: String },

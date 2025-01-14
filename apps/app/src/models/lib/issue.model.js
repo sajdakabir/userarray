@@ -50,14 +50,17 @@ const IssueSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User'
   },
-    isArchived: {
-        type: Boolean,
-        default: false
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
+  liked:{
+    type: Number,
+  },
+  isArchived: {
+      type: Boolean,
+      default: false
+  },
+  isDeleted: {
+      type: Boolean,
+      default: false
+  },
   },
   { timestamps: true }
 );

@@ -16,8 +16,7 @@ const PlanClient = ({
   slug: string;
   workspace: null | boolean;
 }) => {
-  const { allLinearIssues, fetchAllIssues, issueStatus } =useIssueStore();
-
+  const { allLinearIssues, fetchAllIssues, issueStatus } = useIssueStore();
 
   useEffect(() => {
     const url =
@@ -28,26 +27,23 @@ const PlanClient = ({
     fetchAllIssues(token, url, "plan");
   }, [token, slug, fetchAllIssues]);
 
-  // if (!isLoading) return <Spinner />;
-
   return (
-    <section className="h-screen flex flex-col gap-y-12 flex-grow right-0 bg-dashboard pt-8">
-      <div className="mx-20">
-        <h2 className="text-xl flex items-center font-medium text-focus-text-hover">
-          <Orbit className="mr-2" size={20} />
-        </h2>
-        <h4 className="text-focus-text text-sm mt-2 flex items-center">
-          All your work items: your playground from where you push things to be
-          executed.
-        </h4>
+    <section 
+      className="h-screen flex flex-col flex-grow relative" 
+      style={{ backgroundColor: '#FFF' }}
+    >
+      <div className="flex-1 h-full overflow-auto" style={{ backgroundColor: '#FFF' }}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 py-6">
+          <div className="space-y-2 pb-16">
+            <IssueCard
+              token={token}
+              issue={allLinearIssues}
+              issueStatus={issueStatus}
+              myWorkSpace={workspace}
+            />
+          </div>
+        </div>
       </div>
-
-      <IssueCard
-        token={token}
-        issue={allLinearIssues}
-        issueStatus={issueStatus}
-        myWorkSpace={workspace} // Using ref value without causing re-render
-      />
     </section>
   );
 };

@@ -16,8 +16,7 @@ const PlanClient = ({
   slug: string;
   workspace: null | boolean;
 }) => {
-  const { allLinearIssues, fetchAllIssues, issueStatus } =useIssueStore();
-
+  const { allLinearIssues, fetchAllIssues, issueStatus } = useIssueStore();
 
   useEffect(() => {
     const url =
@@ -31,23 +30,15 @@ const PlanClient = ({
   // if (!isLoading) return <Spinner />;
 
   return (
-    <section className="h-screen flex flex-col gap-y-12 flex-grow right-0 bg-dashboard pt-8">
-      <div className="mx-20">
-        <h2 className="text-xl flex items-center font-medium text-focus-text-hover">
-          <Orbit className="mr-2" size={20} />
-        </h2>
-        <h4 className="text-focus-text text-sm mt-2 flex items-center">
-          All your work items: your playground from where you push things to be
-          executed.
-        </h4>
+    <section className="h-screen flex flex-col flex-grow" style={{ backgroundColor: '#171717' }}>
+      <div className="flex-1 overflow-auto">
+        <IssueCard
+          token={token}
+          issue={allLinearIssues}
+          issueStatus={issueStatus}
+          myWorkSpace={workspace}
+        />
       </div>
-
-      <IssueCard
-        token={token}
-        issue={allLinearIssues}
-        issueStatus={issueStatus}
-        myWorkSpace={workspace} // Using ref value without causing re-render
-      />
     </section>
   );
 };

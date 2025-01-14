@@ -4,10 +4,11 @@ import { Workspace } from "@/types/workspace";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
 import { getUser } from "@/server/fetchers/user/getdetails";
 import { User } from "@/types/Users";
-import Header from "@/components/header/Header";
+import TopBar from "@/components/topbar/TopBar";
 
 const SlugLayout = async ({
   children,
+  params,
 }: {
   children: React.ReactNode;
   params: {
@@ -17,15 +18,11 @@ const SlugLayout = async ({
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN)?.value as string;
   const user: User | null = await getUser(accessToken);
-  
- 
   const workSpace: Workspace | null = await getAllWorkspaces(accessToken);
-
-  
 
   return (
     <main className="h-screen flex-col gap-0 justify-between">
-      <Header user={user} workSpace={workSpace} />
+      <TopBar workspace={params.slug} />
       {children}
     </main>
   );

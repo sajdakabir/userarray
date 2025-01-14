@@ -22,24 +22,18 @@ const CycleClient = ({ token, slug,workspace }: { token: string; slug: string,wo
 
   // if(isLoading) return <Spinner/>
   return (
-    <section className="h-screen flex flex-col gap-y-12 flex-grow right-0 bg-dashboard pt-8 z-50 ">
-      <div className="mx-20">
-        <h2 className="text-xl flex items-center font-medium text-focus-text-hover">
-          <Orbit className="mr-2" size={20} />
-          Plan
-        </h2>
-        <h4 className="text-focus-text text-sm mt-2 flex items-center">
-          All your work items: your playground from where you push things to be
-          executed.
-        </h4>
+    <section 
+      className="h-screen flex flex-col flex-grow" 
+      style={{ backgroundColor: '#171717' }}
+    >
+      <div className="flex-1 h-full pt-4" style={{ backgroundColor: '#171717' }}>
+        <IssueCard
+          token={token}
+          issue={cycleAllLinearIssues}
+          issueStatus={cycleIssueStatus}
+          myWorkSpace={workspace} 
+        />
       </div>
-
-      <IssueCard
-        token={token}
-        issue={cycleAllLinearIssues}
-        issueStatus={cycleIssueStatus}
-        myWorkSpace={workspace} 
-      />
     </section>
   );
 };

@@ -44,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ user, workSpace }) => {
                   className="text-hx flex items-center gap-2 justify-start px-2 py-1 rounded-md border border-transparent hover:border-divider text-zinc-100"
                 >
                   <Zap size={14} />
-                  Cycle
+                  Feedback
                 </Link>}
 
 

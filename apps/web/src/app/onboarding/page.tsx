@@ -42,7 +42,6 @@ const Onboard = async () => {
   if (workSpace===null) {
     return <CreateWorkspace accessToken={accessToken} />;
   }
-  console.log('user',user);
   
   if (user.onboarding.linear_connect===false) {
     return <LinearConnect token={accessToken} />;

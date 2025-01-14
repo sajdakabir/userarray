@@ -13,7 +13,7 @@ interface FeedbackData {
 }
 
 interface FeedbackListProps {
-  token: string;
+  token: string |null;
   slug: string;
   workspace: string;
 }
@@ -39,7 +39,7 @@ const feedbackData: FeedbackData[] = [
 const FeedbackList: React.FC<FeedbackListProps> = ({ token }) => {
   return (
     <>
-      {token.slice(0, 2)}
+      {token?.slice(0, 2)}
       <div className="max-w-4xl mx-auto flex justify-between my-5 items-center">
         <h1 className="text-white text-xl">All Feedback </h1>
         <div>

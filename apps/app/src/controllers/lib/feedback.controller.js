@@ -3,10 +3,11 @@ import { getWorkspaceProfile } from '../../services/lib/workspace.service.js';
 
 export const createFeedbackController  = async (req, res, next) => {        
     try {
+        console.log("hey");
         const requestedData = req.body;
         const user = req.user;
         const workspace = await getWorkspaceProfile(req.params.workspace);
-        const issue = await createFeedback({ requestedData, user, workspace });
+        const issue = await createFeedback( requestedData, user, workspace);
         res.status(200).json({ issue });
     } catch (err) {
         next(err)

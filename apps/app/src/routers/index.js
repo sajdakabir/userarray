@@ -12,10 +12,10 @@ import PublicRoute from "../routers/lib/public.route.js"
 
 const initRoutes = (app) => {
     app.use("/auth", AuthRouter);
+    app.use('/public', PublicRoute)
     app.use("/users", JWTMiddleware, UserRouter);
     app.use("/workspaces", JWTMiddleware, WorkspacesRouter);
     app.use("/linear", JWTMiddleware, IntegrationRouter);
-    app.use('/public', PublicRoute)
 
 
     app.get("/", async (req, res) => {

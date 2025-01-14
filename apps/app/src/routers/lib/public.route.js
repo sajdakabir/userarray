@@ -2,8 +2,8 @@ import { Router } from "express";
 import { getWorkspacePublicProfileController } from "../../controllers/lib/workspace.controller.js";
 import { getAllPublicTeamsController } from "../../controllers/lib/team.controller.js";
 import { getAllPublicIssuesController, getPublicTeamCurrentCycleIssuesController } from "../../controllers/lib/issue.controller.js"
-// import { createFeedbackController } from "../../controllers/lib/feedback.controller.js"
-// import { JWTMiddleware } from "../../middlewares/jwt.middleware.js"
+import { getAllFeedbackController } from "../../controllers/lib/feedback.controller.js";
+
 
 const router = Router();
 
@@ -17,6 +17,6 @@ router.route("/:workspace/cycles/current/issues/").get(getPublicTeamCurrentCycle
 
 
 // write the feedback api here
-
+router.route("/workspaces/:workspace/feedback/").get(getAllFeedbackController)
 
 export default router;

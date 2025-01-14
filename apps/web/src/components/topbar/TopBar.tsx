@@ -50,12 +50,12 @@ const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
             <span className="text-[#E3E3E3] mx-1.5">/</span>
 
             {/* Workspace Name */}
-            <Link
-              href={`/${workspace}`}
-              className="text-[#666] font-medium hover:text-black transition-colors text-sm"
+            <button
+              disabled
+              className="text-[#666] font-medium  transition-colors text-sm"
             >
               {workspace}
-            </Link>
+            </button>
           </div>
         </div>
 

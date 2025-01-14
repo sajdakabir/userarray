@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import CreateProfile from "@/views/onboarding/CreateProfile";
-import { User } from "@/types/Users";
+import {  UserProfile } from "@/types/Users";
 import { getUser } from "@/server/fetchers/user/getdetails";
 import LinearConnect from "@/views/onboarding/LinearConnect";
 import { ACCESS_TOKEN } from "@/config/constant/cookie";
@@ -21,7 +21,7 @@ const Onboard = async () => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN)?.value as string;
 
-  const user: User | null = await getUser(accessToken);
+  const user: UserProfile | null = await getUser(accessToken);
   
   if (!user) {
     return <Signin />;

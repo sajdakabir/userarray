@@ -1,5 +1,5 @@
 
-export type User = {
+export type UserProfile = {
   _id: string;
   uuid: string;
   firstName?: string;

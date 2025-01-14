@@ -1,10 +1,9 @@
 import { GET_USER } from '@/config/apiConfig';
-import { User } from '@/types/Users';
 import { create } from 'zustand';
 
 interface UserProfile {
     isLoading: boolean;
-    myProfile: User | null;
+    myProfile: UserProfile | null;
     logout: () => void;
     fetchUser: (token: string) => Promise<boolean>;
 }

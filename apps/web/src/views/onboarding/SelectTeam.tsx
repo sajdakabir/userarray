@@ -95,7 +95,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
   
       if (patchResponse.status === 200) {
         setLoading(false);
-        router.push(`/${workspace}/cycle`);
+        router.push(`/${workspace}/feedback`);
       } else {
         alert("Failed to update user onboarding.");
       }

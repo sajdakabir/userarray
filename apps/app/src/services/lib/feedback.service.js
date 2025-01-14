@@ -10,6 +10,9 @@ export const createFeedback = async (requestedData, user, workspace) => {
     const newIssue = new Issue({
         ...requestedData,
         source: "feedback",
+        state: {
+            "name": "open"
+        },
         createdBy: user.id,
         workspace: workspace._id,
         team: workspace.teams[0]._id,

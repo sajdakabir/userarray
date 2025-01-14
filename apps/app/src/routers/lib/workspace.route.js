@@ -36,6 +36,7 @@ import {
 import {
   getTeamCurrentCyclesController,
 } from "../../controllers/lib/cycle.controller.js";
+import { createFeedbackController } from "../../controllers/lib/feedback.controller.js";
 
 import {
   createLabelController,
@@ -57,6 +58,7 @@ router.use("/:workspace", WorkspaceMiddleware); //done
 router.route("/:workspace/").get(getWorkspaceProfileController); //done
 router.route("/:workspace/").patch(updateWorkspaceController); //done
 router.route("/:workspace/").delete(deleteWorkspaceController); //done
+router.route("/:workspace/feedback/").post(createFeedbackController)
 
 // TODO: need to take a look according to userarray needs
 

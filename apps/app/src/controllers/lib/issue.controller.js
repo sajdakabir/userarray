@@ -86,3 +86,15 @@ export const getAllPublicIssuesController = async (req,res,next) =>{
         next(err)
     }
 }
+
+
+export const getPublicIssueController = async (req,res,next) =>{
+    try {
+        const { workspace:slug, issue:id }= req.params
+        const workspace = await getWorkspaceProfile(slug)
+        const issue = await getIssue(workspace, workspace.teams[0]._id, id)
+        res.status(200).json({ issue })
+    } catch (err) {
+        next(err)
+    }
+}

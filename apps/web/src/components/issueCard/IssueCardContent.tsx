@@ -9,7 +9,7 @@ type IssueCardContentProps = {
   statusColor: string;
 };
 
-const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
+const IssueCardContent: FC<IssueCardContentProps> = ({ item }) => {
   const getLabelStyle = (color?: string) => {
     if (!color) {
       return {
@@ -32,10 +32,11 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
         backgroundColor: `rgba(${r}, ${g}, ${b}, 0.1)`,
         color: color
       };
-    } catch (error) {
+    } catch (error: string | unknown) {
       return {
         backgroundColor: 'rgba(107, 114, 128, 0.1)',
-        color: '#6B7280'
+        color: '#6B7280',
+        error: { message: (error as Error).message }
       };
     }
   };
@@ -48,14 +49,14 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
             <p className="text-black text-sm truncate">
               {item.title}
             </p>
-            {item.priority && (
+            {/* {item.priority && (
               <span
                 className="px-1.5 py-0.5 rounded text-xs"
                 style={getLabelStyle(item.priority)}
               >
                 {item.priority}
               </span>
-            )}
+            )} */}
           </div>
 
           {item.description ? (

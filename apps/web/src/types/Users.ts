@@ -36,7 +36,7 @@ export type UserProfile = {
 
 export type UserResponse = {
   status: number;
-  response: User;
+  response: UserProfile;
 };
 
 export type Assignee = {

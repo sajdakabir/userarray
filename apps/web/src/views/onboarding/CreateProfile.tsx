@@ -58,9 +58,9 @@ const CreateProfile = (props: { accessToken: string }) => {
       });
 
       location.reload()
-    } catch (error: any) {
+    } catch (error: string | unknown) {
       console.error(error);
-      if (error.response?.data?.message) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
         setError("Something went wrong!");

@@ -11,9 +11,8 @@ const SlugLayout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: {
-    slug: string;
-  };
+
+  params: Promise<{ slug: string }>
 }) => {
   const {slug}=await params
   const cookieStore = await cookies();

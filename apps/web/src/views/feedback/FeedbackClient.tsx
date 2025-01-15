@@ -23,7 +23,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug }) => {
   const handleSubmitFeedback = async (
     title: string,
     description: string,
-    label: string
+    // label: string
   ) => {
     if (token === null || undefined) {
       alert("Login first to post a feedback");

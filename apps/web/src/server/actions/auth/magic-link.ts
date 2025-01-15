@@ -3,12 +3,15 @@
 import { cookies } from "next/headers";
 import axios, { AxiosError } from "axios";
 import { LoginResponse } from "@/types/Authentication";
-import { MAGIC_VERIFY } from "@/utils/constants/api-endpoints";
+import { BACKEND_URL } from "@/config/apiConfig";
+
+const MAGIC_VERIFY = `${BACKEND_URL}/auth/magic/verify/`;
+
 import {
   ACCESS_TOKEN,
   MAX_AGE,
   REFRESH_TOKEN,
-} from "@/utils/constants/cookie";
+} from "@/config/constant/cookie";
 
 export const VerifyMagicLink = async (authToken: string) => {
   let res: LoginResponse;
@@ -22,7 +25,8 @@ export const VerifyMagicLink = async (authToken: string) => {
     return false;
   }
 
-  cookies().set(ACCESS_TOKEN, res.response.accessToken, {
+  const cookieStore = await cookies();
+  cookieStore.set(ACCESS_TOKEN, res.response.accessToken, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
@@ -30,13 +34,14 @@ export const VerifyMagicLink = async (authToken: string) => {
     path: "/",
   });
 
-  cookies().set(REFRESH_TOKEN, res.response.refreshToken, {
+  cookieStore.set(REFRESH_TOKEN, res.response.refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
     maxAge: MAX_AGE,
     path: "/",
   });
+
 
   return true;
 };

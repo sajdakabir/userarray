@@ -1,5 +1,6 @@
 import { createLabel, getLabels, getLabel, updateLabel, deleteLabel } from "../../services/lib/label.service.js";
 import { CreateLabelPayload, UpdateLabelPayload } from "../../payloads/lib/label.payload.js";
+import { getWorkspaceProfile } from "../../services/lib/workspace.service.js";
 
 const createLabelController = async (req, res, next) => {
     try {
@@ -24,7 +25,7 @@ const createLabelController = async (req, res, next) => {
 
 const getLabelsController = async (req, res, next) => {
     try {
-        const workspace = res.locals.workspace;
+        const workspace = await getWorkspaceProfile(req.params.workspace);
         const labels = await getLabels(workspace);
 
         res.json({
@@ -39,7 +40,7 @@ const getLabelsController = async (req, res, next) => {
 const getLabelController = async (req, res, next) => {
     try {
         const { label: id } = req.params;
-        const workspace = res.locals.workspace;
+        const workspace = await getWorkspaceProfile(req.params.workspace);
         const label = await getLabel(id, workspace);
 
         res.json({

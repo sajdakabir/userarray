@@ -24,7 +24,6 @@ const createLabelController = async (req, res, next) => {
 };
 
 const getLabelsController = async (req, res, next) => {
-    console.log("hey");
     try {
         const workspace = await getWorkspaceProfile(req.params.workspace);
         const labels = await getLabels(workspace);

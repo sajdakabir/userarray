@@ -20,6 +20,7 @@
     "apps/*"
   ],
   "dependencies": {
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.5",
+    "tailwind-merge": "^2.6.0"
   }
 }

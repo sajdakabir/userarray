@@ -33,10 +33,9 @@ const createLabels = async (labelsData, workspace) => {
     return createdLabels;
 }
 
-const getLabels = async (workspace, space) => {
+const getLabels = async (workspace) => {
     const labels = await Label.find({
-        workspace,
-        space
+        workspace: workspace._id
     })
         .sort({ name: 1 })
         .exec();
@@ -44,11 +43,10 @@ const getLabels = async (workspace, space) => {
     return labels;
 }
 
-const getLabel = async (id, space) => {
+const getLabel = async (id, workspace) => {
     const label = await Label.findOne({
         uuid: id,
-        space: space._id,
-        workspace: space.workspace
+        workspace: workspace._id
     });
     if (!label) {
         const error = new Error("Label not found")

@@ -21,13 +21,15 @@ const LabelSchema = new Schema({
         type: Number,
         default: 0
     },
+    linearId: {
+        type: String
+    },
     linearTeamId: { 
         type: String
     },
     workspace: {
         type: Schema.Types.ObjectId,
         ref: 'Workspace'
-        // required: true
     }
 }, { timestamps: true });
 

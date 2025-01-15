@@ -23,7 +23,9 @@ export const getIssue = async (workspace, team, id) => {
    const issue = await Issue.findOne({
       workspace: workspace._id,
       team: team,
-      uuid: id
+      uuid: id,
+      isDeleted: false,
+      isArchived: false
    })
    return issue
 }

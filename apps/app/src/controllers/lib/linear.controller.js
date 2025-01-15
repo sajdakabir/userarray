@@ -38,8 +38,8 @@ export const getLinearTeamsController = async (req, res, next) => {
 
 export const getLinearIssuesController = async (req, res, next) => {
     
-    const hmm = await fetchCurrentCycle("", "");
-    res.status(200).json({ hmm });
+    // const hmm = await fetchCurrentCycle("", "");
+    // res.status(200).json({ hmm });
 }
 
 export const handleLinearWebhook = async (req, res, next) => {

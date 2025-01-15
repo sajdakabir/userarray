@@ -138,7 +138,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
                     <div className="space-y-[1px]">
                       {allTasks.map((task) => (
                         <IssueCardContent 
-                          key={task.uuid || task.id} 
+                          key={task.uuid || task._id} 
                           item={task} 
                           statusColor={textColor}
                         />

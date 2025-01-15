@@ -33,6 +33,7 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
         color: color
       };
     } catch (error) {
+      console.log(error)
       return {
         backgroundColor: 'rgba(107, 114, 128, 0.1)',
         color: '#6B7280'
@@ -46,16 +47,16 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <p className="text-black text-sm truncate">
-              {item.title}
+              {item.title} 
             </p>
-            {item.priority && (
+            {/* {item.priority && (
               <span
                 className="px-1.5 py-0.5 rounded text-xs"
-                style={getLabelStyle(item.priority)}
+                style={getLabelStyle(item.priority.toString())}
               >
                 {item.priority}
               </span>
-            )}
+            )} */}
           </div>
 
           {item.description ? (

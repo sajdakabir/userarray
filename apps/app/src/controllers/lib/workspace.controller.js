@@ -2,9 +2,7 @@ import { WorkSpaceAvailabilityCheck, createWorkspace, getUserWorkspaces, updateW
 import { createWorkspaceMember, getWorkspaceMemberByUser, getWorkspaceMember, createInvitation, getWorkspaceInvitations, getWorkspaceInvitationByUuid, deleteWorkspaceInvitationByUuid, validateInvitation, getAllWorkspaceMembers, getWorkspaceInvitation, countAdminRoleWorkspaceMember, leaveWorkspace, getUserWorkspaceInvitations } from "../../services/lib/workspaceMember.service.js";
 import { createEmailUser, getUserByEmail, getUserById } from "../../services/core/user.service.js";
 import { generateRandomPassword, sendEmail, readTemplateFile } from "../../utils/helper.service.js";
-// import { generateJWTToken } from "../../utils/jwt.service.js";
 import { environment } from "../../loaders/environment.loader.js";
-import { createTeam } from "../../services/lib/team.service.js";
 import { getLabels, createLabels } from "../../services/lib/label.service.js";
 
 
@@ -44,6 +42,14 @@ const createWorkspaceController = async (req, res, next) => {
             role: "admin",
             status: "accepted"
         })
+
+        const labelsData = [
+            { "name": "Bugs", "color": "#dc2626" },
+            { "name": "Features", "color": "#7c3aed" },
+            { "name": "Improvement", "color": "#3b82f6" },
+            { "name": "UI/UX", "color": "#7057ff" }
+        ];
+        await createLabels(labelsData, workspace._id);
 
         res.json({
             status: 200,

@@ -108,16 +108,15 @@ router.route("/:workspace/issues/:issue/").get(getIssueController);
 router.route("/:workspace/issues/:issue/").patch(updateIssueController);
 
 // Labels
-router.route("/:workspace/spaces/:space/labels/").post(createLabelController);
-router.route("/:workspace/spaces/:space/labels/").get(getLabelsController);
+router.route("/:workspace/labels/").get(getLabelsController);
 router
-  .route("/:workspace/spaces/:space/labels/:label/")
+  .route("/:workspace/labels/:label/")
   .get(getLabelController);
-router
-  .route("/:workspace/spaces/:space/labels/:label/")
-  .patch(updateLabelController);
-router
-  .route("/:workspace/spaces/:space/labels/:label/")
-  .delete(deleteLabelController);
+// router
+//   .route("/:workspace/spaces/:space/labels/:label/")
+//   .patch(updateLabelController);
+// router
+//   .route("/:workspace/spaces/:space/labels/:label/")
+//   .delete(deleteLabelController);
 
 export default router;

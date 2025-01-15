@@ -24,8 +24,8 @@ const createLabelController = async (req, res, next) => {
 
 const getLabelsController = async (req, res, next) => {
     try {
-        const space = res.locals.space;
-        const labels = await getLabels(space.workspace, space._id);
+        const workspace = res.locals.workspace;
+        const labels = await getLabels(workspace);
 
         res.json({
             status: 200,
@@ -39,8 +39,8 @@ const getLabelsController = async (req, res, next) => {
 const getLabelController = async (req, res, next) => {
     try {
         const { label: id } = req.params;
-        const space = res.locals.space;
-        const label = await getLabel(id, space);
+        const workspace = res.locals.workspace;
+        const label = await getLabel(id, workspace);
 
         res.json({
             status: 200,

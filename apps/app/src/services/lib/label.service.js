@@ -16,11 +16,10 @@ const createLabel = async (labelData, space) => {
     return label;
 }
 
-const createLabels = async (labelsData, space) => {
+const createLabels = async (labelsData, workspace) => {
     const labels = labelsData.map(labelData => ({
         ...labelData,
-        space: space._id,
-        workspace: space.workspace
+        workspace
     }));
 
     const createdLabels = await Label.insertMany(labels);

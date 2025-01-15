@@ -1,7 +1,6 @@
 import { Schema } from "mongoose";
 import { v4 as uuid } from "uuid";
 import { db } from "../../loaders/db.loader.js";
-import { type } from "os";
 
 const IssueSchema = new Schema(
   {
@@ -20,8 +19,9 @@ const IssueSchema = new Schema(
     },
     labels: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Label'
+        id: { type: String },
+        name: { type: String },
+        color: { type: String },
       },
     ],
     dueDate: { type: Date },

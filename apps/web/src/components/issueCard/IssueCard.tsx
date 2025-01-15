@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useState, useEffect, useRef } from "react";
 import { Issue, IssueStatus } from "@/types/Issue";
-import { CheckSquare, Plus } from "lucide-react";
+// import { CheckSquare, Plus } from "lucide-react";
 import IssueCardContent from "./IssueCardContent";
 
 interface IssueCardProps {
@@ -22,7 +22,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
       if (!contentRef.current) return;
   
       const container = contentRef.current;
-      const scrollPosition = container.scrollTop;
+      // const scrollPosition = container.scrollTop;
       const sections = container.querySelectorAll("[data-status-section]");
   
       let maxVisibleSection: Element | null = null;
@@ -118,7 +118,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
         <div className="flex flex-col pb-16 min-h-full">
           {issueStatus &&
             issueStatus.length !== 0 &&
-            issueStatus.map((state, index) => {
+            issueStatus.map((state) => {
               const allTasks = issue.filter(
                 (issue) => issue.state?.id === state.id
               );

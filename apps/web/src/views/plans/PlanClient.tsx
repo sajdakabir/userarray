@@ -1,6 +1,6 @@
 "use client";
 
-import { Orbit } from "lucide-react";
+// import { Orbit } from "lucide-react";
 import { useEffect } from "react";
 
 import IssueCard from "@/components/issueCard/IssueCard";

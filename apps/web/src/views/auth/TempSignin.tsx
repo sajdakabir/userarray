@@ -1,15 +1,15 @@
 "use client";
-import { NextButton } from "@/components/ui/custom-buttons";
-import CustomLogin from "@/server/actions/auth/custom-login";
+// import { NextButton } from "@/components/ui/custom-buttons";
+// import CustomLogin from "@/server/actions/auth/custom-login";
 import { useState } from "react";
 
 const TempSignin = () => {
   const [c_email, setCEmail] = useState<string>("");
   const [c_pass, setCPass] = useState<string>("");
 
-  const handleCustomLogin = async () => {
-    await CustomLogin(c_email, c_pass);
-  };
+  // const handleCustomLogin = async () => {
+  //   await CustomLogin(c_email, c_pass);
+  // };
 
   return (
     <div id="hidden" className="flex flex-col gap-2 mt-6 w-full">
@@ -33,7 +33,7 @@ const TempSignin = () => {
         }}
         placeholder="password"
       />
-      <NextButton text="Login" type="submit" handleClick={handleCustomLogin} />
+      {/* <NextButton text="Login" type="submit" handleClick={handleCustomLogin} /> */}
     </div>
   );
 };

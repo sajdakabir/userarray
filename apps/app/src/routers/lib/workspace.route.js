@@ -38,14 +38,6 @@ import {
 } from "../../controllers/lib/cycle.controller.js";
 import { createFeedbackController } from "../../controllers/lib/feedback.controller.js";
 
-import {
-  createLabelController,
-  getLabelsController,
-  getLabelController,
-  updateLabelController,
-  deleteLabelController,
-} from "../../controllers/lib/label.controller.js";
-
 const router = Router();
 
 router.route("/").post(createWorkspaceController); //done
@@ -108,10 +100,6 @@ router.route("/:workspace/issues/:issue/").get(getIssueController);
 router.route("/:workspace/issues/:issue/").patch(updateIssueController);
 
 // Labels
-router.route("/:workspace/labels/").get(getLabelsController);
-router
-  .route("/:workspace/labels/:label/")
-  .get(getLabelController);
 // router
 //   .route("/:workspace/spaces/:space/labels/:label/")
 //   .patch(updateLabelController);

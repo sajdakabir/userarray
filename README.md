@@ -20,8 +20,3 @@ linear companion for open source and user facing teams.
 
 • Twitter: [twitter.com/userarray](https://twitter.com/userarray)
 
-• Buy us a coffee: [buymeacoffee.com/userarray](https://buymeacoffee.com/userarray)
-
-• Changelog: [userarray/changelog](https://github.com/userarray/changelog)
-
-### 💡 FAQ

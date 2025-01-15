@@ -48,14 +48,14 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item, statusColor }) => {
             <p className="text-black text-sm truncate">
               {item.title}
             </p>
-            {item.priority && (
+            {/* {item.priority && (
               <span
                 className="px-1.5 py-0.5 rounded text-xs"
                 style={getLabelStyle(item.priority)}
               >
                 {item.priority}
               </span>
-            )}
+            )} */}
           </div>
 
           {item.description ? (

@@ -4,7 +4,7 @@ export interface FeedbackStatus {
 
 export interface Feedback {
     state: FeedbackStatus;
-    _id: string;
+    _id?: string;
     source: string;
     title: string;
     description: string;
@@ -15,11 +15,11 @@ export interface Feedback {
     isDeleted: boolean;
     uuid: string;
     labels: [];
-    createdAt: string;
-    updatedAt: string;
-    type: string;
+    createdAt?: string;
+    updatedAt?: string;
+    type?: string;
     like: null | number;
     comments:string|null;
     comment: null | string;
-    __v: number;
+   
 }

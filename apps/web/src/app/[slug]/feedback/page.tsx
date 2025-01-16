@@ -15,8 +15,8 @@ const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
 
   // Get the specific workspace based on the slug
   const workSpace: Workspace | null = await getAllWorkspaces(accessToken);
-  const workspaceLavels:WorkSpaceLabels[]  =await getWorkspaceLabels(accessToken,`${BACKEND_URL}/workspaces/${slug}/labels`)
-  // Initialize myWorkSpace as null | boolean
+  const workspaceLavels:WorkSpaceLabels[]  =await getWorkspaceLabels(accessToken,`${BACKEND_URL}/public/workspaces/${slug}/labels/`)
+   
   let myWorkSpace: null | boolean = null;
 
   if (!workSpace) {

@@ -35,6 +35,8 @@ const Signin = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const formdata = new FormData(e.currentTarget);
     const email = formdata.get("email");
+
+    console.log(success);
     
     if (typeof email !== "string") {
       setErrorText("Please enter an email address");
@@ -52,6 +54,7 @@ const Signin = () => {
       const { data } = await axios.post(MAGIC_LOGIN, { email: email });
       setSuccess(true);
       setMagicsent(true);
+      console.log("data", data);
     } catch (error) {
       const e = error as AxiosError;
       console.log(e.response);

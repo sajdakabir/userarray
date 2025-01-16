@@ -6,8 +6,8 @@ import { Workspace } from "@/types/workspace";
 import FeedbackClient from "@/views/feedback/FeedbackClient";
 import { cookies } from "next/headers";
 
-const Page = async ({ params }: { params: { slug: string } }) => {
-    const { slug } = await params;
+const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
+  const { slug } = await params;
 
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN)?.value as string;

@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useEffect } from "react";
-import { Orbit } from "lucide-react";
 
 import IssueCard from "@/components/issueCard/IssueCard";
 import { BACKEND_URL } from "@/config/apiConfig";

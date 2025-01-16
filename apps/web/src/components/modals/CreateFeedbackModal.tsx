@@ -8,19 +8,17 @@ interface CreateFeedbackModalProps {
   LABELS: WorkSpaceLabels[];
 
   isOpen: boolean;
-  isLoading: boolean;
   onClose: () => void;
   onSubmit: (
     title: string,
     description: string,
-    labels?: { id: string; name: string; color: string }
+    labels?: { id: string; name: string; color: string }[]
   ) => void;
 }
 
 const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
   LABELS,
   isOpen,
-  isLoading,
   onClose,
   onSubmit,
 }) => {
@@ -55,7 +53,7 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
     const data = LABELS.find((l) => l._id === selectedLabel);
 
     if (data) {
-      const labels = { id: data._id, name: data.name, color: data.color };
+      const labels = [{ id: data._id, name: data.name, color: data.color }];
       onSubmit(title, description, labels);
     } else {
       // Send only title and description if no label is found
@@ -64,6 +62,7 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
 
     setTitle("");
     setDescription("");
+    onClose();
   };
 
   return (
@@ -163,9 +162,7 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
 
         {/* Footer */}
         <div className="flex justify-end px-4 py-3 border-t border-gray-100">
-          {isLoading ? (
-            <>loading</>
-          ) : (
+          
             <button
               onClick={handleSubmit}
               disabled={!title.trim()}
@@ -177,7 +174,7 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
             >
               Submit feedback
             </button>
-          )}
+          
         </div>
       </div>
     </div>

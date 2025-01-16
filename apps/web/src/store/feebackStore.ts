@@ -7,7 +7,7 @@ interface UseIssueStore {
     allFeedback: Feedback[];
     feedBackStatus:FeedbackStatus[];
     fetchAllFeedback: (token: string | null, url: string) => Promise<boolean>;
-    createFeedBack:(token: string | null, url: string,body:{title:string,description:string}) => Promise<boolean>;
+    createFeedBack:(token: string | null, url: string,body:{title:string,description:string,labels:{ id: string; name: string; color: string }[]|undefined}) => Promise<boolean>;
 }
 
 export const useFeedBackStore = create<UseIssueStore>((set,get) => ({
@@ -40,16 +40,45 @@ export const useFeedBackStore = create<UseIssueStore>((set,get) => ({
         return false;
     },
     createFeedBack:async (token, url,body) => {
-        set({ isLoading: true });
 
+        console.log('body',body);
+        
+        set({ isLoading: true });
+        const {allFeedback}=get()
+        const duplicateData: Feedback = {
+            _id: "duplicate",
+            title: body.title,
+            description: body.description,
+            state: { name: "open" },  // Provide a default state
+            source: "",
+            team: "",
+            workspace: "",
+            createdBy: "",
+            isArchived: false,
+            isDeleted: false,
+            uuid: "",
+            labels: [],
+            like: null,
+            comments: null,
+            comment: null,
+           
+        };
+        const newFeedBack=[duplicateData,...allFeedback]
+        const feedBackStatus = Array.from(
+            new Map(newFeedBack.map(({ state }:Feedback) => [state.name, state])).values()
+        );
+        set({ feedBackStatus }); 
+        set({ allFeedback:newFeedBack });
         
         try {
             const createNewFeedBack = await createFeedBack(token, url,body);
-            console.log('createNewFeedBack',createNewFeedBack);
+
+            
+            
             
             if (createNewFeedBack) {
-                const {allFeedback}=get()
-                const newFeedBack=[createNewFeedBack,...allFeedback]
+                
+                const newFeedBack=[createNewFeedBack,...allFeedback.filter(l=>l._id!=='duplicate')]
                 const feedBackStatus = Array.from(
                     new Map(newFeedBack.map(({ state }:Feedback) => [state.name, state])).values()
                 );

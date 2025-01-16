@@ -19,26 +19,24 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
   const route = useRouter();
   const [activeStatus, setActiveStatus] = useState("open");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isLoading,feedBackStatus, allFeedback, fetchAllFeedback, createFeedBack } =
+
+  const { feedBackStatus, allFeedback, fetchAllFeedback, createFeedBack } =
     useFeedBackStore();
  
   const handleSubmitFeedback = async (
     title: string,
     description: string,
-    labels?:{id:string ,name:string,color:string}
+    labels?:{id:string ,name:string,color:string}[] 
    
   ) => {
     if (token === null || undefined) {
-      alert("Login first to post a feedback");
       route.push("/");
       return;
     }
     const data={title, description,labels }
-    const newFeedBack = await createFeedBack(token,`${BACKEND_URL}/workspaces/${slug}/feedback/`,data  );
+    await createFeedBack(token,`${BACKEND_URL}/workspaces/${slug}/feedback/`,data  );
+
     
-    if(newFeedBack===true ||newFeedBack===false ){
-      setIsModalOpen(false)
-    }
   };
 
   useEffect(() => {
@@ -149,7 +147,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
                             <div className="flex items-center gap-3">
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <p className="text-black text-sm truncate">
+                                  <p className={` text-sm truncate ${feedback._id==='duplicate'?'text-zinc-500':'text-black'}`}>
                                     {feedback.title}
                                   </p>
                                 </div>
@@ -197,7 +195,6 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
       <CreateFeedbackModal
       LABELS={workspaceLavels}
         isOpen={isModalOpen}
-        isLoading={isLoading}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmitFeedback}
       />

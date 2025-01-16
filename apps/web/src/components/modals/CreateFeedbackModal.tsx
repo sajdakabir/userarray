@@ -1,74 +1,76 @@
 "use client";
 
-import { FC, useState, useEffect, useRef } from 'react';
-import { SmilePlus, Image, ChevronDown, X } from 'lucide-react';
-import { WorkSpaceLabels } from '@/types/Users';
+import { FC, useState, useEffect, useRef } from "react";
+import { SmilePlus, Image, ChevronDown, X } from "lucide-react";
+import { WorkSpaceLabels } from "@/types/Users";
 
 interface CreateFeedbackModalProps {
-  LABELS:WorkSpaceLabels[] ;
-  
+  LABELS: WorkSpaceLabels[];
+
   isOpen: boolean;
-  isLoading:boolean;
-  onClose: () => void,
-  onSubmit: (title: string, description: string, label: string) => void;
+  isLoading: boolean;
+  onClose: () => void;
+  onSubmit: (
+    title: string,
+    description: string,
+    labels?: { id: string; name: string; color: string }
+  ) => void;
 }
 
-
-
 const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
-
   LABELS,
   isOpen,
   isLoading,
   onClose,
   onSubmit,
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [selectedLabel, setSelectedLabel] = useState(LABELS[0]._id);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedLabel, setSelectedLabel] = useState(LABELS[0]?._id ?? "");
   const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
-
   useEffect(() => {
     if (isOpen) {
-      setTitle('');
-      setDescription('');
+      setTitle("");
+      setDescription("");
       setTimeout(() => {
         if (titleRef.current) {
           titleRef.current.focus();
         }
       }, 0);
     }
-
-    
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const handleClose = () => {
-    setTitle('');
-    setDescription('');
-    onClose()
+    setTitle("");
+    setDescription("");
+    onClose();
   };
 
-  // const handleSubmit = () => {
-  //   const data=LABELS.find(l=>l._id===selectedLabel);
-  //   let labels=[]
-    
-  //   const labels={id:data._id,}
-    
-  //   onSubmit(title, description, );
-  //   setTitle('');
-  //   setDescription('');
-  // };
+  const handleSubmit = () => {
+    const data = LABELS.find((l) => l._id === selectedLabel);
+
+    if (data) {
+      const labels = { id: data._id, name: data.name, color: data.color };
+      onSubmit(title, description, labels);
+    } else {
+      // Send only title and description if no label is found
+      onSubmit(title, description);
+    }
+
+    setTitle("");
+    setDescription("");
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-2xl rounded-lg relative">
         {/* Close button */}
-        <button 
+        <button
           onClick={handleClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
         >
@@ -95,12 +97,12 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
               className="w-full text-2xl text-gray-700 font-medium focus:outline-none resize-none overflow-hidden placeholder:text-gray-400"
               rows={1}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === "Enter") {
                   e.preventDefault();
                   descriptionRef.current?.focus();
                 }
               }}
-              style={{ height: 'auto' }}
+              style={{ height: "auto" }}
             />
           </div>
 
@@ -108,15 +110,18 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
             <div className="flex items-center gap-1 text-sm text-gray-500">
               <span>Feedback</span>
               <span>•</span>
-              <button 
+              <button
                 onClick={() => setIsLabelDropdownOpen(!isLabelDropdownOpen)}
                 className="flex items-center gap-2 hover:text-gray-700"
               >
                 <span
                   className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: LABELS.find(l=>l._id===selectedLabel)?.color }}
+                  style={{
+                    backgroundColor: LABELS.find((l) => l._id === selectedLabel)
+                      ?.color,
+                  }}
                 />
-                <span>{LABELS.find(l=>l._id===selectedLabel)?.name}</span>
+                <span>{LABELS.find((l) => l._id === selectedLabel)?.name}</span>
                 <ChevronDown className="w-3 h-3" />
               </button>
             </div>
@@ -131,10 +136,12 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
                       setIsLabelDropdownOpen(false);
                     }}
                     className={`flex items-center gap-2 w-full px-3 py-1.5 text-sm hover:bg-gray-50 ${
-                      selectedLabel === label._id ? 'text-black' : 'text-gray-600'
+                      selectedLabel === label._id
+                        ? "text-black"
+                        : "text-gray-600"
                     }`}
                   >
-                    <span 
+                    <span
                       className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: label.color }}
                     />
@@ -156,20 +163,21 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
 
         {/* Footer */}
         <div className="flex justify-end px-4 py-3 border-t border-gray-100">
-          {isLoading?<>
-          loading
-          </>:
-          <button
-            onClick={handleSubmit}
-            disabled={!title.trim()}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              title.trim() 
-                ? 'bg-black text-white hover:bg-gray-900' 
-                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            Submit feedback
-          </button>}
+          {isLoading ? (
+            <>loading</>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={!title.trim()}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                title.trim()
+                  ? "bg-black text-white hover:bg-gray-900"
+                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              }`}
+            >
+              Submit feedback
+            </button>
+          )}
         </div>
       </div>
     </div>

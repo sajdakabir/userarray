@@ -1,3 +1,4 @@
+import { BACKEND_URL } from "@/config/apiConfig";
 import { ACCESS_TOKEN } from "@/config/constant/cookie";
 import { getWorkspaceLabels } from "@/server/fetchers/user/fetchWorkSpaceLabels";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
@@ -14,7 +15,7 @@ const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
 
   // Get the specific workspace based on the slug
   const workSpace: Workspace | null = await getAllWorkspaces(accessToken);
-  const workspaceLavels:WorkSpaceLabels[]  =await getWorkspaceLabels(accessToken,`/workspaces/${slug}/labels`)
+  const workspaceLavels:WorkSpaceLabels[]  =await getWorkspaceLabels(accessToken,`${BACKEND_URL}/workspaces/${slug}/labels`)
   // Initialize myWorkSpace as null | boolean
   let myWorkSpace: null | boolean = null;
 

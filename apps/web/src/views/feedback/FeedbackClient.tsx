@@ -21,23 +21,21 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isLoading,feedBackStatus, allFeedback, fetchAllFeedback, createFeedBack } =
     useFeedBackStore();
-
+ 
   const handleSubmitFeedback = async (
     title: string,
     description: string,
-    // label: string
+    labels?:{id:string ,name:string,color:string}
+   
   ) => {
     if (token === null || undefined) {
       alert("Login first to post a feedback");
       route.push("/");
       return;
     }
-
-    const newFeedBack = await createFeedBack(
-      token,
-      `${BACKEND_URL}/workspaces/${slug}/feedback/`,
-      { title, description }
-    );
+    const data={title, description,labels }
+    const newFeedBack = await createFeedBack(token,`${BACKEND_URL}/workspaces/${slug}/feedback/`,data  );
+    
     if(newFeedBack===true ||newFeedBack===false ){
       setIsModalOpen(false)
     }

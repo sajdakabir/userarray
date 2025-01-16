@@ -1,8 +1,10 @@
+import { BACKEND_URL } from "@/config/apiConfig";
 import { ACCESS_TOKEN } from "@/config/constant/cookie";
+import { getWorkspaceLabels } from "@/server/fetchers/user/fetchWorkSpaceLabels";
 import { getAllWorkspaces } from "@/server/fetchers/workspace/get-workspace";
+import { WorkSpaceLabels } from "@/types/Users";
 import { Workspace } from "@/types/workspace";
 import FeedbackClient from "@/views/feedback/FeedbackClient";
-// import FeedbackList from "@/views/feedback/FeedbackList";
 import { cookies } from "next/headers";
 
 const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
@@ -13,8 +15,8 @@ const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
 
   // Get the specific workspace based on the slug
   const workSpace: Workspace | null = await getAllWorkspaces(accessToken);
-
-  // Initialize myWorkSpace as null | boolean
+  const workspaceLavels:WorkSpaceLabels[]  =await getWorkspaceLabels(accessToken,`${BACKEND_URL}/public/workspaces/${slug}/labels/`)
+   
   let myWorkSpace: null | boolean = null;
 
   if (!workSpace) {
@@ -28,6 +30,7 @@ const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
   return (
     <>
       <FeedbackClient
+        workspaceLavels={workspaceLavels}
         token={accessToken}
         slug={slug}
         workspace={myWorkSpace}

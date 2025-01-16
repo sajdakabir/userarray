@@ -11,6 +11,7 @@ interface UserProfile {
 export const useUserStore = create<UserProfile>((set) => ({
     myProfile: null,
     isLoading: false,
+    workSpaceLabels:[],
     logout: () => {
         set({ myProfile: null });
     
@@ -42,4 +43,5 @@ export const useUserStore = create<UserProfile>((set) => ({
             set({ isLoading: false });
         }
     },
+
 }));

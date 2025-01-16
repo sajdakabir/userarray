@@ -7,38 +7,36 @@ import { Feedback, FeedbackStatus } from "@/types/Feedback";
 import { useFeedBackStore } from "@/store";
 import { BACKEND_URL } from "@/config/apiConfig";
 import { useRouter } from "next/navigation";
+import { WorkSpaceLabels } from "@/types/Users";
 interface FeedbackClientProps {
+  workspaceLavels:WorkSpaceLabels[] ;
   token: string;
   slug: string;
   workspace?: boolean | null;
 }
 
-const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug }) => {
+const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}) => {
   const route = useRouter();
   const [activeStatus, setActiveStatus] = useState("open");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isLoading,feedBackStatus, allFeedback, fetchAllFeedback, createFeedBack } =
-    useFeedBackStore();
 
+  const { feedBackStatus, allFeedback, fetchAllFeedback, createFeedBack } =
+    useFeedBackStore();
+ 
   const handleSubmitFeedback = async (
     title: string,
     description: string,
-    // label: string
+    labels?:{id:string ,name:string,color:string}[] 
+   
   ) => {
     if (token === null || undefined) {
-      alert("Login first to post a feedback");
       route.push("/");
       return;
     }
+    const data={title, description,labels }
+    await createFeedBack(token,`${BACKEND_URL}/workspaces/${slug}/feedback/`,data  );
 
-    const newFeedBack = await createFeedBack(
-      token,
-      `${BACKEND_URL}/workspaces/${slug}/feedback/`,
-      { title, description }
-    );
-    if(newFeedBack===true ||newFeedBack===false ){
-      setIsModalOpen(false)
-    }
+    
   };
 
   useEffect(() => {
@@ -149,7 +147,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug }) => {
                             <div className="flex items-center gap-3">
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <p className="text-black text-sm truncate">
+                                  <p className={` text-sm truncate ${feedback._id==='duplicate'?'text-zinc-500':'text-black'}`}>
                                     {feedback.title}
                                   </p>
                                 </div>
@@ -195,8 +193,8 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug }) => {
         </div>
       </div>
       <CreateFeedbackModal
+      LABELS={workspaceLavels}
         isOpen={isModalOpen}
-        isLoading={isLoading}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmitFeedback}
       />

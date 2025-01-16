@@ -45,3 +45,15 @@ export type Assignee = {
   userName: string;
   avatar: string;
 };
+
+export type WorkSpaceLabels = {
+  _id: string;
+  name: string;
+  color: string;
+  counter: number;
+  workspace: string;
+  uuid: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
+};

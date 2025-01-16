@@ -19,43 +19,47 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!contentRef.current) return;
-  
-      const container = contentRef.current;
-      // const scrollPosition = container.scrollTop;
-      const sections = container.querySelectorAll("[data-status-section]");
-  
-      let maxVisibleSection: Element | null = null;
-      let maxVisibleHeight = 0;
-  
-      sections.forEach((section) => {
-        const rect = (section as HTMLElement)?.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-  
-        if (!rect) return;
-  
-        const visibleTop = Math.max(rect.top, containerRect.top);
-        const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-  
-        if (visibleHeight > maxVisibleHeight) {
-          maxVisibleHeight = visibleHeight;
-          maxVisibleSection = section;
+        if (!contentRef.current) return;
+
+        const container = contentRef.current;
+        const sections = container.querySelectorAll("[data-status-section]");
+
+        let maxVisibleSection: Element | null = null;
+        let maxVisibleHeight = 0;
+
+        sections.forEach((section) => {
+            const rect = (section as HTMLElement)?.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+
+            if (!rect) return;
+
+            const visibleTop = Math.max(rect.top, containerRect.top);
+            const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
+            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+            if (visibleHeight > maxVisibleHeight) {
+                maxVisibleHeight = visibleHeight;
+                maxVisibleSection = section;
+            }
+        });
+
+        if (maxVisibleSection) {
+            const sectionId = (maxVisibleSection as HTMLElement).getAttribute("data-status-id");
+            setActiveStatus(sectionId || "");
         }
-      });
-  
-      if (maxVisibleSection) {
-        const sectionId = (maxVisibleSection as HTMLElement).getAttribute("data-status-id");
-        setActiveStatus(sectionId || "");
-      }
     };
-  
-    const contentElement = contentRef.current;
-    if (contentElement) {
-      contentElement.addEventListener("scroll", handleScroll);
-      return () => contentElement.removeEventListener("scroll", handleScroll);
+
+    if (contentRef.current) {
+        contentRef.current.addEventListener("scroll", handleScroll);
     }
-  }, []);
+
+    return () => {
+        if (contentRef.current) {
+            contentRef.current.removeEventListener("scroll", handleScroll);
+        }
+    };
+}, []);
+
   
 
   const getStatusColor = (name: string) => {
@@ -69,6 +73,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
   };
 
   const scrollToStatus = (statusId: string) => {
+    setActiveStatus(statusId)
     const element = document.getElementById(`status-${statusId}`);
     if (element && contentRef.current) {
       const container = contentRef.current;
@@ -90,6 +95,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
           {issueStatus.map((state) => (
             <button
               key={state.id}
+              id={state.id}
               onClick={() => scrollToStatus(state.id)}
               className={`text-sm py-1.5 px-3 rounded-lg transition-colors relative text-left ${
                 activeStatus === state.id
@@ -142,9 +148,9 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
                   {allTasks.length > 0 && (
                     <div className="space-y-[1px]">
                       {allTasks.map((task) => (
-                        <IssueCardContent
-                          key={task.uuid || task._id}
-                          item={task}
+                        <IssueCardContent 
+                          key={task.uuid || task._id} 
+                          item={task} 
                           statusColor={textColor}
                         />
                       ))}

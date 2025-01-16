@@ -12,6 +12,11 @@ export type assignee={
     startsAt: string;
     endsAt: string;
   }
+  export type labels ={
+    id:string,
+    name:string,
+    color:string
+  }
   
 // export interface Issue {
 //     state: IssueStatus;

@@ -47,12 +47,12 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <p className="text-black text-sm truncate">
-              {item.title}
+              {item.title} 
             </p>
             {/* {item.priority && (
               <span
                 className="px-1.5 py-0.5 rounded text-xs"
-                style={getLabelStyle(item.priority)}
+                style={getLabelStyle(item.priority.toString())}
               >
                 {item.priority}
               </span>

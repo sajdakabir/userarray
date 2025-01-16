@@ -7,13 +7,15 @@ import { Feedback, FeedbackStatus } from "@/types/Feedback";
 import { useFeedBackStore } from "@/store";
 import { BACKEND_URL } from "@/config/apiConfig";
 import { useRouter } from "next/navigation";
+import { WorkSpaceLabels } from "@/types/Users";
 interface FeedbackClientProps {
+  workspaceLavels:WorkSpaceLabels[] ;
   token: string;
   slug: string;
   workspace?: boolean | null;
 }
 
-const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug }) => {
+const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}) => {
   const route = useRouter();
   const [activeStatus, setActiveStatus] = useState("open");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -195,6 +197,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug }) => {
         </div>
       </div>
       <CreateFeedbackModal
+      LABELS={workspaceLavels}
         isOpen={isModalOpen}
         isLoading={isLoading}
         onClose={() => setIsModalOpen(false)}

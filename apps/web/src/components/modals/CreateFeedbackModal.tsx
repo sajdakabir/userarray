@@ -2,21 +2,22 @@
 
 import { FC, useState, useEffect, useRef } from 'react';
 import { SmilePlus, Image, ChevronDown, X } from 'lucide-react';
+import { WorkSpaceLabels } from '@/types/Users';
 
 interface CreateFeedbackModalProps {
+  LABELS:WorkSpaceLabels[] ;
+  
   isOpen: boolean;
   isLoading:boolean;
   onClose: () => void,
   onSubmit: (title: string, description: string, label: string) => void;
 }
 
-const LABELS = [
-  { id: 'bug', name: 'Bug', color: '#F87171' },
-  { id: 'feature', name: 'Feature', color: '#60A5FA' },
-  { id: 'improvement', name: 'Improvement', color: '#34D399' },
-];
+
 
 const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
+
+  LABELS,
   isOpen,
   isLoading,
   onClose,
@@ -24,10 +25,11 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedLabel, setSelectedLabel] = useState(LABELS[0]);
+  const [selectedLabel, setSelectedLabel] = useState(LABELS[0]._id);
   const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -39,6 +41,8 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
         }
       }, 0);
     }
+
+    
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -49,11 +53,16 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
     onClose()
   };
 
-  const handleSubmit = () => {
-    onSubmit(title, description, selectedLabel.id);
-    setTitle('');
-    setDescription('');
-  };
+  // const handleSubmit = () => {
+  //   const data=LABELS.find(l=>l._id===selectedLabel);
+  //   let labels=[]
+    
+  //   const labels={id:data._id,}
+    
+  //   onSubmit(title, description, );
+  //   setTitle('');
+  //   setDescription('');
+  // };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -105,9 +114,9 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
               >
                 <span
                   className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: selectedLabel.color }}
+                  style={{ backgroundColor: LABELS.find(l=>l._id===selectedLabel)?.color }}
                 />
-                <span>{selectedLabel.name}</span>
+                <span>{LABELS.find(l=>l._id===selectedLabel)?.name}</span>
                 <ChevronDown className="w-3 h-3" />
               </button>
             </div>
@@ -116,13 +125,13 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
               <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg py-1 min-w-[120px] z-10">
                 {LABELS.map((label) => (
                   <button
-                    key={label.id}
+                    key={label._id}
                     onClick={() => {
-                      setSelectedLabel(label);
+                      setSelectedLabel(label._id);
                       setIsLabelDropdownOpen(false);
                     }}
                     className={`flex items-center gap-2 w-full px-3 py-1.5 text-sm hover:bg-gray-50 ${
-                      selectedLabel.id === label.id ? 'text-black' : 'text-gray-600'
+                      selectedLabel === label._id ? 'text-black' : 'text-gray-600'
                     }`}
                   >
                     <span 

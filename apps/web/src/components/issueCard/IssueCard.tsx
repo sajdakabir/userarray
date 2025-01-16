@@ -20,38 +20,42 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
       if (!contentRef.current) return;
       
       const container = contentRef.current;
-      const scrollPosition = container.scrollTop;
       const sections = container.querySelectorAll('[data-status-section]');
-      
-      let maxVisibleSection = null;
-      let maxVisibleHeight = 0;
-
+      const center = container.getBoundingClientRect().top + window.innerHeight / 2; // Middle of the viewport
+  
+      let closestSection = null;
+      let closestDistance = Infinity;
+  
       sections.forEach((section) => {
-        const rect = (section as HTMLElement).getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        
-        const visibleTop = Math.max(rect.top, containerRect.top);
-        const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-
-        if (visibleHeight > maxVisibleHeight) {
-          maxVisibleHeight = visibleHeight;
-          maxVisibleSection = section;
+        const rect = section.getBoundingClientRect();
+        const sectionCenter = rect.top + rect.height / 2; // Middle of the section
+        const distance = Math.abs(center - sectionCenter); // Distance to the center
+  
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestSection = section;
         }
       });
-
-      if (maxVisibleSection) {
-        const sectionId = maxVisibleSection.getAttribute('data-status-id');
+  
+      if (closestSection) {
+        const sectionId = closestSection.getAttribute('data-status-id');
         setActiveStatus(sectionId || '');
       }
     };
-
+  
     const contentElement = contentRef.current;
     if (contentElement) {
       contentElement.addEventListener('scroll', handleScroll);
-      return () => contentElement.removeEventListener('scroll', handleScroll);
     }
+  
+    return () => {
+      if (contentElement) {
+        contentElement.removeEventListener('scroll', handleScroll);
+      }
+    };
   }, []);
+  
+  
 
   const getStatusColor = (name: string) => {
     const statusColors: { [key: string]: string } = {
@@ -64,6 +68,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
   };
 
   const scrollToStatus = (statusId: string) => {
+    setActiveStatus(statusId)
     const element = document.getElementById(`status-${statusId}`);
     if (element && contentRef.current) {
       const container = contentRef.current;
@@ -85,6 +90,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
           {issueStatus.map((state) => (
             <button
               key={state.id}
+              id={state.id}
               onClick={() => scrollToStatus(state.id)}
               className={`text-sm py-1.5 px-3 rounded-lg transition-colors relative text-left ${
                 activeStatus === state.id 

@@ -1,7 +1,7 @@
 import { GET_USER } from "@/config/apiConfig";
-import { User } from "@/types/Users";
+import { UserProfile } from "@/types/Users";
 
-export const getUser = async (accessToken: string): Promise<User | null> => {
+export const getUser = async (accessToken: string): Promise<UserProfile | null> => {
   try {
     const response = await fetch(GET_USER, {
       headers: {
@@ -17,7 +17,7 @@ export const getUser = async (accessToken: string): Promise<User | null> => {
 
     const data = await response.json();
     
-    const user: User = data.response; 
+    const user: UserProfile = data.response; 
     return user;
   } catch (error) {
     console.error("Error:", error);

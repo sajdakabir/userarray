@@ -50,6 +50,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspaceLavels 
         allFeedback={allFeedback}
         selectedFeedback={selectedFeedback}
         onFeedbackSelect={setSelectedFeedback}
+        workspaceLavels={workspaceLavels}
       />
     );
   }

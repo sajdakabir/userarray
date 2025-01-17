@@ -158,7 +158,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
                                   </div>
                                 ) : (
                                   <span className="text-xs text-[#666] block italic opacity-60">
-                                    No description
+                                    
                                   </span>
                                 )}
                               </div>

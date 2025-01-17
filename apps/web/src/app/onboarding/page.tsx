@@ -14,7 +14,7 @@ import TeamCreate from "@/views/onboarding/TeamCreate";
 
 export const metadata: Metadata = {
   title: "onboarding",
-  description: "Creating Workspace for march",
+  description: "Creating Workspace for userarray",
 };
 
 const Onboard = async () => {

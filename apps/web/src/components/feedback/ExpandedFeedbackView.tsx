@@ -7,7 +7,6 @@ import {
   // Link2,
   ThumbsUp,
   MessageSquare,
-  User2,
   Plus,
   User,
 } from "lucide-react";
@@ -37,7 +36,7 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
   selectedFeedback,
   onFeedbackSelect,
   workspaceLavels = [],
-  feedBackStatus = DEFAULT_STATUSES,
+  feedBackStatus ,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStatus, setActiveStatus] = useState("Open");
@@ -45,10 +44,10 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
   if (!selectedFeedback) return null;
 
   const getStatusColor = (status: string) => {
-    const foundStatus = allFeedback.find(
-      (s) => s.state.name.toLowerCase() === status
+    const foundStatus = DEFAULT_STATUSES.find(
+      (s) => s.name.toLowerCase() === status
     );
-    return foundStatus?.labels[0].color || "#666666";
+    return foundStatus?.color || "#666666";
   };
   
   const filteredFeedback =
@@ -59,7 +58,7 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
         );
 
   return (
-    <div className="flex flex-col bg-white h-full">
+    <div className="flex flex-col bg-white min-h-full h-auto">
       {/* Container with max width and padding */}
       <div className="w-full max-w-[1400px] mx-auto px-6">
         {/* Top header with back button and add feedback */}
@@ -88,7 +87,7 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
               {/* List header with status filters */}
               <div className="px-4 py-4 bg-white">
                 <div className="flex items-center gap-2 overflow-x-auto">
-                  {feedBackStatus.map((status) => (
+                  {feedBackStatus && feedBackStatus.map((status) => (
                     <button
                       key={status.name}
                       onClick={() => setActiveStatus(status.name)}
@@ -213,9 +212,7 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
                     {selectedFeedback.title}
                   </h1>
                   <div className="flex items-center gap-2.5 text-sm text-[#475467]">
-                    <div className="w-6 h-6 rounded-full bg-[#F2F4F7] flex items-center justify-center">
-                      <User2 className="w-3.5 h-3.5 text-[#344054]" />
-                    </div>
+                    
                     <div className="flex items-center gap-2 ">
                       {" "}
                       <span>Created by </span>{" "}
@@ -232,7 +229,7 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
                       )}
                       {selectedFeedback.createdBy?.firstName}{" "}
                       <span> {formatMongoDate(selectedFeedback.createdAt) }  </span>
-                    </div>?
+                    </div>
                   </div>
                 </div>
 

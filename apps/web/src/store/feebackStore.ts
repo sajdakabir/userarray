@@ -53,7 +53,7 @@ export const useFeedBackStore = create<UseIssueStore>((set,get) => ({
             source: "",
             team: "",
             workspace: "",
-            createdBy: "",
+            createdBy: null,
             isArchived: false,
             isDeleted: false,
             uuid: "",

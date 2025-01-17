@@ -59,7 +59,7 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
         );
 
   return (
-    <div className="flex flex-col bg-white">
+    <div className="flex flex-col bg-white h-full">
       {/* Container with max width and padding */}
       <div className="w-full max-w-[1400px] mx-auto px-6">
         {/* Top header with back button and add feedback */}

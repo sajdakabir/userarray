@@ -3,66 +3,71 @@
 import { FC, useEffect, useState } from "react";
 import { ThumbsUp, MessageSquare, Plus } from "lucide-react";
 import CreateFeedbackModal from "@/components/modals/CreateFeedbackModal";
+import ExpandedFeedbackView from "@/components/feedback/ExpandedFeedbackView";
 import { Feedback, FeedbackStatus } from "@/types/Feedback";
 import { useFeedBackStore } from "@/store";
 import { BACKEND_URL } from "@/config/apiConfig";
 import { useRouter } from "next/navigation";
 import { WorkSpaceLabels } from "@/types/Users";
+
 interface FeedbackClientProps {
-  workspaceLavels:WorkSpaceLabels[] ;
+  workspaceLavels: WorkSpaceLabels[];
   token: string;
   slug: string;
   workspace?: boolean | null;
 }
 
-const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}) => {
+const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspaceLavels }) => {
   const route = useRouter();
   const [activeStatus, setActiveStatus] = useState("open");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
 
   const { feedBackStatus, allFeedback, fetchAllFeedback, createFeedBack } =
     useFeedBackStore();
- 
+
   const handleSubmitFeedback = async (
     title: string,
     description: string,
-    labels?:{id:string ,name:string,color:string}[] 
-   
+    labels?: { id: string; name: string; color: string }[]
   ) => {
     if (token === null || undefined) {
       route.push("/");
       return;
     }
-    const data={title, description,labels }
-    await createFeedBack(token,`${BACKEND_URL}/workspaces/${slug}/feedback/`,data  );
-
-    
+    const data = { title, description, labels };
+    await createFeedBack(token, `${BACKEND_URL}/workspaces/${slug}/feedback/`, data);
   };
 
   useEffect(() => {
-    fetchAllFeedback(
-      token,
-      `${BACKEND_URL}/public/workspaces/${slug}/feedback/`
-    );
+    fetchAllFeedback(token, `${BACKEND_URL}/public/workspaces/${slug}/feedback/`);
   }, [slug]);
 
+  // If a feedback is selected, show the expanded view
+  if (selectedFeedback) {
+    return (
+      <ExpandedFeedbackView
+        allFeedback={allFeedback}
+        selectedFeedback={selectedFeedback}
+        onFeedbackSelect={setSelectedFeedback}
+      />
+    );
+  }
+
   const getStatusColor = (status: string) => {
-    const colors: { [key: string]: string } = {
-      open: "#16A34A",
-      inProgress: "#2563EB",
-      closed: "#666666",
-    };
-    return colors[status.toLowerCase()] || "#666666";
-  };
-
-  const scrollToStatus = (statusId: string) => {
-    const element = document.getElementById(`status-${statusId}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    switch (status.toLowerCase()) {
+      case 'open':
+        return '#16A34A';
+      case 'inprogress':
+        return '#2563EB';
+      case 'closed':
+        return '#666666';
+      default:
+        return '#666666';
     }
-    setActiveStatus(statusId);
   };
 
+  // Otherwise show the main feedback list view
   return (
     <section
       className="h-screen flex flex-col flex-grow"
@@ -91,7 +96,13 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
                 {feedBackStatus.map((state: FeedbackStatus) => (
                   <button
                     key={state.name}
-                    onClick={() => scrollToStatus(state.name)}
+                    onClick={() => {
+                      const element = document.getElementById(`status-${state.name}`);
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                      setActiveStatus(state.name);
+                    }}
                     className={`text-sm py-1.5 px-3 rounded-lg transition-colors relative text-left ${
                       activeStatus === state.name
                         ? "text-black font-medium"
@@ -142,12 +153,13 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
                         {statusFeedback.map((feedback: Feedback) => (
                           <div
                             key={feedback._id}
+                            onClick={() => setSelectedFeedback(feedback)}
                             className="px-3 py-1.5 hover:bg-[#F8F8F8] transition-colors duration-200 cursor-pointer rounded-lg"
                           >
                             <div className="flex items-center gap-3">
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <p className={` text-sm truncate ${feedback._id==='duplicate'?'text-zinc-500':'text-black'}`}>
+                                  <p className={`text-sm truncate ${feedback._id === 'duplicate' ? 'text-zinc-500' : 'text-black'}`}>
                                     {feedback.title}
                                   </p>
                                 </div>
@@ -193,7 +205,7 @@ const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug ,workspaceLavels}
         </div>
       </div>
       <CreateFeedbackModal
-      LABELS={workspaceLavels}
+        LABELS={workspaceLavels}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmitFeedback}

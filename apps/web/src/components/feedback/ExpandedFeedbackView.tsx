@@ -219,7 +219,7 @@ const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
                     <div className="flex items-center gap-2 ">
                       {" "}
                       <span>Created by </span>{" "}
-                      {selectedFeedback?.createdBy?.avatar ? (
+                      {selectedFeedback.createdBy?.avatar ?(
                         <Image
                           src={selectedFeedback.createdBy.avatar}
                           alt={selectedFeedback?.createdBy?.firstName || "User"}

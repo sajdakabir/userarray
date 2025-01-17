@@ -23,7 +23,7 @@ export interface Feedback {
     description: string;
     team: string;
     workspace: string;
-    createdBy:  |null;
+    createdBy: CreatedBy |null;
     isArchived: boolean;
     isDeleted: boolean;
     uuid: string;

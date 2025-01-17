@@ -60,7 +60,7 @@ export const getAllFeedback = async (workspace, team) => {
         workspace: workspace._id,
         team: team,
         source: "feedback"
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: -1 }).populate('createdBy');
     return issues;
 }
 

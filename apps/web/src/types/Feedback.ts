@@ -1,5 +1,15 @@
+export interface FeedbackActivity {
+    type: string;
+    action: string;
+    timestamp?: string;
+    user: string;
+    from?: string;
+    to?: string;
+}
+
 export interface FeedbackStatus {
-    name:string
+    name: string;
+    color?: string;
 }
 
 export interface Feedback {
@@ -19,7 +29,7 @@ export interface Feedback {
     updatedAt?: string;
     type?: string;
     like: null | number;
-    comments:string|null;
+    comments: string | null;
     comment: null | string;
-   
+    activity?: FeedbackActivity[];
 }

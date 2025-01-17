@@ -96,12 +96,12 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
               >
                 Connect Linear
               </Button>
-              <button
+              {/* <button
                 onClick={() => window.location.href = '/dashboard'}
                 className="w-full text-sm text-zinc-400 hover:text-zinc-300"
               >
                 I will  do this later
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

@@ -18,7 +18,7 @@ const CycleClient: FC<CycleClientProps> = ({ token, slug, workspace }) => {
   useEffect(() => {
     const url = token && workspace 
       ? `${BACKEND_URL}/workspaces/${slug}/cycles/current/issues/`
-      : `${BACKEND_URL}/public/workspaces/${slug}/cycles/current/issues`;
+      : `${BACKEND_URL}/public/${slug}/cycles/current/issues`;
     fetchAllIssues(token, url, "cycle");
   }, [token, slug, workspace, fetchAllIssues]);
 

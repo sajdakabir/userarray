@@ -260,13 +260,13 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
                 )}
                 Continue with Linear
               </Button>
-              <button
+              {/* <button
                 type="button"
                 onClick={() => router.push("/dashboard")}
                 className="w-full text-xs text-zinc-400 hover:text-white transition-colors"
               >
                 I will  do this later
-              </button>
+              </button> */}
             </div>
           </form>
         </div>

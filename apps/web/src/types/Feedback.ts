@@ -1,5 +1,18 @@
+
 export interface FeedbackStatus {
     name:string
+}
+export interface CreatedBy {
+    firstName:string,
+    userName:string,
+    lastName:string,
+    avatar:string
+}
+export interface labels {
+    _id:string,
+    id:string,
+    name:string,
+    color:string
 }
 
 export interface Feedback {
@@ -10,11 +23,11 @@ export interface Feedback {
     description: string;
     team: string;
     workspace: string;
-    createdBy: string;
+    createdBy: CreatedBy |null;
     isArchived: boolean;
     isDeleted: boolean;
     uuid: string;
-    labels: [];
+    labels: labels[] |[];
     createdAt?: string;
     updatedAt?: string;
     type?: string;

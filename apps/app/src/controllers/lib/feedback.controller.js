@@ -16,6 +16,7 @@ export const createFeedbackController  = async (req, res, next) => {
 export const getAllFeedbackController = async (req, res, next) => {
     try {
         const workspace = await getWorkspaceProfile(req.params.workspace);
+        
         const issues = await getAllFeedback(workspace, workspace.teams[0]._id)
         res.status(200).json({ issues })
     } catch (err) {

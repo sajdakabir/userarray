@@ -19,48 +19,48 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-        if (!contentRef.current) return;
+      if (!contentRef.current) return;
 
-        const container = contentRef.current;
-        const sections = container.querySelectorAll("[data-status-section]");
+      const container = contentRef.current;
+      const sections = container.querySelectorAll("[data-status-section]");
 
-        let maxVisibleSection: Element | null = null;
-        let maxVisibleHeight = 0;
+      let maxVisibleSection: Element | null = null;
+      let maxVisibleHeight = 0;
 
-        sections.forEach((section) => {
-            const rect = (section as HTMLElement)?.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
+      sections.forEach((section) => {
+        const rect = (section as HTMLElement)?.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
 
-            if (!rect) return;
+        if (!rect) return;
 
-            const visibleTop = Math.max(rect.top, containerRect.top);
-            const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
-            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const visibleTop = Math.max(rect.top, containerRect.top);
+        const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
 
-            if (visibleHeight > maxVisibleHeight) {
-                maxVisibleHeight = visibleHeight;
-                maxVisibleSection = section;
-            }
-        });
-
-        if (maxVisibleSection) {
-            const sectionId = (maxVisibleSection as HTMLElement).getAttribute("data-status-id");
-            setActiveStatus(sectionId || "");
+        if (visibleHeight > maxVisibleHeight) {
+          maxVisibleHeight = visibleHeight;
+          maxVisibleSection = section;
         }
+      });
+
+      if (maxVisibleSection) {
+        const sectionId = (maxVisibleSection as HTMLElement).getAttribute(
+          "data-status-id"
+        );
+        setActiveStatus(sectionId || "");
+      }
     };
 
     if (contentRef.current) {
-        contentRef.current.addEventListener("scroll", handleScroll);
+      contentRef.current.addEventListener("scroll", handleScroll);
     }
 
     return () => {
-        if (contentRef.current) {
-            contentRef.current.removeEventListener("scroll", handleScroll);
-        }
+      if (contentRef.current) {
+        contentRef.current.removeEventListener("scroll", handleScroll);
+      }
     };
-}, []);
-
-  
+  }, []);
 
   const getStatusColor = (name: string) => {
     const statusColors: { [key: string]: string } = {
@@ -73,7 +73,7 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
   };
 
   const scrollToStatus = (statusId: string) => {
-    setActiveStatus(statusId)
+    setActiveStatus(statusId);
     const element = document.getElementById(`status-${statusId}`);
     if (element && contentRef.current) {
       const container = contentRef.current;
@@ -90,7 +90,10 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
   return (
     <div className="w-full h-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 flex gap-8">
       {/* Status List */}
-      <div className="w-48 flex-shrink-0 pt-4" style={{ backgroundColor: "#FFF" }}>
+      <div
+        className="w-48 flex-shrink-0 pt-4"
+        style={{ backgroundColor: "#FFF" }}
+      >
         <div className="flex flex-col gap-2">
           {issueStatus.map((state) => (
             <button
@@ -148,9 +151,9 @@ const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
                   {allTasks.length > 0 && (
                     <div className="space-y-[1px]">
                       {allTasks.map((task) => (
-                        <IssueCardContent 
-                          key={task.uuid || task._id} 
-                          item={task} 
+                        <IssueCardContent
+                          key={task.uuid || task._id}
+                          item={task}
                           statusColor={textColor}
                         />
                       ))}

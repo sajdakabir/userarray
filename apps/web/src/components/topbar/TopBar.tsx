@@ -73,7 +73,7 @@ const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
               Feedback
             </Link>
             <Link
-              href={`/${workspace}/plan`}
+              href={`/${workspace}/issue`}
               className={`px-2 py-1 transition-colors ${
                 isActivePath("/plan")
                   ? "text-black font-medium"

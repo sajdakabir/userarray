@@ -44,8 +44,8 @@ const createWorkspaceController = async (req, res, next) => {
         })
 
         const labelsData = [
-            { "name": "Bugs", "color": "#dc2626" },
-            { "name": "Features", "color": "#7c3aed" },
+            { "name": "Bug", "color": "#dc2626" },
+            { "name": "Feature", "color": "#7c3aed" },
             { "name": "Improvement", "color": "#3b82f6" },
             { "name": "UI/UX", "color": "#7057ff" }
         ];

@@ -84,13 +84,13 @@ const createMagicLoginLink = async (email, redirectUrl) => {
     })
     await sendEmail({
         from: {
-            name: 'Marchbot',
+            name: 'Userarraybot',
             address: `hello@trymarch.dev`
         },
         to: {
             address: user?.accounts?.local?.email || user?.accounts?.google?.email
         },
-        subject: `[march] Login link`,
+        subject: `[userarray] Login link`,
         content: await readTemplateFile('magic-link', {
             name: user.userName || user.fullName,
             token,

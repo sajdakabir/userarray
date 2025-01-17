@@ -237,14 +237,14 @@ const inviteMemberToWorkspaceController = async (req, res, next) => {
         if (invitation) {
             sendEmail({
                 from: {
-                    name: "Marchbot",
+                    name: "userarray",
                     address: "hello@trymarch.dev"
                 },
                 to: {
                     name: email.split('@')[0],
                     address: email
                 },
-                subject: `[march] Invitation`,
+                subject: `[userArray] Invitation`,
                 content: await readTemplateFile("invite-link", {
                     inviterName: requestingUserData.userName || requestingUserData.fullName,
                     name: user.userName || user.fullName,

@@ -41,7 +41,7 @@ const TopBar: FC<TopBarProps> = ({ workspace }) => {
         {/* Navigation Links */}
         <div className="flex items-center gap-4 ml-8">
           <Link
-            href={`/${workspace}/plan`}
+            href={`/${workspace}/issue`}
             className={`text-sm px-3 py-1 rounded-md transition-colors ${
               isActivePath('/plan')
                 ? 'text-focus-text-hover bg-[#1F1F1F]'

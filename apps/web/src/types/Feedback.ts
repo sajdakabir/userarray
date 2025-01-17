@@ -1,7 +1,12 @@
-import { UserProfile } from "./Users";
 
 export interface FeedbackStatus {
     name:string
+}
+export interface CreatedBy {
+    firstName:string,
+    userName:string,
+    lastName:string,
+    avatar:string
 }
 export interface labels {
     _id:string,
@@ -18,7 +23,7 @@ export interface Feedback {
     description: string;
     team: string;
     workspace: string;
-    createdBy: UserProfile |null;
+    createdBy:  |null;
     isArchived: boolean;
     isDeleted: boolean;
     uuid: string;

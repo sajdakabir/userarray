@@ -68,7 +68,7 @@ const IssueCardContent: FC<IssueCardContentProps> = ({ item }) => {
             />
           ) : (
             <span className="text-xs text-[#666] block italic opacity-60">
-              No description
+              
             </span>
           )}
 

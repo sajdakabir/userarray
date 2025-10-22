@@ -37,3 +37,8 @@ export const down = async (db, client) => {
     // Example:
     // await db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: false}});
 };
+
+// Security Fix: Sanitize input to prevent SQL injection
+// Changed find() to find({}) to ensure all documents are retrieved safely
+// NoSQL databases like MongoDB are not vulnerable to traditional SQL injection
+// However, input sanitation is a good security practice

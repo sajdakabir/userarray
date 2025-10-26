@@ -1,6 +1,10 @@
+```javascript
 import { createMagicLoginLink, validateMagicLoginLink, getUserById, validateGoogleUser, getUserByEmail, createGoogleUser } from "../../services/core/user.service.js";
 import { generateJWTTokenPair } from "../../utils/jwt.service.js";
 import { BlackList } from "../../models/core/black-list.model.js";
+
+// JWT token expiration time in seconds
+const TOKEN_EXPIRATION = 3600; // 1 hour
 
 export const magicLoginController = async (req, res, next) => {
     try {
@@ -29,7 +33,7 @@ export const validateLoginMagicLinkController = async (req, res, next) => {
     try {
         const token = await validateMagicLoginLink(req.body.token)
         const user = await getUserById(token.user?.uuid)
-        const tokenPair = await generateJWTTokenPair(user)
+        const tokenPair = await generateJWTTokenPair(user, TOKEN_EXPIRATION)
         res.status(200).json({
             statusCode: 200,
             response: tokenPair
@@ -66,7 +70,7 @@ export const authenticateWithGoogleController = async (req, res, next) => {
             isNewUser = true;
             user = await createGoogleUser(payload)
         }
-        const tokenPair = await generateJWTTokenPair(user)
+        const tokenPair = await generateJWTTokenPair(user, TOKEN_EXPIRATION)
         res.status(200).json({
             statusCode: 200,
             response: {
@@ -101,3 +105,4 @@ export const logOutController = async (req, res, next) => {
         next(err)
     }
 }
+```

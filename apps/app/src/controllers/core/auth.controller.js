@@ -1,8 +1,17 @@
+```javascript
 import { createMagicLoginLink, validateMagicLoginLink, getUserById, validateGoogleUser, getUserByEmail, createGoogleUser } from "../../services/core/user.service.js";
 import { generateJWTTokenPair } from "../../utils/jwt.service.js";
 import { BlackList } from "../../models/core/black-list.model.js";
+import rateLimit from 'express-rate-limit';
 
-export const magicLoginController = async (req, res, next) => {
+// Rate limiting middleware for auth endpoints
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // 5 requests per windowMs
+    message: 'Too many authentication attempts, please try again later'
+});
+
+export const magicLoginController = [authLimiter, async (req, res, next) => {
     try {
         if (!req.body.email) {
             const error = new Error("Bad request")
@@ -23,9 +32,9 @@ export const magicLoginController = async (req, res, next) => {
         error.statusCode = err.statusCode || 500;
         next(err)
     }
-}
+}]
 
-export const validateLoginMagicLinkController = async (req, res, next) => {
+export const validateLoginMagicLinkController = [authLimiter, async (req, res, next) => {
     try {
         const token = await validateMagicLoginLink(req.body.token)
         const user = await getUserById(token.user?.uuid)
@@ -44,9 +53,9 @@ export const validateLoginMagicLinkController = async (req, res, next) => {
         error.statusCode = err.statusCode || 500;
         next(err)
     }
-}
+}]
 
-export const authenticateWithGoogleController = async (req, res, next) => {
+export const authenticateWithGoogleController = [authLimiter, async (req, res, next) => {
     try {
         const token = req.headers["x-google-auth"]
         if (!token) {
@@ -77,7 +86,7 @@ export const authenticateWithGoogleController = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+}]
 
 export const logOutController = async (req, res, next) => {
     try {
@@ -101,3 +110,4 @@ export const logOutController = async (req, res, next) => {
         next(err)
     }
 }
+```

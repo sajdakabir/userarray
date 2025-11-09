@@ -1,9 +1,60 @@
+```javascript
 import { ItemActivity } from "../models/lib/itemActivity.model.js";
 import { Worker } from "bullmq";
 import { redisConnection } from "../loaders/redis.loader.js";
 import { Label } from "../models/lib/label.model.js";
 import { User } from "../models/core/user.model.js";
-import { Cycle } from "../models/lib/cycle.model.js"
+import { Cycle } from "../models/lib/cycle.model.js";
+import { Item } from "../models/lib/item.model.js";
+import { Space } from "../models/lib/space.model.js";
+import { Workspace } from "../models/core/workspace.model.js";
+
+// Security: Validate user permissions before performing database operations
+const validateUserPermissions = async (actor, workspace, space, item) => {
+    // Verify actor exists and is a valid user
+    const user = await User.findById(actor);
+    if (!user) {
+        throw new Error('Invalid actor: User not found');
+    }
+
+    // Verify workspace exists and user has access
+    const workspaceDoc = await Workspace.findById(workspace);
+    if (!workspaceDoc) {
+        throw new Error('Invalid workspace');
+    }
+    
+    // Check if user is a member of the workspace
+    const isMember = workspaceDoc.members && workspaceDoc.members.some(
+        member => member.toString() === actor.toString()
+    );
+    if (!isMember) {
+        throw new Error('User does not have access to this workspace');
+    }
+
+    // Verify space exists and belongs to workspace
+    if (space) {
+        const spaceDoc = await Space.findById(space);
+        if (!spaceDoc || spaceDoc.workspace.toString() !== workspace.toString()) {
+            throw new Error('Invalid space or space does not belong to workspace');
+        }
+    }
+
+    // Verify item exists and belongs to the space/workspace
+    if (item) {
+        const itemDoc = await Item.findById(item);
+        if (!itemDoc) {
+            throw new Error('Invalid item: Item not found');
+        }
+        if (itemDoc.workspace.toString() !== workspace.toString()) {
+            throw new Error('Item does not belong to the specified workspace');
+        }
+        if (space && itemDoc.space && itemDoc.space.toString() !== space.toString()) {
+            throw new Error('Item does not belong to the specified space');
+        }
+    }
+
+    return true;
+};
 
 // Track Changes in name
 const trackName = async (
@@ -405,6 +456,9 @@ const trackCycle = async (
 const createItemActivity = async (data) => {
     const { requestedData, currentInstance, item, space, workspace, actor } = data;
 
+    // Security: Validate permissions before creating activity
+    await validateUserPermissions(actor, workspace, space, item);
+
     const issueActivity = new ItemActivity({
         item,
         space,
@@ -419,180 +473,4 @@ const createItemActivity = async (data) => {
     await issueActivity.save();
 
     if (requestedData.assignee_ids) {
-        trackAssignees(requestedData, currentInstance, item, space, workspace, actor);
-    }
-}
-
-const ITEM_ACTIVITY_MAPPER = {
-    name: trackName,
-    effort: trackEffort,
-    status: trackStatus,
-    description: trackDescription,
-    dueDate: trackDueDate,
-    labels: trackLabels,
-    assignees: trackAssignees,
-    cycles: trackCycle
-};
-
-const updateItemActivity = async (data) => {
-    const { requestedData, currentInstance, item, space, workspace, actor } = data;
-
-    for (const key in requestedData) {
-        if (Object.prototype.hasOwnProperty.call(requestedData, key)) {
-            const func = ITEM_ACTIVITY_MAPPER[key];
-            if (func) {
-                await func(
-                    requestedData,
-                    currentInstance,
-                    item,
-                    space,
-                    workspace,
-                    actor
-                );
-            } else {
-                console.warn(`No mapping function found for key: ${key}`);
-            }
-        }
-    }
-}
-
-const deleteItemActivity = async (data) => {
-    const { item, space, workspace, actor } = data;
-    const itemActivity = new ItemActivity({
-        item,
-        space,
-        workspace,
-        comment: "deleted the item",
-        verb: "deleted",
-        actor,
-        field: "item"
-    });
-
-    await itemActivity.save();
-};
-
-const createCommentActivity = async (data) => {
-    const { requestedData, item, space, workspace, actor } = data;
-    const activity = new ItemActivity({
-        item,
-        space,
-        workspace,
-        comment: "created a comment",
-        verb: "created",
-        actor,
-        field: "comment",
-        newValue: requestedData.comment || "",
-        newIdentifier: requestedData._id || null,
-        issueCommentId: requestedData._id || null
-    });
-
-    await activity.save();
-};
-
-const updateCommentActivity = async (data) => {
-    const { requestedData, currentInstance, item, space, workspace, actor } = data;
-    if (currentInstance.comment !== requestedData.comment) {
-        const itemActivity = new ItemActivity({
-            item,
-            space,
-            workspace,
-            comment: "updated a comment",
-            verb: "updated",
-            actor,
-            field: "comment",
-            oldValue: currentInstance.comment || "",
-            newValue: requestedData.comment || "",
-            oldIdentifier: currentInstance._id,
-            newIdentifier: currentInstance._id || null,
-            issue_comment_id: currentInstance._id || null
-        });
-
-        await itemActivity.save();
-    }
-};
-
-const deleteCommentActivity = async (data) => {
-    const { item, space, workspace, actor } = data;
-    const itemActivity = new ItemActivity({
-        item,
-        space,
-        workspace,
-        comment: "deleted the comment",
-        verb: "deleted",
-        actor,
-        field: "comment"
-    });
-
-    await itemActivity.save();
-};
-
-const createCycleActivity = async (data) => {
-    // const { requestedData, currentInstance, item, space, workspace, actor } = data;
-
-    // const itemActivity = new ItemActivity({
-    //     requestedData,
-    //     currentInstance,
-    //     item,
-    //     space,
-    //     workspace,
-    //     actor,
-    //     verb: 'Created',
-    //     comment: 'Item added to the cycle',
-    //     field: 'Cycle'
-
-    // })
-    // await itemActivity.save();
-}
-
-const issueActivityWorker = new Worker('itemActivityQueue', async (job) => {
-    if (job.data.type === 'item.activity.created') {
-        await createItemActivity(job.data);
-    } else if (job.data.type === 'item.activity.updated') {
-        await updateItemActivity(job.data);
-    } else if (job.data.type === 'item.activity.deleted') {
-        await deleteItemActivity(job.data);
-    } else if (job.data.type === 'comment.activity.created') {
-        await createCommentActivity(job.data);
-    } else if (job.data.type === 'comment.activity.updated') {
-        await updateCommentActivity(job.data);
-    } else if (job.data.type === 'comment.activity.deleted') {
-        await deleteCommentActivity(job.data);
-    }
-}, {
-    connection: redisConnection
-});
-
-issueActivityWorker.on('completed', async (job) => {
-    console.log(`Job ${job.id} has completed!`);
-    // Remove the job from the queue after completion
-    await job.remove();
-});
-
-issueActivityWorker.on('failed', (job, err) => {
-    console.error(`Job ${job.id} has failed with ${err.message}`);
-});
-
-issueActivityWorker.on('error', (err) => {
-    console.error('Worker encountered an error:', err);
-});
-
-console.log('Worker setup completed.');
-
-export {
-    trackName,
-    trackDescription,
-    trackEffort,
-    trackStatus,
-    trackDueDate,
-    trackLabels,
-    trackAssignees,
-    trackCycle,
-    createItemActivity,
-    updateItemActivity,
-    deleteItemActivity,
-    createCommentActivity,
-    updateCommentActivity,
-    deleteCommentActivity,
-    createCycleActivity,
-    issueActivityWorker
-};
+        trackAssignees(requestedData, currentInstance, item, space, workspace

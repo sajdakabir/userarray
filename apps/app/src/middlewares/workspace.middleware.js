@@ -1,14 +1,33 @@
+```javascript
 import { getUserById } from "../services/core/user.service.js";
 import { validateUserWithWorkspace, getWorkspaceProfile } from "../services/lib/workspace.service.js";
 
 export const WorkspaceMiddleware = async (req, res, next) => {
     try {
         const user = req.user
+        
+        // Security: Validate workspace parameter exists to prevent undefined access
+        if (!req.params.workspace) {
+            const error = new Error("Workspace parameter is required");
+            error.statusCode = 400;
+            throw error;
+        }
+        
         const workspace = await getWorkspaceProfile(req.params.workspace)
+        
+        // Security: Validate workspace exists before proceeding
+        if (!workspace) {
+            const error = new Error("Workspace not found");
+            error.statusCode = 404;
+            throw error;
+        }
+        
         const check = await validateUserWithWorkspace(user.id, workspace._id)
         if (check) {
             res.locals.user = user;
             res.locals.workspace = workspace;
+            // Security: Store workspace ID for sub-resource validation in subsequent middleware/controllers
+            res.locals.workspaceId = workspace._id;
             next();
         } else {
             const error = new Error("User not authorised")
@@ -17,7 +36,7 @@ export const WorkspaceMiddleware = async (req, res, next) => {
         }
     } catch (err) {
         const error = new Error(err.message);
-        error.statusCode = 403;
+        error.statusCode = err.statusCode || 403;
         next(error);
     }
 };
@@ -61,3 +80,5 @@ export const WorkspaceMiddleware = async (req, res, next) => {
 // };
 
 
+
+```

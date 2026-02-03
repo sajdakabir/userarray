@@ -1,7 +1,7 @@
 import Redis from "ioredis";
 import { environment } from "./environment.loader.js"
 
-const redisConnection = new Redis(`redis://${environment.REDIS_DB_USER}:${environment.REDIS_DB_PASS}@${environment.REDIS_HOST}:${environment.REDIS_PORT}`, {
+const redisConnection = new Redis(`${environment.REDIS_DB_URL }`, {
     maxRetriesPerRequest: null
 });
 

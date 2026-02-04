@@ -169,7 +169,7 @@ const Signin = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-black text-white hover:bg-gray-900 h-9 font-normal"
+                className="w-full bg-white text-black border border-gray-300 hover:bg-gray-50 h-9 font-normal"
                 disabled={loading || magicsent}
               >
                 {loading && (

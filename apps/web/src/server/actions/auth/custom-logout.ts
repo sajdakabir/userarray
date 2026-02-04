@@ -39,17 +39,18 @@ const CustomLogout = async () => {
     // Revalidate the home and auth pages to clear cache
     revalidatePath("/");
     revalidatePath("/auth");
-
-    // Get frontend URL from environment
-    const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
-    
-    // Redirect to login page using full URL
-    redirect(frontendUrl);
   } catch (error) {
     const e = error as any;
+    // Check if it's a redirect error (expected behavior)
+    if (e.message === "NEXT_REDIRECT" || e.digest?.startsWith("NEXT_REDIRECT")) {
+      throw error; // Re-throw to allow redirect
+    }
     console.error("Logout error:", e.message);
     throw new Error("Failed to logout");
   }
+  
+  // Redirect to login page (must be outside try-catch)
+  redirect("/");
 };
 
 export default CustomLogout;

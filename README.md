@@ -1,4 +1,4 @@
-# userArray
+## userArray
 
 linear companion for open source and user facing teams.
 
@@ -19,4 +19,5 @@ linear companion for open source and user facing teams.
 • Talk to founders: [cal.com/userarray](https://cal.com/userarray)
 
 • Twitter: [twitter.com/userarray](https://twitter.com/userarray)
+
 

@@ -5,7 +5,15 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "NEXT_PUBLIC_GOOGLE_CLIENT_ID",
+        "NEXT_PUBLIC_BACKEND_URL",
+        "NEXT_PUBLIC_FRONTEND_URL",
+        "LINEAR_CLIENT_ID",
+        "LINEAR_CLIENT_SECRET",
+        "LINEAR_REDIRECT_URL"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

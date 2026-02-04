@@ -31,21 +31,21 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
  
 
   return (
-    <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
-      <header className="flex items-center justify-between px-6 py-3 border-b border-white/10">
-        <span className="text-white font-medium">
+    <div className="min-h-screen bg-white flex flex-col">
+      <header className="flex items-center justify-between px-6 py-3 border-b border-gray-200">
+        <span className="text-black font-medium">
           userArray
         </span>
         <nav className="flex items-center gap-6">
           <button 
             onClick={() => window.open('https://github.com/sajdakabir/userarray', '_blank')}
-            className="text-sm text-zinc-400 hover:text-white transition-colors cursor-pointer"
+            className="text-sm text-gray-600 hover:text-black transition-colors cursor-pointer"
           >
             GitHub
           </button>
           <button 
             onClick={() => window.open('https://userarray.com/changelog', '_blank')}
-            className="text-sm bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-md text-white transition-colors cursor-pointer"
+            className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-md text-black transition-colors cursor-pointer"
           >
             Demo
           </button>
@@ -65,34 +65,34 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
                 />
               </div>
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-white">
+            <h1 className="text-2xl font-semibold tracking-tight text-black">
               Connect with Linear
             </h1>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-600">
               mirror your Linear issues to userArray public board
             </p>
           </div>
 
           <div className="space-y-4">
-            <div className="bg-[#0C0C0C] border border-zinc-800 rounded-lg p-4 space-y-3">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
               <div className="flex items-start gap-3">
-                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 flex-shrink-0" />
-                <p className="text-sm text-zinc-300">fully customizable two way sync issues, status and lebels in real-time.</p>
+                <Circle className="w-1.5 h-1.5 text-gray-600 mt-2 flex-shrink-0" />
+                <p className="text-sm text-gray-700">fully customizable two way sync issues, status and lebels in real-time.</p>
               </div>
               <div className="flex items-start gap-3">
-                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 flex-shrink-0" />
-                <p className="text-sm text-zinc-300">let your users and contibutors view and comment on issues without needing to give them access to Linear.</p>
+                <Circle className="w-1.5 h-1.5 text-gray-600 mt-2 flex-shrink-0" />
+                <p className="text-sm text-gray-700">let your users and contibutors view and comment on issues without needing to give them access to Linear.</p>
               </div>
               <div className="flex items-start gap-3">
-                <Circle className="w-1.5 h-1.5 text-zinc-300 mt-2 flex-shrink-0" />
-                <p className="text-sm text-zinc-300">one click convert any feedback, commments into linear issues and send them to triage</p>
+                <Circle className="w-1.5 h-1.5 text-gray-600 mt-2 flex-shrink-0" />
+                <p className="text-sm text-gray-700">one click convert any feedback, commments into linear issues and send them to triage</p>
               </div>
             </div>
 
             <div className="space-y-3">
               <Button 
                 onClick={handleConnect}
-                className="w-full bg-white text-black hover:bg-zinc-100 h-9 font-normal"
+                className="w-full bg-black text-white hover:bg-gray-900 h-9 font-normal"
               >
                 Connect Linear
               </Button>

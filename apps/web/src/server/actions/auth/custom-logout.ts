@@ -40,6 +40,7 @@ const CustomLogout = async () => {
     revalidatePath("/");
     revalidatePath("/auth");
   } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const e = error as any;
     // Check if it's a redirect error (expected behavior)
     if (e.message === "NEXT_REDIRECT" || e.digest?.startsWith("NEXT_REDIRECT")) {

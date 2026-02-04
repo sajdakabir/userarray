@@ -15,9 +15,11 @@ export function Toaster() {
 
   return (
     <ToastProvider>
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       {toasts.map(function ({ id, title, description, action, ...props }: any) {
         return (
           // @ts-expect-error - Radix UI Toast type compatibility
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           <Toast key={id} {...(props as any)}>
             <div className="grid gap-1">
               {title && (

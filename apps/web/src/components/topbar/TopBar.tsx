@@ -25,6 +25,7 @@ const TopBar = ({ workspace, myProfile }: TopBarProps) => {
       // CustomLogout redirects, so we won't reach here
     } catch (error) {
       // NEXT_REDIRECT is not an error - let it propagate
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const e = error as any;
       if (e.message === "NEXT_REDIRECT") {
         return; // Allow redirect to happen

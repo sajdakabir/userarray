@@ -84,23 +84,27 @@ const Signin = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <header className="flex items-center justify-between px-6 py-3 border-b border-gray-200">
+      <header className="relative z-50 flex items-center justify-between px-6 py-3 border-b border-gray-200">
         <span className="text-black font-medium">
           userArray
         </span>
         <nav className="flex items-center gap-6">
-          <button 
-            onClick={() => window.open('https://github.com/sajdakabir/userarray', '_blank')}
+          <a 
+            href="https://github.com/sajdakabir/userarray"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm text-gray-600 hover:text-black transition-colors cursor-pointer"
           >
             GitHub
-          </button>
-          <button 
-            onClick={() => window.open('https://userarray.com/changelog', '_blank')}
+          </a>
+          <a 
+            href="https://userarray.com/changelog"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-md text-black transition-colors cursor-pointer"
           >
             Demo
-          </button>
+          </a>
         </nav>
       </header>
 

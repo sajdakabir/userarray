@@ -20,9 +20,12 @@ export const ACCESS_TOKEN = "userarrayAccess";
 export const REFRESH_TOKEN = "userarrayRefresh";
 
 //common login endpoint
-export const COMMON_LOGIN=""
+export const COMMON_LOGIN = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:9001'}/auth/login`
+
+//common signup endpoint
+export const COMMON_SIGNUP = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:9001'}/auth/signup`
 
 //magic login end point 
-export const MAGIC_LOGIN=""
+export const MAGIC_LOGIN = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:9001'}/auth/magic/login`
 
 

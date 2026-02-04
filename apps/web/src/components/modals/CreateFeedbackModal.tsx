@@ -83,6 +83,7 @@ const CreateFeedbackModal = ({
               <SmilePlus className="w-4 h-4 text-gray-400" />
             </button>
             <button>
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
               <Image className="w-4 h-4 text-gray-400" />
             </button>
           </div>

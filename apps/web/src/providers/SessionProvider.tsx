@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import React, { ReactNode } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "@/components/ui/toaster";

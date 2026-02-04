@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Circle } from "lucide-react";
@@ -10,7 +10,7 @@ type LinearProps = {
   token: string;
 };
 
-const LinearConnect: FC<LinearProps> = ({ token }) => {
+const LinearConnect = ({ token }: LinearProps) => {
 
   const handleConnect = useCallback(async () => {
     try {

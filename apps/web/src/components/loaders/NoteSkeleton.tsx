@@ -1,12 +1,11 @@
 // import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { FC } from "react";
 
 type NoteSkeletonProps = {
   className?: string;
 };
 
-export const NoteSkeleton: FC<NoteSkeletonProps> = ({ className }) => {
+export const NoteSkeleton = ({ className }: NoteSkeletonProps) => {
   return (
     <div className={cn("flex flex-col gap-y-2 text-focus-text h-32 mt-8", className)}>
       {/* <Skeleton className="h-5 w-80" />

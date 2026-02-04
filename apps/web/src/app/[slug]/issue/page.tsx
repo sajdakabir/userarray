@@ -25,9 +25,7 @@ const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
   }
 
   return (
-    <>
-      <PlanClient token={accessToken} slug={slug} workspace={myWorkSpace} />
-    </>
+    <PlanClient token={accessToken} slug={slug} workspace={myWorkSpace} />
   );
 };
 

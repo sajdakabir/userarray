@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/Users";
@@ -13,7 +13,7 @@ interface TopBarProps {
   workspace: string;
 }
 
-const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
+const TopBar = ({ workspace, myProfile }: TopBarProps) => {
   const pathname = usePathname();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const isActivePath = (path: string) => pathname.includes(path);

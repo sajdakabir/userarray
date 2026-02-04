@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -8,7 +7,7 @@ interface TopBarProps {
   workspace: string;
 }
 
-const TopBar: FC<TopBarProps> = ({ workspace }) => {
+const TopBar = ({ workspace }: TopBarProps) => {
   const pathname = usePathname();
   const isActivePath = (path: string) => pathname.includes(path);
 

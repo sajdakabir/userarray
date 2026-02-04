@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ThumbsUp, MessageSquare, Plus } from "lucide-react";
 import CreateFeedbackModal from "@/components/modals/CreateFeedbackModal";
 import ExpandedFeedbackView from "@/components/feedback/ExpandedFeedbackView";
@@ -17,7 +17,7 @@ interface FeedbackClientProps {
   workspace?: boolean | null;
 }
 
-const FeedbackClient: FC<FeedbackClientProps> = ({ token, slug, workspaceLavels }) => {
+const FeedbackClient = ({ token, slug, workspaceLavels }: FeedbackClientProps) => {
   const route = useRouter();
   const [activeStatus, setActiveStatus] = useState("open");
   const [isModalOpen, setIsModalOpen] = useState(false);

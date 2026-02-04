@@ -4,7 +4,7 @@ import { Workspace } from "@/types/workspace";
 import CycleClient from "@/views/cycles/CycleClient";
 import { cookies } from "next/headers";
 
-async function Page({ params }: {params: Promise<{ slug: string }>}) {
+const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
   const { slug } = await params;
   
   const cookieStore = await cookies();
@@ -25,14 +25,12 @@ async function Page({ params }: {params: Promise<{ slug: string }>}) {
   }
 
   return (
-    <>
-      <CycleClient
-        token={accessToken}
-        slug={slug}
-        workspace={myWorkSpace}
-      />
-    </>
+    <CycleClient
+      token={accessToken}
+      slug={slug}
+      workspace={myWorkSpace}
+    />
   );
-}
+};
 
 export default Page;

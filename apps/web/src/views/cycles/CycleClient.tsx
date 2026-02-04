@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { useEffect } from "react";
 
 import IssueCard from "@/components/issueCard/IssueCard";
 import { BACKEND_URL } from "@/config/apiConfig";
@@ -12,7 +12,7 @@ interface CycleClientProps {
   workspace: boolean | null;
 }
 
-const CycleClient: FC<CycleClientProps> = ({ token, slug, workspace }) => {
+const CycleClient = ({ token, slug, workspace }: CycleClientProps) => {
   const { fetchAllIssues, cycleAllLinearIssues, cycleIssueStatus } = useIssueStore();
 
   useEffect(() => {

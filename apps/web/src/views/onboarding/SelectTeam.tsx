@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { FC } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronDown } from "lucide-react";
@@ -15,7 +14,7 @@ type TeamCreateProps = {
   workspace:string
 };
 
-const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
+const SelectTeam = ({ token, response,workspace }: TeamCreateProps) => {
   const router = useRouter();
   const [selectedTeamId, setSelectedTeamId] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);

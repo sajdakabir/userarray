@@ -1,4 +1,4 @@
-import React, { FC} from "react";
+import React from "react";
 import getLinearAllTeam from "@/server/fetchers/onboarding/getAllLinearTeams";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -10,7 +10,7 @@ type TeamCreateProps = {
   workspace:string
 };
 
-const TeamCreate: FC<TeamCreateProps> = async ({ token,workspace }) => {
+const TeamCreate = async ({ token,workspace }: TeamCreateProps) => {
   const cookieStore =await cookies();
   const linear_Token = cookieStore.get(LINEAR_TOKEN);
   const linearToken = linear_Token?.value;

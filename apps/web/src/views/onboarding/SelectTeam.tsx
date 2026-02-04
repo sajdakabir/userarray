@@ -253,10 +253,10 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
               <Button
                 type="submit"
                 disabled={loading || !selectedTeamId}
-                className="w-full bg-black hover:bg-gray-900 text-white h-8 text-sm font-normal disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white hover:bg-gray-50 text-black border border-gray-300 h-8 text-sm font-normal disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading && (
-                  <div className="mr-2 h-3 w-3 animate-spin rounded-full border-[1.5px] border-white border-t-transparent" />
+                  <div className="mr-2 h-3 w-3 animate-spin rounded-full border-[1.5px] border-black border-t-transparent" />
                 )}
                 Continue with Linear
               </Button>

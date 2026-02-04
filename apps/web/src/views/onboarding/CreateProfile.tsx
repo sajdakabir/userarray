@@ -139,10 +139,10 @@ const CreateProfile = (props: { accessToken: string }) => {
             <Button 
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full bg-black text-white hover:bg-gray-900 h-9 font-normal"
+              className="w-full bg-white text-black border border-gray-300 hover:bg-gray-50 h-9 font-normal"
             >
               {loading && (
-                <div className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <div className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-black border-t-transparent" />
               )}
               Continue
             </Button>

@@ -92,7 +92,7 @@ const LinearConnect: FC<LinearProps> = ({ token }) => {
             <div className="space-y-3">
               <Button 
                 onClick={handleConnect}
-                className="w-full bg-black text-white hover:bg-gray-900 h-9 font-normal"
+                className="w-full bg-white text-black border border-gray-300 hover:bg-gray-50 h-9 font-normal"
               >
                 Connect Linear
               </Button>

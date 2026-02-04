@@ -9,8 +9,10 @@ interface Props {
 }
 
 export function SessionProvider(props: Props) {
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+  
   return (
-    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+    <GoogleOAuthProvider clientId={clientId}>
       {props.children}
       <Toaster />
     </GoogleOAuthProvider>

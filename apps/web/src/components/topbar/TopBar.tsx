@@ -1,11 +1,12 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/Users";
-import { User } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 import Image from "next/image";
+import CustomLogout from "@/server/actions/auth/custom-logout";
 
 interface TopBarProps {
   myProfile: UserProfile | null;
@@ -14,13 +15,30 @@ interface TopBarProps {
 
 const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
   const pathname = usePathname();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const isActivePath = (path: string) => pathname.includes(path);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await CustomLogout();
+      // CustomLogout redirects, so we won't reach here
+    } catch (error) {
+      // NEXT_REDIRECT is not an error - let it propagate
+      const e = error as any;
+      if (e.message === "NEXT_REDIRECT") {
+        return; // Allow redirect to happen
+      }
+      console.error("Logout failed:", error);
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <div className="h-16 border-b border-[#E3E3E3] bg-white sticky top-0 z-50">
-      <div className="max-w-screen-2xl mx-auto h-full flex items-center text-sm">
-        <div className="w-[240px] pl-12">
-          {/* Logo and Name */}
+      <div className="max-w-screen-2xl mx-auto h-full flex items-center justify-between text-sm px-12">
+        <div className="flex items-center gap-6">
+          {/* Logo and Workspace Section */}
           <div className="flex items-center gap-1.5">
             {/* Profile Section */}
             <button className="p-1.5 rounded-full hover:bg-[#F8F8F8] transition-colors">
@@ -57,9 +75,7 @@ const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
               {workspace}
             </button>
           </div>
-        </div>
 
-        <div className="flex items-center">
           {/* Navigation Links */}
           <div className="flex items-center gap-8">
             <Link
@@ -94,6 +110,17 @@ const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
             </Link>
           </div>
         </div>
+
+        {/* Logout Button - Fixed at Right */}
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="flex items-center gap-2 px-3 py-1.5 text-sm text-[#666] hover:text-black hover:bg-[#F8F8F8] rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Logout"
+        >
+          <LogOut size={16} />
+          <span>Logout</span>
+        </button>
       </div>
     </div>
   );

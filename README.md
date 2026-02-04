@@ -14,10 +14,11 @@ linear companion for open source and user facing teams.
 
 ## 🔗 Links
 
-• Sign in: [app.userarray.com](https://app.userarray.com)
+• Sign in: [app.userarray.com](https://userarray.sajdakabir.com/)
 
 • Talk to founders: [cal.com/userarray](https://cal.com/userarray)
 
 • Twitter: [twitter.com/userarray](https://twitter.com/userarray)
+
 
 

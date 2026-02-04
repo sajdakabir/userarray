@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Issue, IssueStatus } from "@/types/Issue";
 // import { CheckSquare, Plus } from "lucide-react";
 import IssueCardContent from "./IssueCardContent";
@@ -11,7 +11,7 @@ interface IssueCardProps {
   myWorkSpace: boolean | null;
 }
 
-const IssueCard: FC<IssueCardProps> = ({ issue, issueStatus }) => {
+const IssueCard = ({ issue, issueStatus }: IssueCardProps) => {
   const [activeStatus, setActiveStatus] = useState<string>(
     issueStatus[0]?.id || ""
   );

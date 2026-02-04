@@ -25,13 +25,11 @@ const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
   }
 
   return (
-    <>
-      <CycleClient
-        token={accessToken}
-        slug={slug}
-        workspace={myWorkSpace}
-      />
-    </>
+    <CycleClient
+      token={accessToken}
+      slug={slug}
+      workspace={myWorkSpace}
+    />
   );
 };
 

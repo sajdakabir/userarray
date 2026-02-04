@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SmilePlus, Image, ChevronDown, X } from "lucide-react";
 import { WorkSpaceLabels } from "@/types/Users";
 
@@ -16,12 +16,12 @@ interface CreateFeedbackModalProps {
   ) => void;
 }
 
-const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
+const CreateFeedbackModal = ({
   LABELS,
   isOpen,
   onClose,
   onSubmit,
-}) => {
+}: CreateFeedbackModalProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedLabel, setSelectedLabel] = useState(LABELS[0]?._id ?? "");
@@ -83,6 +83,7 @@ const CreateFeedbackModal: FC<CreateFeedbackModalProps> = ({
               <SmilePlus className="w-4 h-4 text-gray-400" />
             </button>
             <button>
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
               <Image className="w-4 h-4 text-gray-400" />
             </button>
           </div>

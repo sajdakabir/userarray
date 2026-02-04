@@ -15,11 +15,15 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      {toasts.map(function ({ id, title, description, action, ...props }: any) {
         return (
-          <Toast key={id} {...props}>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          <Toast key={id} {...(props as any)}>
             <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
+              {title && (
+                <ToastTitle>{title}</ToastTitle>
+              )}
               {description && (
                 <ToastDescription>{description}</ToastDescription>
               )}

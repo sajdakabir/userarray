@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import { Feedback, FeedbackStatus } from "@/types/Feedback";
 import {
   ChevronLeft,
@@ -31,13 +31,13 @@ interface ExpandedFeedbackViewProps {
   feedBackStatus?: FeedbackStatus[];
 }
 
-const ExpandedFeedbackView: FC<ExpandedFeedbackViewProps> = ({
+const ExpandedFeedbackView = ({
   allFeedback = [],
   selectedFeedback,
   onFeedbackSelect,
   workspaceLavels = [],
   feedBackStatus ,
-}) => {
+}: ExpandedFeedbackViewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStatus, setActiveStatus] = useState("Open");
 

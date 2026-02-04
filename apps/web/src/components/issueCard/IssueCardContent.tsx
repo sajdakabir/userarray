@@ -1,6 +1,5 @@
 'use client'
 
-import { FC } from "react";
 import { Issue } from "@/types/Issue";
 import { truncateString } from "@/utils/truncateString";
 
@@ -9,7 +8,7 @@ type IssueCardContentProps = {
   statusColor: string;
 };
 
-const IssueCardContent: FC<IssueCardContentProps> = ({ item }) => {
+const IssueCardContent = ({ item }: IssueCardContentProps) => {
   const getLabelStyle = (color?: string) => {
     if (!color) {
       return {

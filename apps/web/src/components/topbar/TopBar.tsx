@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/Users";
@@ -13,7 +13,7 @@ interface TopBarProps {
   workspace: string;
 }
 
-const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
+const TopBar = ({ workspace, myProfile }: TopBarProps) => {
   const pathname = usePathname();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const isActivePath = (path: string) => pathname.includes(path);
@@ -25,6 +25,7 @@ const TopBar: FC<TopBarProps> = ({ workspace, myProfile }) => {
       // CustomLogout redirects, so we won't reach here
     } catch (error) {
       // NEXT_REDIRECT is not an error - let it propagate
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const e = error as any;
       if (e.message === "NEXT_REDIRECT") {
         return; // Allow redirect to happen

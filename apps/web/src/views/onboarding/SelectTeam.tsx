@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { FC } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronDown } from "lucide-react";
@@ -15,7 +14,7 @@ type TeamCreateProps = {
   workspace:string
 };
 
-const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
+const SelectTeam = ({ token, response,workspace }: TeamCreateProps) => {
   const router = useRouter();
   const [selectedTeamId, setSelectedTeamId] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -114,15 +113,15 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
   );
 
   return (
-    <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
-      <header className="flex items-center justify-between px-5 py-2.5 border-b border-white/10">
-        <span className="text-white font-medium text-sm">userArray</span>
+    <div className="min-h-screen bg-white flex flex-col">
+      <header className="flex items-center justify-between px-5 py-2.5 border-b border-gray-200">
+        <span className="text-black font-medium text-sm">userArray</span>
         <nav className="flex items-center gap-4">
           <button
             onClick={() =>
               window.open("https://github.com/sajdakabir/userarray", "_blank")
             }
-            className="text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer"
+            className="text-xs text-gray-600 hover:text-black transition-colors cursor-pointer"
           >
             GitHub
           </button>
@@ -130,7 +129,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
             onClick={() =>
               window.open("https://userarray.com/changelog", "_blank")
             }
-            className="text-xs bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-md text-white transition-colors cursor-pointer"
+            className="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1 rounded-md text-black transition-colors cursor-pointer"
           >
             Demo
           </button>
@@ -150,18 +149,18 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
               />
             </div>
             <div className="text-center space-y-1.5">
-              <h1 className="text-xl font-semibold tracking-tight text-white">
+              <h1 className="text-xl font-semibold tracking-tight text-black">
                 Sync Linear team with your userArray public board
               </h1>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-gray-600">
                 Choose a team to connect with {workspace}
               </p>
             </div>
           </div>
 
-          <div className="bg-white/5 rounded-md p-3 space-y-3">
+          <div className="bg-gray-50 rounded-md p-3 space-y-3">
             <div className="flex items-start gap-2.5">
-              <div className="mt-0.5 text-white">
+              <div className="mt-0.5 text-black">
                 <svg
                   viewBox="0 0 24 24"
                   className="w-3.5 h-3.5"
@@ -176,14 +175,14 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
                   />
                 </svg>
               </div>
-              <p className="text-xs text-white">
+              <p className="text-xs text-gray-700">
                 Issues and current cycle with status from your Linear team will
                 be publicly visible at userarray/{workspace}
               </p>
             </div>
 
             <div className="flex items-start gap-2.5">
-              <div className="mt-0.5 text-white">
+              <div className="mt-0.5 text-black">
                 <svg
                   viewBox="0 0 24 24"
                   className="w-3.5 h-3.5"
@@ -198,7 +197,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
                   />
                 </svg>
               </div>
-              <p className="text-xs text-white">
+              <p className="text-xs text-gray-700">
                 You can customize later in settings which issues to sync
               </p>
             </div>
@@ -209,38 +208,38 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
               <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full bg-[#0C0C0C] border border-zinc-800 rounded-md px-3 py-2 text-left text-white text-sm focus:outline-none focus:ring-2 focus:ring-white/10 transition-colors hover:bg-white/5"
+                className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-left text-black text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors hover:bg-gray-50"
               >
                 <div className="flex items-center justify-between">
                   <span
-                    className={selectedTeam ? "text-white" : "text-zinc-500"}
+                    className={selectedTeam ? "text-black" : "text-gray-500"}
                   >
                     {selectedTeam ? selectedTeam.name : "Select a team"}
                   </span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-zinc-400 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    className={`w-3.5 h-3.5 text-gray-600 transition-transform ${isOpen ? "rotate-180" : ""}`}
                   />
                 </div>
               </button>
 
               {isOpen && (
-                <div className="absolute z-10 w-full mt-1 bg-[#1C1C1C] border border-zinc-800 rounded-md shadow-lg overflow-hidden">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-hidden">
                   <div className="max-h-48 overflow-y-auto">
                     {response.map((team) => (
                       <button
                         key={team.id.toString()}
                         type="button"
                         onClick={() => handleTeamSelect(team.id.toString())}
-                        className="w-full px-3 py-2 text-left text-sm text-white hover:bg-white/5 flex items-center justify-between group"
+                        className="w-full px-3 py-2 text-left text-sm text-black hover:bg-gray-100 flex items-center justify-between group"
                       >
                         <div className="flex items-center space-x-2">
-                          <span className="w-5 h-5 flex items-center justify-center rounded bg-white/5 text-xs font-medium text-white">
+                          <span className="w-5 h-5 flex items-center justify-center rounded bg-gray-100 text-xs font-medium text-black">
                             {team.key}
                           </span>
                           <span>{team.name}</span>
                         </div>
                         {selectedTeamId === team.id.toString() && (
-                          <Check className="w-3.5 h-3.5 text-white" />
+                          <Check className="w-3.5 h-3.5 text-black" />
                         )}
                       </button>
                     ))}
@@ -253,7 +252,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
               <Button
                 type="submit"
                 disabled={loading || !selectedTeamId}
-                className="w-full bg-white hover:bg-zinc-100 text-black h-8 text-sm font-normal disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white hover:bg-gray-50 text-black border border-gray-300 h-8 text-sm font-normal disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading && (
                   <div className="mr-2 h-3 w-3 animate-spin rounded-full border-[1.5px] border-black border-t-transparent" />
@@ -277,7 +276,7 @@ const SelectTeam: FC<TeamCreateProps> = ({ token, response,workspace }) => {
           {[...Array(7)].map((_, i) => (
             <div
               key={i}
-              className={`w-1 h-1 rounded-full ${i === 6 ? "bg-white" : "bg-white/20"}`}
+              className={`w-1 h-1 rounded-full ${i === 6 ? "bg-black" : "bg-gray-300"}`}
             />
           ))}
         </div>

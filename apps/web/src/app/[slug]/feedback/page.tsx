@@ -28,14 +28,12 @@ const Page = async ({ params }: {params: Promise<{ slug: string }>}) => {
   }
 
   return (
-    <>
-      <FeedbackClient
-        workspaceLavels={workspaceLavels}
-        token={accessToken}
-        slug={slug}
-        workspace={myWorkSpace}
-      />
-    </>
+    <FeedbackClient
+      workspaceLavels={workspaceLavels}
+      token={accessToken}
+      slug={slug}
+      workspace={myWorkSpace}
+    />
   );
 };
 

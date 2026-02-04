@@ -78,21 +78,21 @@ const CreateWorkspace = (props: { accessToken: string }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0C0C0C] flex flex-col">
-      <header className="flex items-center justify-between px-6 py-3 border-b border-white/10">
-        <span className="text-white font-medium">
+    <div className="min-h-screen bg-white flex flex-col">
+      <header className="flex items-center justify-between px-6 py-3 border-b border-gray-200">
+        <span className="text-black font-medium">
           userArray
         </span>
         <nav className="flex items-center gap-6">
           <button 
             onClick={() => window.open('https://github.com/sajdakabir/userarray', '_blank')}
-            className="text-sm text-zinc-400 hover:text-white transition-colors cursor-pointer"
+            className="text-sm text-gray-600 hover:text-black transition-colors cursor-pointer"
           >
             GitHub
           </button>
           <button 
             onClick={() => window.open('https://userarray.com/changelog', '_blank')}
-            className="text-sm bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-md text-white transition-colors cursor-pointer"
+            className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-md text-black transition-colors cursor-pointer"
           >
             Demo
           </button>
@@ -102,17 +102,17 @@ const CreateWorkspace = (props: { accessToken: string }) => {
       <main className="flex-1 flex items-center justify-center -mt-24">
         <div className="w-full max-w-[320px] space-y-4">
           <div className="text-center space-y-1">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">
+            <h1 className="text-2xl font-semibold tracking-tight text-black">
               Create your public board
             </h1>
-            <p className="text-sm text-zinc-400">
-              Need custom domain? <a href="mailto:hello@userarray.com" className="text-white hover:text-zinc-200">Contact us</a>
+            <p className="text-sm text-gray-600">
+              Need custom domain? <a href="mailto:hello@userarray.com" className="text-black hover:text-gray-800">Contact us</a>
             </p>
           </div>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="workspaceName" className="text-sm text-zinc-400">
+              <Label htmlFor="workspaceName" className="text-sm text-gray-600">
                 Board Name
               </Label>
               <Input
@@ -126,26 +126,26 @@ const CreateWorkspace = (props: { accessToken: string }) => {
                   setSlug(name.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, ''));
                 }}
                 placeholder="Acme Corp"
-                className="bg-[#0C0C0C] border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-zinc-500 focus-visible:ring-offset-0 h-9"
+                className="bg-white border-gray-300 text-black placeholder:text-gray-400 focus-visible:ring-gray-500 focus-visible:ring-offset-0 h-9"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="workspaceUrl" className="text-sm text-zinc-400">
+              <Label htmlFor="workspaceUrl" className="text-sm text-gray-600">
                 Public URL
               </Label>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-zinc-500">userarray.com/</span>
+                <span className="text-sm text-gray-600">userarray.com/</span>
                 <Input
                   id="workspaceUrl"
                   name="workspaceUrl"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value.toLowerCase())}
                   placeholder="acme-corp"
-                  className="bg-[#0C0C0C] border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-zinc-500 focus-visible:ring-offset-0 h-9"
+                  className="bg-white border-gray-300 text-black placeholder:text-gray-400 focus-visible:ring-gray-500 focus-visible:ring-offset-0 h-9"
                 />
               </div>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-gray-600">
                 Only lowercase letters, numbers, and hyphens are allowed
               </p>
               {error && (
@@ -156,7 +156,7 @@ const CreateWorkspace = (props: { accessToken: string }) => {
             <Button 
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full bg-white text-black hover:bg-zinc-100 h-9 font-normal"
+              className="w-full bg-white text-black border border-gray-300 hover:bg-gray-50 h-9 font-normal"
             >
               {loading && (
                 <div className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-black border-t-transparent" />
